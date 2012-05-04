@@ -44,11 +44,11 @@
 
 //=================================
 // included dependencies
-#include "../../server/l5_application_server.h"
-#include "clothes_node.h"
+#include <mili/mili.h>
+#include <combeng/combeng.h>
 #include <set>
 #include <list>
-
+#include "clothes_node.h"
 
 class ResultClothe
 {
@@ -129,6 +129,14 @@ public:
     ~ClothesApplicationServerImp();
 
     /**
+     * To extract the global result
+     */
+    inline std::list<ResultClothe> get_top_5_clothes() const
+    {
+        return _top_5_dressed;
+    }
+
+    /**
      * For implementation. From L4ServerApp (recabs)
      */
     virtual void get_initial_packet(recabs::Packet& pkt) const;
@@ -138,16 +146,8 @@ public:
     /**
      * For implementation. From L5ApplicationServer (comb_eng)
      */
-    comb_eng::L4Node<Clothe>* get_initial_node();
+    void get_initial_set(std::list<Clothe> &);
 
-    /**
-     * For implementation. From L5ApplicationServer (comb_eng)
-     */
-    std::list<Clothe> get_initial_set();
 
-    inline std::list<ResultClothe> get_top_5_clothes() const
-    {
-        return _top_5_dressed;
-    }
 };
 #endif  /* _CLOTHES_APPLICATION_SERVER_IMP_H */

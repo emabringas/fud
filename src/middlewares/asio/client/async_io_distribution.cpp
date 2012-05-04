@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,53 +53,6 @@ AsyncIODistribution::AsyncIODistribution(std::string address, Port port) :
 {
 }
 
-void AsyncIODistribution::wait_for_job_unit()
-{
-    try
-    {
-        JobUnitID   id(1);
-        JobUnitSize size(1);
-
-        while (id != 0 && size != 0)
-        {
-            char header[HEADER_LENGTH];
-            boost::asio::read(*_socket,boost::asio::buffer(header,HEADER_LENGTH));
-
-            InputMessage bis(std::string(header,HEADER_LENGTH));
-            bis >> id >> size;
-            assert (id != 0 && size != 0);
-
-            std::auto_ptr<char> body(new char[size]);
-            boost::asio::read(*_socket,boost::asio::buffer(body.get(),size));
-
-            ProcessorsManager::get_instance()->deliver_message(std::string(body.get(),size));
-        }
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "Connection closed by server: " << e.what() << std::endl;
-    }
-}
-
-void AsyncIODistribution::inform_result(bool result)
-{
-    try
-    {
-        if (result)
-        {
-            OutputMessage bos;
-            bos << JobUnitCompleted << ProcessorsManager::get_instance()->get_return_message();
-            boost::asio::write(*_socket, boost::asio::buffer(bos.str()));
-        }
-        else // will be done differently
-            std::cerr << "ERROR obtaining results " << std::endl;
-    }
-    catch(std::exception& e)
-    {
-        std::cerr << "ERROR: " << e.what() << std::endl;
-    }
-}
-
 void AsyncIODistribution::run()
 {
     try
@@ -106,14 +65,55 @@ void AsyncIODistribution::run()
         if (error)
             throw boost::system::system_error(error);
 
-        //state: connected
-        wait_for_job_unit();
+        _connected = true;
+        while (_connected)
+        {
+            wait_for_message();
+        }
     }
     catch (const std::exception& e)
     {
         std::cerr << "An error ocurred: " << e.what() << std::endl;
     }
 }
+
+void AsyncIODistribution::wait_for_message()
+{
+    try
+    {
+        char header_size[HEADER_SIZE];
+        boost::asio::read(*_socket, boost::asio::buffer(header_size, HEADER_SIZE) );
+
+        fud_size size;
+        InputMessage bis( std::string(header_size, HEADER_SIZE) );
+        bis >> size;
+        assert (size > 0);
+
+        std::auto_ptr<char> body(new char[size - HEADER_SIZE]);
+        boost::asio::read(*_socket, boost::asio::buffer(body.get(), size - HEADER_SIZE) );
+
+        handle_incoming_message( std::string(body.get(), size - HEADER_SIZE) );
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "Connection closed by server: " << e.what() << std::endl;
+        _connected = false;
+    }
+}
+
+void AsyncIODistribution::dispatch(const std::string& out)
+{
+    try
+    {
+        boost::asio::write(*_socket, boost::asio::buffer(out));
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        _connected = false;
+    }
+}
+
 
 namespace fud
 {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>410</x>
+      <y>140</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>/comb_eng::PrunePolicy/
+--
+- _name
+--
++ PrunePolicy()
+/+ ~PrunePolicy()/
+/+ is_useful()/
+bg=light_gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

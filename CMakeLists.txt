@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 242 2010-08-13 16:31:21Z billybiset $
+# $Id: CMakeLists.txt 573 2011-06-13 20:01:53Z emab73 $
 
 cmake_minimum_required( VERSION 2.6 )
 
@@ -10,6 +10,11 @@ option( apps "Compile sample applications too." OFF )
 
 if ( apps )
     message ( STATUS "Compiling sample applications as well." )
-    include_directories( src/common )
     add_subdirectory( apps )
 endif ( apps )
+
+
+option( ResendPendingJobs "Resend pending jobs units to free clients." ON )
+
+
+

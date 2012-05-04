@@ -1,10 +1,10 @@
-/* $Id: bs_deserializer.h 334 2010-10-14 22:36:19Z emab73 $ */
+/* $Id: bs_deserializer.h 567 2011-06-07 20:06:32Z marjobe $ */
 
 /** 
  *  @file:      bs_deserializer.h
  *  @details    Header file for Recabs providing BSDeserializer class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *  
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +41,7 @@
 #ifndef BS_DESERIALIZER_H
 #define BS_DESERIALIZER_H
 
-//#include <recabs/recabs.h>
-#include "recabs_dev.h"
+#include "recabs.h"
 
 /**
  *  Concrete class to deserialize BinarySearchs.

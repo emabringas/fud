@@ -1,0 +1,264 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{ifpdf}
+\usepackage{appendix}
+\usepackage{listings}
+\usepackage[colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=black]{hyperref}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{shapes,snakes}
+\usepackage{bookmark}
+\usepackage[chapter]{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{color}
+\usepackage{textcomp}
+\usepackage{lscape}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,
+    rulecolor=,
+    language=matlab,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=true,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0.1,0.1,0.6}\bfseries,
+        commentstyle=\color[rgb]{0.133,0.545,0.133},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+
+% Definitions
+\def\fud {\textbf{\textit{FuD}}}
+\def\fude {\textbf{\textit{FuDePAN}}}
+\def\rc {\textbf{\textit{RecAbs}}}
+\def\cpp {\textbf{\textit{C++}}}
+\def\ana {\textbf{\textit{Ana}}}
+
+% Tools
+\def\doxy {\textbf{\textit{Doxygen}}}
+\def\gc {\textbf{\textit{GoogleCode}}}
+\def\uml {\textbf{\textit{UML}}}
+\def\linux {\textbf{\textit{GNU/Linux}}}
+\def\unix {\textbf{\textit{UNIX}}}
+\def\make {\textbf{\textit{make}}}
+\def\cmake {\textbf{\textit{CMake}}}
+\def\autotools {\textbf{\textit{Autotools}}}
+
+% Commands
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\renewcommand{\appendixname}{Apéndices}
+\renewcommand{\appendixtocname}{Apéndices}
+\renewcommand{\appendixpagename}{Apéndices}
+
+%Headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\bfseries\thepage}
+\fancyhead[L]{\nouppercase{\textsc{\rightmark}}}
+
+\begin{document}
+
+	\pagenumbering{roman}
+
+    %Title
+    \begin{titlepage}
+        \begin{center}
+
+            %Escudos
+            \begin{minipage}{0.45\textwidth}
+                \begin{center}
+                    %Escudo UNRC
+                    \includegraphics[width=60pt,height=90.5pt]{images/unrc.jpg}\\
+                    \begin{scriptsize}
+                        \textsc{Universidad Nacional de Río Cuarto} \\
+                    \end{scriptsize}
+                    \vfill
+                    \begin{tiny}
+                        \textsc{Fac. de Cs. Exactas, Fco-Qcas y Naturales} \\
+                        \textsc{Departamento de Computación} \\[1cm]    
+                    \end{tiny}
+                \end{center}
+            \end{minipage}
+            \begin{minipage}{0.45\textwidth}
+                \begin{center}
+                    %Escudo FuDePAN
+                    \includegraphics[width=90pt,height=90pt]{images/fudepan.png}\\
+                    \vfill
+                    \begin{scriptsize}
+                        \textsc{FuDePAN} \\
+                    \end{scriptsize}
+                    \begin{tiny}
+                        \textsc{Fundación para el Desarrollo de la Programación en Ácidos Nucleicos} \\[1cm]    
+                    \end{tiny}
+                \end{center}
+            \end{minipage}
+
+            \vspace{2cm}
+            
+            \textsc{\Large{Trabajo Final}}\\
+            \textsc{Licenciatura en Ciencias de la Computación}\\
+            
+            \HRule\\[0.1cm]
+            \textbf{\huge{RecAbs}\\[0.3cm]
+                    \Large Abstracción de distribución de procesos recursivos implementada sobre FuD.}\\[0.1cm]
+            \HRule\\[0.4cm]
+
+            \vspace{1cm}
+
+            \begin{large}
+                \center{\small{\textsc{Autores}}}\\
+                \textbf{Bessone}, Mariano José\\
+                \textbf{Bringas}, Emanuel César
+            \end{large}            
+                
+            \vspace{1cm}
+            
+            \begin{minipage}{0.4\textwidth}
+                \begin{center}
+                    \center{\small{\textsc{Director}}} \\
+                    \large{\textbf{Biset}, Guillermo}
+                \end{center}
+            \end{minipage}
+            \begin{minipage}{0.4\textwidth}
+                \begin{flushright} 
+                \center{\small{\textsc{Co-Director}}} \\
+                \large{\textbf{Gutson}, Daniel}
+                \end{flushright}
+            \end{minipage}
+
+            \vfill
+            {\large 2 de Diciembre de 2011}
+            
+        \end{center}
+
+    \end{titlepage}
+    
+    \begin{abstract}
+
+        El procesamiento de grandes conjuntos de datos es un tema importante en Ciencias de la Computación; mucha información es
+        inherentemente difícil de comprimir y, además, los recursos para procesar estas cantidades de datos usualmente es muy costoso.
+        Existen muchas herramientas para lograrlo por medio de alguna forma de computación distribuida.
+        
+        Este trabajo provee un panorama general sobre el diseño y la implementación de una librería que brinda soporte para construir
+        soluciones a problemas específicos recurrentes de la bioinformática. A su vez, este trabajo extiende el framework de distribución
+        \fud{}, el cuál nos facilita la implementación de una solución distribuida del problema a resolver. Concretamente se trata de una
+        capa de abstracción que permite desarrollar soluciones recursivas sin tener que lidiar con problemas comunes en la implementación
+        de algoritmos distribuidos.
+
+        El alcance de esta abstracción abarca a todos los problemas cuya solución recursiva no tenga dependencia de datos entre los nodos
+        del árbol de recursión.
+
+    \end{abstract}
+
+    \newpage
+\chapter*{Agradecimientos}
+
+El presente trabajo fue fruto de un esfuerzo en el cuál, directa o indirectamente, participaron varias personas leyendo, opinando,
+corrigiendo, apoyando y motivando en los distintos momentos que atravesamos en el desarrollo del mismo. Queremos agradecerles a todos ellos
+por cuanto han hecho por nosotros para que este trabajo saliera adelante de la mejor manera posible.\\
+
+En primer lugar, queremos agradecer especialmente a los dos directores de esta tesis: Daniel Gutson y Guillermo Biset, los mentores de este
+proyecto y quienes confiaron en nosotros para que lo llevemos adelante. Estamos muy agradecidos por su generosidad al brindarnos la
+oportunidad de recurrir a su capacidad y experiencia científica en un marco de confianza, afecto y amistad, fundamentales para la concreción
+de este trabajo.\\
+
+A los autores del proyecto \emph{CombEng}, Diego Díaz y Favio Bettiol por un constante feedback de nuestro proyecto que nos brindó un
+progreso constante con una mayor calidad. Su labor fue muy importante en nuestra etapa de test, su disposición a la hora de trabajar en
+conjunto fue total. Esperamos haberles sido de tanta utilidad a ellos como lo han sido para nosotros.\\
+
+A German Regis y Nazareno Aguirre por su buena voluntad para ayudarnos con las formalidades requeridas por la universidad que este trabajo
+demandó.\\
+
+Al Departamento de Computación y a su director, en su momento Nazareno, por facilitarnos las salas de máquinas para realizar pruebas a
+escalas un poco mayores.\\
+
+A cada uno de los que forman parte de la fundación \fude{}, por ser personas que, sin esperar nada a cambio, trabajan incansablemente sólo
+por su compromiso y amor a la investigación.\\
+
+Finalmente, y no por eso menos importante, sino todo lo contrario, queremos agradecerles muy especialmente a nuestras familias por habernos
+apoyado incondicionalmente a lo largo de toda la carrera. Esperamos que este trabajo, y el logro que el mismo conlleva, sea una mínima
+retribución a tantas cosas que ellos nos han brindado durante todos los años de estudio.\\
+
+    \newpage
+
+    %Index
+    \tableofcontents
+    \newpage
+    
+    %Figure index
+	\listoffigures
+	\newpage
+
+    %Figure Tables
+    \listoftables
+    \newpage
+
+	\pagenumbering{arabic}
+	
+    % Part I
+    \part{Preliminares}
+    \label{part:prelim}
+
+    \input{01-introduction}
+    \input{02-theoretical-background}
+    \input{03-work-methodology}
+
+    % Part II
+    \part{RecAbs}
+    \label{part:recabs}
+
+    \input{04-about-recabs}
+    \input{05-recabs-design}
+    \input{06-implementation}
+    \input{07-dummy-application}
+    \input{08-projects-on-recabs}
+
+    % Part III
+    \part{Refactorización de FuD}
+    \label{part:refactorin_fud}
+
+    \input{09-redesign-problem}
+    \input{10-redesign-solution}
+    \input{11-redesign-external-dependencies}
+
+    % Part IV
+    \part{Conclusión}
+    \label{part:conclusion}
+
+    \input{12-conclusion}
+    \input{13-future-work}
+
+    % Bibliography
+    \addcontentsline{toc}{chapter}{Bibliografía}
+    \bibliographystyle{annotate}
+    \bibliography{biblio}
+
+    % Appendix
+    \appendix \label{appendix}
+    \addappheadtotoc
+    \appendixpage
+    \newpage
+
+    \input{appendix-design-patterns}
+    \input{appendix-recabs-metrics}
+    \input{appendix-fud-metrics}
+
+\end{document}
+

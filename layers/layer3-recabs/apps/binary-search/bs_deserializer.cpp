@@ -1,10 +1,10 @@
-/* $Id: bs_deserializer.cpp 354 2010-11-03 22:22:34Z emab73 $ */
+/* $Id: bs_deserializer.cpp 629 2011-09-13 13:54:45Z marjobe $ */
 
 /**
  *  @file:      bs_deserializer.cpp
  *  @details    Implementation file for BSDeserializer class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ void BSDeserializer::deserialize(const recabs::Packet& pkt, recabs::Serializable
 {
     mili::bistream bis(pkt);
 
-    int searched;
+    uint32_t searched;
     BinarySearch::Elements v;
     bis >> v >> searched;
     *rf = new BinarySearch(v, searched);

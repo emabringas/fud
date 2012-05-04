@@ -1,8 +1,8 @@
-# $Id: CMakeLists.txt 242 2010-08-13 16:31:21Z billybiset $
+# $Id: CMakeLists.txt 400 2011-01-25 00:19:10Z marjobe $
 
 if ( NOT DEFINED middleware )
-    set ( middleware "asio" ) # Default
-    message ( STATUS "Using default middleware: asio")
+    set ( middleware "ana" ) # Default
+    message ( STATUS "Using default middleware: ${middleware}")
 endif ()
 
 add_subdirectory( ${middleware} )
@@ -10,3 +10,9 @@ add_subdirectory( ${middleware} )
 set ( middleware_server "${CMAKE_CURRENT_SOURCE_DIR}/${middleware}/${server_file}" PARENT_SCOPE)
 
 set ( middleware_client "${CMAKE_CURRENT_SOURCE_DIR}/${middleware}/${client_file}" PARENT_SCOPE)
+
+# This var is used to include the header files of the middleware to target
+set ( MIDDLEWARE_HEADERS ${MIDDLEWARE_HEADERS} PARENT_SCOPE)
+
+# This var is used to link the middleware's libs with fud
+set ( MIDDLEWARE_LIBS ${MIDDLEWARE_LIBS} PARENT_SCOPE )

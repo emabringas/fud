@@ -1,4 +1,4 @@
-/* $Id: recursion_manager.h 356 2010-11-04 13:38:16Z emab73 $ */
+/* $Id: recursion_manager.h 589 2011-07-14 18:25:31Z marjobe $ */
 
 /** 
  *  @file:      recursion_manager.h
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,9 @@
 #define RECURSION_MANAGER_H
 
 #include <stack>
-#include "common.h"
+//#include "common.h"
 #include "l4_server_app.h"
-#include "l4_client_app.h" // Solo por ahora, esto no debería hacer falta!!!
-#include "deserializer_functor.h"
+
 
 namespace recabs
 {
@@ -59,38 +58,15 @@ namespace recabs
 
             /**
              * Should be start the recursion.
-             *
-             * @param server_app : concrete L4ServerApp to set.
              */
             virtual void start() = 0;
 
            /**
              * Handles input packets. 
              *
-             * @param child_in : the input packet that we handle.
+             * @param input : the input packet that us will handle.
              */
-            virtual void handle_receive_packet(const Packet& packet);
-
-            /**
-             * Should be send a packet.
-             *
-             * @param packet : packet to send.
-             */
-            virtual void send_packet(const Packet& packet) = 0;
-
-           /**
-             * Should be receive a packet.
-             *
-             * @param packet : packet to send.
-             */    
-            virtual void receive_packet(const Packet& packet) = 0 ;
-        
-            /**
-              * To be implemented, will be linked with the apropriate concrete
-              * Recursion Manager.
-              * Solo por ahora toma un clien app, ya que es necesario para la creación del recursion manager de prototipo VER!!!
-              */
-            static RecursionManager* create_recursion_manager(L4ServerApp& srv_app, L4ClientApp& clt_app, const DeserializerFunctor& deserializer);
+            virtual void handle_receive_packet(InputMessage& input);
 
         protected:
 
@@ -121,6 +97,11 @@ namespace recabs
             virtual bool empty_stack() const;
 
             /**
+             * It handles the end of a client process.
+             */
+            virtual void handle_end_of_job();
+
+            /**
              * Returns wheter the recursion process is finished.
              *
              * @returns true if the recursion is finished.
@@ -147,9 +128,15 @@ namespace recabs
             /* It's the number of results we wait.
              * _missing_result_counter = <functors-sent> - <results-received>
              */
-            uint _missing_result_counter;
+            uint _jobs_waiting_end;
 
     };
+    
+    /**
+      * To be implemented, will be linked with the apropriate concrete Recursion Manager.
+      */
+    RecursionManager* create_recursion_manager(L4ServerApp& srv_app);
+
 
 
 }

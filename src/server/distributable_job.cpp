@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,20 +82,38 @@ void DistributableJobImplementation::inform_generation()
     ++_job_units_generated;
 }
 
-void DistributableJobImplementation::process_results (JobUnitID id, const std::string* message)
+void DistributableJobImplementation::process_results (JobUnitID id, fud_uint message_number, const std::string* message)
 {
-    if (completion_accepted(id))
+    if (!completed(id))
     {
-        _input.str(*message);
-        handle_results(id,_input);
+        /* Search message */
+        bool finded(false);
+        std::list<fud_uint>::iterator it;
+        for (it = _messages_map[id].begin(); it != _messages_map[id].end() && !finded; it++)
+            if (*it == message_number)
+                finded = true;
+        /* If the message is not in the list: process and add it; otherwise does nothing. */
+        if (!finded)
+        {
+            _input.str(*message);
+            handle_results(id,_input);
+            _messages_map[id].push_front(message_number);
+        }
     }
+}
 
-    if (finished())
+void DistributableJobImplementation::process_finalization (JobUnitID id)
+{
+    if (!completed(id))
     {
-        _condition.notify_all();
-        _listener->distributable_job_completed_event(this);
+        add_completion(id);
+        handle_finalization(id);
+        if (finished())
+        {
+            _condition.notify_all();
+            _listener->distributable_job_completed_event(this);
+        }
     }
-
 }
 
 JobUnit* DistributableJobImplementation::get_next_job_unit(JobUnitSize  size)
@@ -101,18 +125,19 @@ JobUnit* DistributableJobImplementation::get_next_job_unit(JobUnitSize  size)
     return ju;
 }
 
-bool DistributableJobImplementation::completion_accepted(JobUnitID id)
+void DistributableJobImplementation::add_completion(JobUnitID id)
+{
+    boost::mutex::scoped_lock glock(_completed_mutex);
+
+    _completed.insert(id);
+}
+
+bool DistributableJobImplementation::completed(JobUnitID id)
 {
     boost::mutex::scoped_lock glock(_completed_mutex);
 
     std::set<JobUnitID>::iterator it;
     it = _completed.find(id);
 
-    if(it != _completed.end())
-        return false;
-    else
-    {
-        _completed.insert(id);
-        return true;
-    }
+    return it != _completed.end();
 }

@@ -1,4 +1,4 @@
-/* $$ */
+/* $Id: result_sender.h 589 2011-07-14 18:25:31Z marjobe $ */
 
 /** 
  *  @file:      result_sender.h
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,76 +41,147 @@
 #ifndef RESULT_SENDER_H
 #define RESULT_SENDER_H
 
-#include "communication.h"
+#include "common.h"
 
 namespace recabs
 {
-    struct ResultSender : public Communication
-    {
+
+/**
+ * RealSender interface.
+ * Should be implemented by another interface which know send, in the layer below.
+ */
+struct RealSender
+{
+    /**
+     * Sends a message to the server
+     * Should be implemented by the layer below.
+     *
+     * @param out : message to send.
+     */
+    virtual void send(const OutputMessage& out) = 0;
+};
+
+/**
+ *  RealSender Factory Method.
+ */
+RealSender* create_real_sender();
+
+struct MessageSender
+{
+
+    /**
+     *  Reimplementation of method send.
+     */
+    virtual void send(const PacketContainer& packet_container) = 0;
+
+    /**
+     *  Added flush method for packet accumulated.
+     */
+    virtual void flush() = 0;
+
+};
+
+class FinalSender : public MessageSender
+{
+    public:
+
+        /**
+         * Destructor.
+         */
+        virtual ~FinalSender(){};
+
         /**
          *  Reimplementation of method send.
          */
-	    virtual void send(const Packet& packet) = 0;
+        virtual void send(const PacketContainer& packet_container) = 0;
 
         /**
          *  Added flush method for packet accumulated.
          */
-	    virtual void flush() = 0;
+        virtual void flush() = 0;
+
+    protected:
+
+        /**
+         * Constructor.
+         */
+        FinalSender(RecabsPacketHeader header):
+            _header(header)
+        {};
+
+        /* Header attribute */
+        const RecabsPacketHeader _header;
+
+};
+
+class ChainableSender: public MessageSender
+{
+    public: 
+
+        /**
+         *  Destructor
+         */
+    	virtual ~ChainableSender(){};
+
+        /**
+         *  Reimplementation of method send.
+         */
+        virtual void send(const PacketContainer& packet_container) = 0;
+
+        /**
+         *  Added flush method for packet accumulated.
+         */
+        virtual void flush() = 0;
+
+    protected:
+
+        /**
+         *  Constructor
+         */
+    	ChainableSender(MessageSender* next):
+            _nextSender(next)
+        {};
         
-    };
+        /**
+         *  Atribute
+         */
+    	MessageSender* const _nextSender;
+};
 
-    class ChainableSender: public ResultSender
-    {
-        public: 
+class InmediatelySender : public FinalSender
+{
+    public: 
 
-            /**
-             *  Constructor
-             */
-        	ChainableSender(ResultSender* next): _nextSender(next) {};
+        /**
+         * Constructor.
+         */
+        InmediatelySender(RecabsPacketHeader header):
+            FinalSender(header),
+            _real_sender( create_real_sender() )
+        {};
 
-            /**
-             *  Reimplementation of method send.
-             */
-	        virtual void send(const Packet& packet) = 0;
+        /**
+         * Reimplementation of method send.
+         * Should be implemented by the layer below.
+         */
+        virtual void send(const PacketContainer& packet_container)
+        {
+            OutputMessage out;
+            out << _header << packet_container;
+            _real_sender->send(out);
+        };
 
-            /**
-             *  Added flush method for packet accumulated.
-             */
-	        virtual void flush() = 0;
+        /**
+         *  Added flush method for packet accumulated.
+         */
+        virtual void flush(){};
 
-        protected:
-            
-            /**
-             *  Atribute
-             */
-        	ResultSender* const _nextSender;
-    };
+    protected:
 
-    class RealResultSender : public ResultSender
-    {
-        public: 
+        /* Real sender attribute. */
+        RealSender* const _real_sender;
 
-            RealResultSender (RecursionManager& rm);
-
-            /**
-             *  Reimplementation of method send.
-             */
-	        virtual void send(const Packet& packet);
-
-            /**
-             *  Added flush method for packet accumulated.
-             */
-	        virtual void flush(){};
-    
-   
-        private:
-
-            /**
-             *  Atribute
-             */
-            Communication* _comm;
-
-    };
+};
 
 }
 

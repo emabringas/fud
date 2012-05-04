@@ -1,4 +1,4 @@
-/* $Id: serializable_recursive_functor.h 357 2010-11-05 14:42:13Z emab73 $ */
+/* $Id: serializable_recursive_functor.h 589 2011-07-14 18:25:31Z marjobe $ */
 
 /** 
  *  @file:      serializable_recursive_functor.h
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,6 +83,11 @@ namespace recabs
          * @returns its representation as a Packet.
          */
         virtual void serialize(Packet& pkt) = 0;
+
+        /**
+         * Destructor.
+         */
+        virtual ~SerializableRecursiveFunctor(){};
 
     };
 

@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,20 +59,25 @@ namespace fud
         public:
             /**
              * The method in charge of sending the JobUnit to the client.
-             * Implementation depends on the type of ClientsManager used.
              *
              * \sa JobUnit
              * \sa ClientsManager
              */
-            virtual void process(const JobUnit& job_unit) = 0;
+            virtual void process(const JobUnit& job_unit);
 
             /**
+             *  Send to the client the given message
+             */
+            virtual void send(const std::string& message) = 0;
+
+            /**
+
              * Check to see if the corresponding client is busy working.
              *
              * @return <b>true</b> if the client attached to this proxy is busy
              *         working, <b>false</b> otherwise.
              */
-            virtual bool busy() const = 0;
+            virtual bool busy() const;
 
             /**
              * Get the ClientID of the current proxy.
@@ -75,7 +86,16 @@ namespace fud
              *
              * \sa ClientID
              */
-            inline  ClientID get_id() const {return _id;}
+            inline ClientID get_id() const {return _id;}
+
+            /**
+             * Get the ClientID of the current proxy.
+             *
+             * @returns The ID of the connected client.
+             *
+             * \sa ClientID
+             */
+            inline void set_id(ClientID id) {_id = id;}
 
             /**
              * Returns the collected data on previous works performed.
@@ -86,6 +106,19 @@ namespace fud
              * \sa WorkHistory
              */
             inline  WorkHistory& history()  {return *_history;}
+
+ 
+            /**
+             * Handles incoming message.
+             *
+             * @param message : the message to handle.
+             */
+            virtual void handle_response(const std::string& message);
+            
+            /**
+             *  Verify if JobUnit given is incomplete and in this case enqueue to job queue.
+             */
+            virtual void check_incomplete_job();            
 
             virtual ~ClientProxy();
 
@@ -102,10 +135,15 @@ namespace fud
              */
             void    i_am_free();
 
+            /* Attributes that implementations classes maybe handles it. */
+            JobUnitID       _current_id;
+            ClientState     _state;
+
         private:
-            WorkHistory* const _history;
-            static ClientID    _last_id;
-            ClientID           _id;
+            WorkHistory* const  _history;
+            static ClientID     _last_id;
+            ClientID            _id;
+
     };
 }
 

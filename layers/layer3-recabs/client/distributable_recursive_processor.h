@@ -1,10 +1,10 @@
-/* $Id: distributable_recursive_processor.h 358 2010-11-09 20:47:54Z emab73 $ */
+/* $Id: distributable_recursive_processor.h 640 2011-09-29 15:30:05Z marjobe $ */
 
 /** 
  *  @file:      distributable_recursive_processor.h
  *  @details    Header file for Recabs providing DistributableRecursiveProcessor class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *  
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,81 +46,127 @@
 #include "deserializer_functor.h"
 #include "result_sender.h"
 #include "l4_client_app.h"
-#include <mili/mili.h>
+#include "distribution_policy.h"
 
 namespace recabs
 {
-    /**
-     *  Abstract class that represents a distributable node of execution.
-     */
 
-    class DistributableRecursiveProcessor : public RecursiveProcessor
-    {
+/**
+ *  Abstract class that represents a distributable node of execution.
+ */
 
-        static DistributableRecursiveProcessor* create_recursive_processor(const DeserializerFunctor& deserializer);
+class DistributableRecursiveProcessor : public RecursiveProcessor
+{
 
-        protected:
+    protected:
 
-            /**
-             *  Constructor.
-             */
-            DistributableRecursiveProcessor(L4ClientApp& app, const DeserializerFunctor& df, RecursionManager& rm);
+        /**
+         *  Constructor.
+         */
+        DistributableRecursiveProcessor(const L4ClientApp& app, const DeserializerFunctor& df, const DistributablePolicy& dp);
 
-            /**
-             *  Destructor.
-             */
-            ~DistributableRecursiveProcessor();
+        /**
+         *  Destructor.
+         */
+        ~DistributableRecursiveProcessor();
 
-            /**
-             *  Should be implemented the way to delegate work to server.
-             *  @param p : Packet with work for the other clients.
-             */
-            virtual void dispatch_work(const Packet& packet);
+        /**
+         *  Sends functors to the server if it needs. The maximum number of delivered functors
+         *  is the size of the list minus 1. Erases the sent functors.
+         *
+         * @param children : list of funtors to dispatch.
+         */
+        virtual void dispatch_children(ChildrenFunctors& children);
 
-            /**
-             *  Should be implemented th way to request help to server.
-             *  @param n: Number of helpers needed.
-             */ 
-            virtual void collaborators(uint n);
+        /**
+         *  Should be implemented the way to delegate work to server.
+         *
+         *  @param p : packet with work for the other clients.
+         */
+        virtual void dispatch_work(ChildrenFunctors& functors);
 
-            /**
-             * Sends a result.
-             */
-            virtual void send_result(const Packet& packet, WhenToSend when);
+        /**
+         *  Should be implemented as a way to request help from the server.
+         *
+         *  @param n : number of helpers needed.
+         */ 
+        virtual uint collaborators(uint n) = 0;
 
-            /**
-             * Sends a packet.
-             *
-             * @param packet : packet to send.
-             */
-            virtual void send_packet(const Packet& packet) = 0;
+        /**
+         * Sends a result.
+         *
+         * @param packet : result to send.
+         * @param when : the time politic to send the packet.
+         */
+        virtual void send_result(const Packet& packet, WhenToSend when);
 
-            /**
-             * Receive a packet.
-             *
-             * @param p : packet received.
-             */
-            virtual void receive_packet(const Packet& packet) = 0;
+        /**
+         * Sends a message.
+         *
+         * @param packet : message to send.
+         * @param when : the time politic to send the packet.
+         */
+        virtual void send_message(const Packet& packet, WhenToSend when);
 
-            /**
-             *  Client distribution algorithm.
-             */
-            virtual void functor_execute(RecursiveFunctor* rf, PacketContainer& final_result);
+        /**
+         * Starts the computation. It receives a packet who is the initial functor,
+         * it begins the recursion.
+         *
+         * @param init_packet : initial packet.
+         */
+        virtual void start_execution(const Packet& init_packet);
 
-        protected:
-    
-            /**
-             *  DeserializerFunctor asociated.
-             */
-            const DeserializerFunctor& _deserializer;
+        /**
+         * Computes the entire recursion. At each step of the recursion, it calls
+         * reproduce method which fills the list of all functors.
+         *
+         * @param functor_list : the initial list to be reproduced.
+         */
+        virtual void do_recursion(ChildrenFunctors& functor_list);
 
-            L4ClientApp _client_app;
-    
-	        ResultSender* _resultSender;
-	        ResultSender* _realSender;
+        /**
+         * Reproduces the functor given by parameter, if it is necessary sends information
+         * to the server and fills the list with the new children generated.
+         *
+         * @param rf : functor to reproduce.
+         * @param functor_list : list of funtors to be filled by this step of the recursion.
+         */
+        virtual void reproduce(RecursiveFunctor* rf, ChildrenFunctors& functor_list);
 
-            
-    };
+    private:
+
+        /**
+         * DeserializerFunctor asociated.
+         * Deserialized the incoming functors.
+         */
+        const DeserializerFunctor& _deserializer;
+
+        /**
+         * L4ClientApp asociated.
+         * It is the responsible of managing of results.
+         */
+        const L4ClientApp& _client_app;
+
+        /**
+         * DistributablePolicy asociated.
+         * Policy responsible of decide when and how much jobs can be deliver to the server.
+         */
+        const DistributablePolicy& _distribution_policy;
+
+        /**
+         * Senders.
+         */
+        MessageSender*     _result_sender;
+        MessageSender*     _message_sender;
+        InmediatelySender  _job_sender;
+
+};
+
+/**
+ *  DistributableRecursiveProcessor Factory Method.
+ */
+DistributableRecursiveProcessor* create_recursion_processor(const L4ClientApp& app, const DeserializerFunctor& df, const DistributablePolicy& dp);
+
 }
 
 #endif

@@ -1,10 +1,10 @@
-/* $Id: deserializer_functor.h 326 2010-10-04 16:49:47Z marjobe $ */
+/* $Id: deserializer_functor.h 567 2011-06-07 20:06:32Z marjobe $ */
 
 /** 
  *  @file:      deserializer_functor.h
  *  @details    Header file for Recabs providing DeserializerFunctor class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *  
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

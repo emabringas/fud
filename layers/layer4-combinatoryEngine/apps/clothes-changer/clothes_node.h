@@ -44,12 +44,10 @@
 #define _CLOTHES_NODE_H
 
 //=================================
-// forward declared dependencies
-
-//=================================
 // included dependencies
+#include <combeng/combeng.h>
+#include <mili/mili.h>
 #include <list>
-#include "../../common/l4_node.h"
 #include "clothe.h"
 #include "tables.h"
 
@@ -63,16 +61,16 @@ private:
 
 
 protected:
-    /* from L4Node ******************************************************************/
-    virtual std::list<comb_eng::L4Node<Clothe>*> new_children(const std::list<Clothe>& new_comb);
+    /**
+     * from L4Node
+     */
+    virtual void new_children(const std::list<Clothe>& combination, std::list<comb_eng::L4Node<Clothe>*>&);
     virtual recabs::Packet get_result();
-    /********************************************************************************/
-    typedef  std::list<Clothe>::iterator clothes_it;
-    void set_intersection(clothes_it clothes_b, clothes_it clothes_e, clothes_it comb_b, clothes_it comb_e, std::list<Clothe>* intersect);
+
 
 public:
     /**
-     * Constructor method.
+     * Constructor methods.
      */
     ClothesNode()
         : comb_eng::L4Node<Clothe>()
@@ -86,36 +84,42 @@ public:
         : comb_eng::L4Node<Clothe>(), _clothes_applied(applied), _clothes_available(available)
     {};
 
-    /**
-     * Constructor method.
-     */
     ClothesNode(std::list<Clothe> combination, ClothesNode* father);
 
     /**
      * Destroyer method.   El metodo ~L4Node es virtual... VER ESTO
      */
     ~ClothesNode()
-    {};
+	{
+		delete _tables;
+	};
 
-    void set_clothes_available(const std::list<Clothe>& clothes);
 
-    /* from L4Node ******************************************************/
-    virtual bool is_leaf();
-    virtual void serialize(recabs::Packet& pkt);
-    virtual std::list<Clothe> get_objects_to_combine();
-    virtual float score();
-    /********************************************************************/
-
-    /*  for tables ******************************************************/
-    inline void set_table(tables* const t)
+    /**
+     * Set the table for the node. It can be imroved.
+     */
+    inline void set_table()
     {
-        _tables = t;
+        _tables = new tables();
     }
 
+    /**
+     * Get the node's table.
+     */
     inline tables* get_table() const
     {
         return _tables;
     }
+
+
+    /**
+     * from L4Node
+     */
+    virtual bool is_leaf();
+    virtual void serialize(recabs::Packet& pkt);
+    virtual void get_objects_to_combine(std::list<Clothe>&);
+    virtual float score();
+
 };
 
 #endif  /* _CLOTHES_NODE_H */

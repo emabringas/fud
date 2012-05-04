@@ -1,0 +1,29 @@
+\chapter{Dependencias externas}
+
+\section{ANA}
+\ana{} (acrónimo de \textit{Asynchronous  Network API}) es una API diseñada para permitir desarrollar
+aplicaciones de red con una arquitectura cliente/servidor.
+Para implementar esta funcionalidad, la API utiliza un modelo asíncrono (es decir, sin bloqueo de operaciones). De esta
+manera, el desarrollador no necesita enfocarse con detalles de código relevante a la comunicación, pudiendo
+concentrarse en otras funcionalidades relacionadas con el programa.\\
+
+Se cuenta con una implementación\footnote{http://code.google.com/p/ana-net/} de esta API usando
+Boost.Asio\footnote{http://www.boost.org/doc/libs/1\_48\_0/doc/html/boost\_asio.html} (Librería de red multiplataforma)
+que logra explotar todo el potencial de la librera brindando una nueva API externa que simplifica su uso y permite al
+usuario final mediante la implementación de unos pocos \textit{handlers} tener una aplicación con comunicación
+asíncrona.\\
+
+
+En la primera versión de \fud{} se contaba con una capa de comunicación (Véase \ref{fud-layers}) realizada con
+Boost.Asio. Tenía la particularidad de ser bloqueante, es decir, una vez recibido un mensaje, el cliente desoye todo
+mensaje del servidor hasta que termina con su trabajo donde retorna a esperar nuevos mensajes. Luego se contó con una
+reimplementación de esta capa que usa como librería de red a \ana. Esta nueva \textit{Layer 1} otorga un código más
+limpio y
+legible con las mismas funcionalidades que el anterior.\\
+
+\fud/\ana{} fue de vital importancia para lograr la refactorización de \fud{} antes descrita, ya que al usar a \ana{}
+se simplifico el uso de mensajería asíncrona necesaria para el envío de mensajes y resultados entre cliente y
+servidor. Como un todo un mecanismo concurrente que opera las distintas envíos y escuchas permitió mediante
+la agregación de algunos métodos lograr tener interacción entre cliente y servidor en cualquier momento del
+procesamiento.
+

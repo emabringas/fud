@@ -1,0 +1,46 @@
+\chapter{Introducción}
+
+La idea original de este proyecto nace de \fude{} (\textbf{Fu}ndación para el \textbf{De}sarrollo de la \textbf{P}rogramación en
+\textbf{Á}cidos \textbf{N}ucleicos), organización sin fines de lucro que se dedica a la investigación y desarrollo en bioinformática,
+aplicándola a problemas biológicos asociados a la salud humana. En esta fundación se utiliza a la computación para hacer simulaciones y
+cálculos para, por ejemplo, mejorar vacunas, mejorar tratamientos contra enfermedades como el HIV, o el virus Junín, desarrollando y
+utilizando herramientas informáticas y programación de avanzada.\\
+
+La mayoría de los problemas que la fundación enfrenta diariamente son de gran complejidad, por lo que se requiere de altos recursos
+computacionales para lograr tener resultados a corto plazo. Es por ello que existe el framework \fud\cite{clus09} para la distribución
+automática de trabajos en nodos de cómputo, que permite mediante una simple reimplementación de proyectos ya desarrollados de manera
+secuencial, obtener una versión paralelizada del mismo. De esta manera se logró obtener resultados confiables en un tiempo relativamente
+corto.\\
+
+Asimismo, se notó que muchos problemas bioinformáticos, corrientes y a futuro, son naturalmente solucionados usando recursión pero no había
+una forma de agruparlos y facilitar su desarrollo. Por esta razón, surge la motivación de construir una implementación genérica a toda
+solución recursiva como una capa más del framework.\\
+
+Los objetivos planteados al comienzo del proyecto fueron los siguientes:
+\begin{itemize}
+    \item   Diseñar una abstracción que permita a cualquier programador de la fundación poder construir soluciones recursivas paralelizadas
+            de una manera sencilla. Evitando así la dificultad que conlleva lidiar con problemas inherentes a la programación paralela.
+    \item   Construir esta abstracción como una aplicación particular de \fud{} que abarque toda solución recursiva de un problema que no
+            requiera \textit{backtracking}.
+    \item   Refactorizar \fud{} con el fin de aportar funcionalidades de interactividad entre cliente y servidor, lo cuál es necesario para
+            el desarrollo de \rc. Este rediseño debe respetar los principios originales del framework, para que toda aplicación que lo use
+            lo siga haciendo sin modificación alguna en la nueva versión.
+    \item   En ambas implementaciones procurar cumplir con los requisitos de calidad y performance en cuánto a código y diseño.
+\end{itemize}
+
+Este documento proporciona una visión general sobre el diseño y detalles de implementación de los puntos mencionados anteriormente, junto
+con ejemplos de su uso y algunos resultados estadísticos sobre el rendimiento de aplicaciones.\\
+
+El informe se divide en 4 partes. La Parte \ref{part:prelim} incluye una introducción a este trabajo, un capítulo con el marco teórico para
+facilitar la lectura de este documento y otro con la metodología de trabajo utilizada para llevar a cabo el proyecto.
+
+La Parte \ref{part:recabs} contiene todo lo relacionado con \rc, a partir del enunciado del problema y el enfoque de la solución tomado, el
+lector encontrará detalles acerca del diseño e implementación de la capa, junto con ejemplos sencillos de su uso.
+
+La Parte \ref{part:refactorin_fud} introduce el problema de montado \rc/\fud, seguido de la refactorización del framework, con el fin de
+acoplar la capa de abstracción de distribución de procesos recursivos sobre éste.
+
+Finalmente, la Parte \ref{part:conclusion} brinda la conclusión sobre la tesis y un mapa de los trabajos que quedan por hacer.
+
+En la parte de apéndices, hay dos reportes de métricas de código generados automáticamente, tanto de \rc{} como de la refactorización de
+\fud, y documentación sobre patrones de diseño utilizados en este proyecto.

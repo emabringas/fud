@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +38,9 @@
  *
  */
 
-#include ".private/common.h"
-#include ".private/client_processor.h"
-#include ".private/distribution_client.h"
-#include ".private/job_unit.h"
+#include "common.h"
+#include "client_processor.h"
+#include "distribution_client.h"
+#include "job_unit.h"
+#include "sender.h"
+#include "interactive_helper.h"

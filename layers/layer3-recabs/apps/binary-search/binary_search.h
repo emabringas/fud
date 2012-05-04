@@ -1,10 +1,10 @@
-/* $Id: binary_search.h 357 2010-11-05 14:42:13Z emab73 $ */
+/* $Id: binary_search.h 629 2011-09-13 13:54:45Z marjobe $ */
 
 /** 
  *  @file:      binary_search.h
  *  @details    Header file for Recabs providing BinarySearch class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *  
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,7 @@
 
 
 #include <list>
-//#include <recabs/recabs.h>
-#include "recabs_dev.h"
+#include "recabs.h"
 
 
 /** 
@@ -55,14 +54,19 @@ class BinarySearch : public recabs::SerializableRecursiveFunctor
 
     public:
         
-        typedef std::list<int> Elements;
+        typedef std::list<uint32_t> Elements;
 
         /** Standar constructor
          * 
          * @param v : Container of elements.
          * @param s : Item to search.
          */
-        BinarySearch(Elements& v, int s);
+        BinarySearch(Elements& v, uint32_t s);
+
+        /**
+         * Destructor.
+         */
+        ~BinarySearch(){};
 
         /**
          * Fills the list with its two children functors if the list contains at least two elements. 
@@ -72,7 +76,7 @@ class BinarySearch : public recabs::SerializableRecursiveFunctor
          * @param result : the packaging result to fill, in base case or inductive case.
          *
          */
-        virtual void call(recabs::ChildrenFunctors& children, recabs::Packet& result, recabs::WhenToSend& when);
+        virtual void call(recabs::ChildrenFunctors& children, recabs::Packet& result, recabs::WhenToSend&);
 
         /**
          * Serializes a BinarySearch as a packet.
@@ -85,7 +89,7 @@ class BinarySearch : public recabs::SerializableRecursiveFunctor
 
 
         Elements _v;
-        int _searched;
+        uint32_t _searched;
 
 };
        

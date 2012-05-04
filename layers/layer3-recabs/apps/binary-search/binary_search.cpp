@@ -1,10 +1,10 @@
-/* $Id: binary_search.cpp 357 2010-11-05 14:42:13Z emab73 $ */
+/* $Id: binary_search.cpp 629 2011-09-13 13:54:45Z marjobe $ */
 
 /**
  *  @file:      binary_search.cpp
  *  @details    Implementation file for BinarySearch class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,38 +42,36 @@
 #include <mili/mili.h>
 #include "binary_search.h"
 
-BinarySearch::BinarySearch(Elements& v, int s) :
+BinarySearch::BinarySearch(Elements& v, uint32_t s) :
     _v(v),
     _searched(s)
 {
 }
 
-void BinarySearch::call(recabs::ChildrenFunctors& children, recabs::Packet& result, recabs::WhenToSend& when)
+void BinarySearch::call(recabs::ChildrenFunctors& children, recabs::Packet& result, recabs::WhenToSend&)
 {
-    mili::bostream bos;
+    /* By default: when = recabs::kSendWhenRecAbsWants; */
 
-    // Caso base 1
+    /* Base case 1 */
     if (_v.empty())
     {
+        mili::bostream bos;
         bos << false;
         result = bos.str();
-        when = recabs::kSendWhenYouWant;
     }
 
-    // Caso base 2
-    if (int (_v.size()) == 1)
+    /* Base case 2 */
+    if (uint32_t (_v.size()) == 1)
     {
+        mili::bostream bos;
         bos << (_v.front() == _searched);
         result = bos.str();
-        when = recabs::kSendWhenYouWant;
     }
-    // Caso Inductivo
+    /* Inductive case */
     else
     {
-        unsigned int middle = _v.size() / 2;
-
         Elements::iterator it = _v.begin();
-        advance(it, middle);
+        advance(it, _v.size() / 2);
 
         Elements leftChild(_v.begin(), it);
         Elements rightChild(it++, _v.end());

@@ -1,0 +1,34 @@
+\chapter{Introducci\'on}
+  Los virus tales como el HIV (Virus de Inmunodeficiencia Humana) no pueden reproducirse por s\'i mismos, sino que precisan de la maquinaria celular para lograrlo. Por esta raz\'on, deben infectar a las c\'elulas de un organismo vivo para duplicarse, es decir, hacer copias nuevas de ellos mismos. A menudo, el sistema inmunol\'ogico elimina las part\'iculas virales que pueden ingresar en un organismo, no obstante, el HIV ataca el sistema inmunol\'ogico mismo, aquel que se encarga de eliminarlas.
+
+  Por otro lado, el SIDA (S\'indrome de Inmunodeficiencia Adquirida) es una afecci\'on m\'edica. A una persona infectada por el virus HIV
+  se le diagnostica SIDA cuando su sistema inmunol\'ogico es demasiado d\'ebil para combatir las infecciones.
+
+  Desde su primera manifestaci\'on, all\'a por el a\~no 1981, hasta la actualidad, el tratamiento de la infecci\'on por el HIV ha 
+  sido, y seguir\'a siendo, foco de numerosas investigaciones. Se han propuesto diferentes enfoques a lo largo de estos a\~nos como terapias para tratamiento del SIDA, pero la terapia m\'as com\'unmente utilizada consiste en una combinaci\'on de diferentes antirretrovirales. 
+  
+  Desde 1987, a\~no en que se aprob\'o el uso de la \textit{zidovudine}\footnote{Inhibidor nucle\'osido de transcriptasa reversa. Se vende bajo los nombres de \textbf{Retrovir} y \textbf{Retrovis}.} en la prevenci\'on de la replicaci\'on del HIV, hasta 1995, la terapia consist\'ia en la administraci\'on de un solo antirretroviral para disminuir la carga viral en sangre, tratamiento m\'as conocido como monoterapia. En 1996, los avances significativos sobre el comportamiento del HIV y la expansi\'on en la s\'intesis de diferentes clases de antirretrovirales, hicieron posible el paso de la monoterapia hacia terapias combinatorias de alta eficacia, cuyo fin radica en la administraci\'on simult\'anea de distintos antirretrovirales pertenecientes a diferentes grupos. Esta terapia con ``cocktails'' de antirretrovirales que recibe el nombre de Tratamiento Antirretroviral de Gran Actividad o HAART (\emph{Highly Active Antiretroviral Therapy})\cite{haart} ha tenido un efecto dram\'atico dado que, en esencia, la terapia de combinaci\'on sofoca las mutantes de HIV antes de que tengan chances de florecer.
+
+  Sin embargo, no todas las personas se adhieren del mismo modo al tratamiento antirretroviral. La adherencia es una cuesti\'on de vital
+  importancia ya que contribuye a evitar la resistencia a los f\'armacos, de otra forma, se puede dar lugar a la aparici\'on de mutantes del HIV que
+  ya no sean susceptibles a los efectos de la medicaci\'on que se toma.
+  
+  Ahora bien, \textit{?`El desarrollo de mutantes asociadas a la resistencia de los antirretrovirales, tiene alguna implicancia en la estructura 
+  secundaria del ARN Viral?}
+
+  Este trabajo intenta dar un abordaje inicial a lo antes mencionado, me\-dian\-te el desarrollo de una aplicaci\'on de 
+  software que, tomando como entrada una secuencia inicial del virus y los antirretrovirales disponibles hasta el momento, permita analizar c\'omo 
+  las diferentes terapias pueden afectar, o no, a la \textbf{estructura secundaria} y si esta posible afecci\'on puede ser un factor en la evoluci\'on viral.
+
+  Para ello, se obtiene el valor $\Delta$G del virus original y se lo compara con aquellos $\Delta$G de las secuencias mutantes resultantes de 
+  aplicar una terapia y con secuencias que, a pesar de tener la misma secuencia aminoac\'idica que las resistentes, no se presentan en los pacientes.
+
+  Dado que todo este proceso es muy costoso computacionalmente, se opta por desarrollar la aplicaci\'on como una capa de un framework para
+  aplicaciones distribuidas, desarrollado por integrantes de la fundaci\'on y que recibe por nombre \fud \ (\textbf{F}uDePAN \textbf{U}biquitous
+  \textbf{D}istribution).
+
+  Como parte de este trabajo final, se realiza el acoplamiento de otra nueva capa al framework proveyendo, entre otras cosas, un motor combinatorio.
+  Este \'ultimo es qui\'en facilitar\'a la obtenci\'on de las posibles terapias.
+
+  La decisi\'on de implementar esta \'ultima capa se debe a la gran cantidad de problemas que se presentan en la fundaci\'on, de caracter
+  bioinform\'atico, que requieren de la generaci\'on de combinaciones en diferentes sabores y el problema tratado aqu\'i no escapa a ello.

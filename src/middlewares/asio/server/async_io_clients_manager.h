@@ -35,9 +35,6 @@
 #ifndef ASYNC_IO_CLIENTS_MANAGER_H
 #define ASYNC_IO_CLIENTS_MANAGER_H
 
-#include <list>
-
-#include <boost/thread.hpp>
 #include <boost/asio.hpp>
 
 #include "common.h"
@@ -85,28 +82,26 @@ namespace fud
                      */
                     AsyncIOClientProxy(boost::asio::io_service& io_service);
 
+                    /**
+                     * Runs the listener thread for the current client proxy.
+                     */
+                    virtual void run();
+
                     virtual ~AsyncIOClientProxy() {};
 
                     /** The socket used for communication. */
                     tcp::socket& socket();
                 private:
-                    virtual void process(const JobUnit& job_unit);
-                    virtual bool busy() const;
 
-                    void handle_response(ResponseCode code,JobUnitID id);
+                    virtual void send(const std::string& message);
 
-                    /* Asynchronous handlers*/
-                    void handle_send   (const boost::system::error_code& ec);
-                    void handle_receive(const boost::system::error_code& ec);
+                    /* Asynchrono handler */
+                    void handle_receive();
 
                     void destroy();
 
                     tcp::socket  _socket;
-                    ClientState  _state;
                     boost::mutex _proxy_mutex;
-
-                    char      _code_buf[RESPONSE_HEADER_LENGTH];
-                    JobUnitID _current_id;
             };
 
             /* Asynchronous handler, calls itself recursively */

@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiqutous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,15 +153,61 @@ void JobManager::free_client_event()
     _event_queue.push(new_event(&JobManagerEventHandler::handle_free_client_event));
 }
 
-void JobManager::job_unit_completed_event(JobUnitID id, std::string* msg)
+void JobManager::job_unit_completed_event(JobUnitID id)
 {
-    _event_queue.push(new_event(&JobManagerEventHandler::handle_job_unit_completed_event, id, msg));
+    _event_queue.push(new_event(&JobManagerEventHandler::handle_job_unit_completed_event, id));
+}
+
+void JobManager::incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message)
+{
+    _event_queue.push(new_event(&JobManagerEventHandler::handle_incoming_message_event, id, message_number, message));
 }
 
 void JobManager::distributable_job_completed_event(DistributableJob* distjob)
 {
     _event_queue.push(new_event(&JobManagerEventHandler::handle_distributable_job_completed_event,distjob));
 }
+
+void JobManager::resend_pending_job_unit()
+{
+    boost::mutex::scoped_lock glock(_mutex);
+
+    if (! _pendingList.empty())
+    {
+        if ( _clients_manager->assign_job_unit(*_pendingList.front()) )
+        {
+            // Send this one to the back, act as Round Robin
+            _pendingList.push_back(_pendingList.front());
+            _pendingList.pop_front();
+        }
+        else
+            syslog(LOG_NOTICE,"Error sending JobUnit %u from Pending List to a client.",_pendingList.front()->get_id());
+    }
+}
+
+void JobManager::rescue_inclomplete_job_unit(JobUnitID id)
+{
+    boost::mutex::scoped_lock glock(_mutex);
+
+    if (! _pendingList.empty())
+    {
+        std::list<JobUnit*>::iterator it;
+        it = find_if(_pendingList.begin(),_pendingList.end(),
+                    boost::bind(&JobUnit::get_id, _1) == id);
+
+        if (it != _pendingList.end())
+        {
+            // Enqueue pending job unit founded into job queue to be eventually reasigned.
+            _jobQueue.push_back(*it);
+            _pendingList.erase(it);
+            syslog(LOG_NOTICE,"Info: Job Unit %d Rescued. ",id);
+        }
+        else
+            syslog(LOG_NOTICE,"Info: Job Unit %d is complete or not found. ",id);       
+    }
+    //TODO assert(complete(JobUnitId) or is_in_job_queue(JobUnitId))
+}
+
 
 void JobManager::handle_free_client_event()
 {
@@ -166,17 +218,9 @@ void JobManager::handle_free_client_event()
 
         if (_jobQueue.empty())
         {
-            if (! _pendingList.empty())
-            {
-                if ( _clients_manager->assign_job_unit(*_pendingList.front()) )
-                {
-                    //send this one to the back, act as Round Robin
-                    _pendingList.push_back(_pendingList.front());
-                    _pendingList.pop_front();
-                }
-                else
-                    syslog(LOG_NOTICE,"Error sending JobUnit %u from Pending List to a client.",_pendingList.front()->get_id());
-            }
+            #ifdef RESEND_PENDING_JOBS
+                resend_pending_job_unit();  //Only for original fud.
+            #endif
         }
         else
         {
@@ -193,7 +237,7 @@ void JobManager::handle_free_client_event()
     handle_job_queue_not_full_event();
 }
 
-void JobManager::handle_job_unit_completed_event(JobUnitID id, std::string* message)
+void JobManager::handle_job_unit_completed_event(JobUnitID id)
 {
     boost::mutex::scoped_lock glock(_mutex);
     syslog(LOG_NOTICE,"JobUnit %u completed.",id);
@@ -201,7 +245,7 @@ void JobManager::handle_job_unit_completed_event(JobUnitID id, std::string* mess
     try
     {
         //generates exception if _ids_to_job_map[id] is not defined
-        mili::find(_ids_to_job_map,id)->process_results(id, message);
+        mili::find(_ids_to_job_map, id)->process_finalization(id);
 
         //remove from pending list
         std::list<JobUnit*>::iterator it;
@@ -214,13 +258,36 @@ void JobManager::handle_job_unit_completed_event(JobUnitID id, std::string* mess
             _pendingList.erase(it);
         }
         else
-            syslog(LOG_NOTICE,"Finished JobUnit %u was not in pending list.",id);
+        {
+            #ifdef RESEND_PENDING_JOBS
+                syslog(LOG_NOTICE,"Finished JobUnit %u is not in the pending list.", id);
+            #else
+                syslog(LOG_NOTICE,"Fatal Error: JobUnit %u is not in the pending list and it was assigned to a client.", id);
+                throw(1);
+            #endif
+        }
     }
     catch(const std::exception& e)
     {
         syslog(LOG_NOTICE,"Error: %s.",e.what());
     }
-    delete message; //release the mem
+}
+
+void JobManager::handle_incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message)
+{
+    boost::mutex::scoped_lock glock(_mutex);
+    syslog(LOG_NOTICE,"JobUnit %u sent a message.", id);
+
+    try
+    {
+        //generates exception if _ids_to_job_map[id] is not defined
+        mili::find(_ids_to_job_map, id)->process_results(id, message_number, message);
+    }
+    catch(const std::exception& e)
+    {
+        syslog(LOG_NOTICE,"Error: %s.",e.what());
+    }
+    delete message; //release the memory
 }
 
 void JobManager::run_scheduler()

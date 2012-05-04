@@ -1,0 +1,32 @@
+\chapter{Conclusiones}
+Como resultado de este trabajo se ha obtenido una nueva capa para el framework \fud, de nombre \combeng. La misma ha cumplido con todas las
+expectativas y ha cubierto cada uno de los requerimientos planteados desde un comienzo. Si bien s\'olo se ha desarrollado una aplicaci\'on relevante,
+y algunas otras como prueba, se puede concluir que el motor combinatorio se encuentra apto para resolver cualquier problema que requiera de
+la combinaci\'on de cualquier tipo de elementos. Aquellas aplicaciones que hacen un uso correcto del framework \fud \ y, por ende, de la nueva capa,
+no deber\'an preocuparse por asuntos relacionados a la programaci\'on paralela. Esto permite realizar el procesamiento de las
+ combinaciones, muchas veces de gran costo computacional, de manera distribuida y sin la necesidad de tener grandes conocimientos en el \'area. 
+
+En cuanto a la aplicaci\'on \rnaffe, se han obtenido numerosos y valiosos datos que hasta el momento no eran conocidos. Tanto la
+aplicaci\'on como los datos recolectados recibieron buenas cr\'iticas tras ser presentados en el 2do Congreso Argentino de
+Bioinform\'atica y Biolog\'ia Computacional. La informaci\'on obtenida sirvi\'o para dar un abordaje 
+inicial a como var\'ia la energ\'ia libre a medida que se avanza en una terapia antirretroviral. Debido a la falta de recursos y tiempo,
+ la aplicaci\'on no pudo ser ejecutada en su totalidad, por lo que los datos que fueron recopilados pertenecen al 60\% del \'arbol total. 
+No obstante, la informaci\'on adquirida fue suficiente para obtener ciertas estad\'isticas y tendencias interesantes.
+\newpage
+\section{Trabajo a Futuro}
+A continuaci\'on se muestran las tareas que quedan pendientes en este trabajo. Las mismas se encuentran agrupadas seg\'un pertenezcan a 
+la aplicaci\'on \emph{RNAFoldingFE} o a la nueva capa acoplada a \fud (\combeng).
+
+\subsection{Trabajo Futuro Para la Aplicaci\'on \emph{RNAFoldingFE}}
+\begin{itemize}
+ \item Optimizar la implementaci\'on de la FSM que define la manera en que los antirretrovirales son combinados.
+ \item Implementar pol\'iticas de poda para achicar el espacio de b\'usqueda.
+ \item Implementar la funcionalidades necesarias para hacer que la aplicaci\'on sea independiente de la arquitectura.
+ \item Implementar una interfaz gr\'afica que permita visualizar los resultados intuitivamente.
+% \item Proveer manejo de probabilidades ya que en ning\'un momento se contemplan cuales son las mutaciones m\'as probables, directamente se toma la de menor distancia.
+\end{itemize}
+
+\subsection{Trabajo futuro para \combeng}
+\begin{itemize}
+  \item Implementar nuevas pol\'iticas de combinaci\'on.
+\end{itemize}

@@ -1,4 +1,4 @@
-/* $Id: common.h 354 2010-11-03 22:22:34Z emab73 $ */
+/* $Id: common.h 613 2011-08-04 16:04:47Z marjobe $ */
 
 /**
  *  @file:      common.h
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +38,13 @@
  *
  */
 
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef COMMON_RECABS_H
+#define COMMON_RECABS_H
 
 #include <string>
 #include <stdint.h>
 #include <list>
+#include <mili/mili.h>
 
 namespace recabs
 {
@@ -59,13 +60,19 @@ namespace recabs
      */
     typedef std::list<Packet> PacketContainer;
 
+    /** MiLi input/output stream for packet streaming. */
+    typedef mili::bistream  InputMessage;
+    typedef mili::bostream  OutputMessage;
+
+    typedef std::string Address;
+    typedef size_t      Port;
 
     /** Type of sent result.  */
     enum WhenToSend
 	{
 		kSendThisImmediately,
 		kSendAllImmediately,
-		kSendWhenYouWant
+		kSendWhenRecAbsWants
 	};   
 
     /** Header client response*/
@@ -73,8 +80,12 @@ namespace recabs
     {
         kRes,        /** Result packet. */
         kJob,        /** Job packet. */
-        kReq         /** Request free clients packet. */
+        kMess        /** Intermediate Result . */
     };
+
+    const Address   LOCALHOST    = "127.0.0.1";
+    const Port      DEFAULT_PORT = 31337;
+
 }
 
 #endif
