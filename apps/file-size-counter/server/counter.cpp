@@ -20,7 +20,7 @@ Counter::CounterJobUnit::CounterJobUnit(char* message,JobUnitSize size) :
     _message()
 {
     std::string msg(message,size);
-    bostream bos;
+    bostream<> bos;
     bos << msg;
     _message = bos.str();
     set_size(size);

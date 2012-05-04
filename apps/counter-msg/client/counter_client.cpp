@@ -29,7 +29,7 @@
 */
 
 #include "counter_processor.h"
-#include "getopt_pp.h"
+#include "getoptpp/getopt_pp.h"
 
 using namespace fud;
 using namespace GetOpt;
