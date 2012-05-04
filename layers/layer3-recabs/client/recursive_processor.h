@@ -1,10 +1,10 @@
-/* $Id: recursive_processor.h 282 2010-09-01 18:59:34Z marjobe $ */
+/* $Id: recursive_processor.h 589 2011-07-14 18:25:31Z marjobe $ */
 
 /** 
- *  @file:      recursive-processor.h
+ *  @file:      recursive_processor.h
  *  @details    Header file for Recabs providing class RecursionProcessor.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *  
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,23 +41,26 @@
 #ifndef RECURSIVE_PROCESSOR_H
 #define RECURSIVE_PROCESSOR_H
 
-#include "recursive_functor.h"
+#include "common.h"
 
 namespace recabs
 {
-    /**
-     *  Abstract class that represent a processing node of RecursiveFunctors.
-     */
-    class RecursiveProcessor
-    {
-        public:
 
-            /**
-             *  Should be implemented as a way to start the exectution of a single node.
-             */
-            virtual void start() = 0;         
-            
-    };
+/**
+ *  Abstract class that represent a processing node of RecursiveFunctors.
+ */
+class RecursiveProcessor
+{
+    public:
+
+        /**
+         * Should be implemented as a way to start the exectution of a single node.
+         * @param address : if it will not run locally, set this with the server address.
+         * @param port : if it will not run locally, set this with the server port.
+         */
+        virtual void run(const Address& address = LOCALHOST, Port port = DEFAULT_PORT) = 0;
+
+};
 
 }
 

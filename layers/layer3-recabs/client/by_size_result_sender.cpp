@@ -1,10 +1,10 @@
-/* $Id: by_size_result_sender.cpp 354 2010-11-03 22:22:34Z emab73 $ */
+/* $Id: by_size_result_sender.cpp 589 2011-07-14 18:25:31Z marjobe $ */
 
 /**
- *  @file:      BySizeResultSender.cpp
+ *  @file:      by_size_result_sender.cpp
  *  @details    Implementation file for BySizeResultSender class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,14 +15,17 @@
  *  @date       October 2010
  *  @version    0.1
  *
- * BySizeResultSender.cpp
- * This file is part of RecAbs
+ * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Emanuel Bringas and Mariano Bessone
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
  *
- * RecAbs is free software; you can redistribute it and/or modify
+ * This file is part of RecAbs project.
+ *
+ * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * RecAbs is distributed in the hope that it will be useful,
@@ -31,34 +34,38 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with RecAbs; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor,
- * Boston, MA  02110-1301  USA
+ * along with RecAbs.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 #include "by_size_result_sender.h"
+#include <assert.h>
 
 using namespace recabs;
 
-BySizeResultSender::BySizeResultSender(ResultSender* next, uint maxByte):
+BySizeResultSender::BySizeResultSender(MessageSender* next, uint maxByte):
     ChainableSender(next),
-    _maxBytes(maxByte)
+    _maxBytes(maxByte),
+    _accumBytes(0)
 {
 }
 
-void BySizeResultSender::send(const Packet& packet)
+void BySizeResultSender::send(const PacketContainer& packet_container)
 {
-    _packets.push_back(packet);
-    _accumBytes += packet.size();
+    PacketContainer copy(packet_container);
+    for (PacketContainer::iterator it = copy.begin(); it != copy.end(); it++)
+        _accumBytes += (*it).size();
+    _packets.splice(_packets.end(), copy);
+
+    assert(copy.empty());
+
     if (_accumBytes >= _maxBytes)
         flush();
 }
 
 void BySizeResultSender::flush()
 {
-    std::list<Packet>::iterator it;
-    for (it = _packets.begin(); it != _packets.end(); it++)
-        _nextSender->send(*it);
+    _nextSender->send(_packets);
 
     _nextSender->flush();
     _packets.clear();

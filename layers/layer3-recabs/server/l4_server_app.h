@@ -1,4 +1,4 @@
-/* $Id: l4_server_app.h 326 2010-10-04 16:49:47Z marjobe $ */
+/* $Id: l4_server_app.h 567 2011-06-07 20:06:32Z marjobe $ */
 
 /** 
  *  @file:      l4_server_app.h
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,10 @@
 
 #include "common.h"
 
+
 namespace recabs
 {
+    
     /**
      * Interface that represents a helper for the start of the recursion and
      * aggregate the results.
@@ -65,6 +67,13 @@ namespace recabs
          * @param result : result to manipulate.
          */
         virtual void receive_result(const Packet& result) = 0;
+
+        /**
+         * Should be process a simple message from a client.
+         *
+         * @param result : result to manipulate.
+         */
+        virtual void receive_message(const Packet& msg) = 0;
     };
 
 }

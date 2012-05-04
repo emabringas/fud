@@ -1,0 +1,20 @@
+\chapter{Trabajos futuros}
+\label{chap:future_work}
+
+Tal vez la parte más importante sobre \rc{} es lo que se haga con ella, es por eso que a continuación se presentará una lista con proyectos
+a futuro, los cuáles serán montados sobre la capa desarrollada. Además, existen funcionalidades y/o extensiones de este trabajo que serán
+dejadas como futuras tareas de la fundación. He aquí algunos trabajos interesantes por llevar a cabo:
+\begin{itemize}
+    \item   Implementar proyectos bioinformáticos. Un caso concreto es \textit{backbones-generator}, este proyecto pertenece a \fude{} y
+            tiene como objetivo construir una base de datos de esqueletos (\textit{backbones} o cadenas proteicas principales) de un tamaño
+            dado a partir de una combinatoria de ángulos y restricciones. Se encuentra implementado secuencialmente, y se desea construir la
+            versión \rc{} del mismo problema.
+    \item   Adaptar esta capa para que proyectos \textbf{\textit{BOINC}} funcionen sobre ella. Lo que se debe hacer es distribuir los
+            functores recursivos, como unidades de trabajo, entre los nodos conectados de la forma en que este middleware trabaja. El uso
+            de \textbf{\textit{BOINC}} permitiría a \fude{} obtener la potencia de procesamiento de miles de CPUs en proyectos científicos.
+    \item   Construir nuevas políticas de distribución para un balanceo de carga específico sobre determinadas aplicaciones o para
+            definir un balanceo genérico con buen rendimiento sobre un grupo de problemas afines. En muchos casos, una \textit{buena}
+            distribución depende exclusivamente del problema que deseamos resolver, es por esto que se pueden extender políticas para
+            una necesidad concreta. Por el contrario, también es posible crear mecanismos de balanceo de carga que ataquen a un conjunto de
+            aplicaciones, y mantengan una buena performance en todos los casos.
+\end{itemize}

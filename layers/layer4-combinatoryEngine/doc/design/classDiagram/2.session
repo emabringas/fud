@@ -1,0 +1,11 @@
+window_sizes 1364 716 227 1127 493 144
+diagrams
+  active  classdiagram_ref 128008 // diagramaDeClases
+    1127 493 100 27 471 621
+end
+show_stereotypes
+selected classdiagram_ref 128008 // diagramaDeClases
+open
+  classview_ref 128008 // diagramaDeClases
+end
+end

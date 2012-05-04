@@ -1,0 +1,142 @@
+\chapter{Metodología de Trabajo}
+
+\section{Practicas de Software}
+En la etapa previa a la implementación del proyecto se le dedicó mucha importancia a la especificación de requerimientos, análisis y
+diseño del sistema con el fin de construir un marco de trabajo para estructurar, planificar y controlar el desarrollo del mismo. A lo
+largo de todas las etapas del desarrollo, éstas se fueron refinando para ir obteniendo cada vez un recurso mas pulido y acorde con
+requerimiento inicial.
+
+\begin{description}
+
+    \item[Especificación de Requerimientos]
+        En los comienzo del proyecto se le dedicó un tiempo considerable en comprender la necesidad de la fundación de obtener una
+herramienta para soporte de un gran número de proyectos bioinformáticos. Para ello se acotó el nivel de abstracción final que debía tener
+\rc. A su vez, esto también incluyó el estudio a fondo de \fud{} para poder hacer una correcta refactorización y extensión.
+
+    \item[Diseño]
+        Durante el desarrollo de \rc{}, aproximadamente el 40 por ciento del tiempo fue dedicado al diseño. En este porcentaje esta
+incluido el diseño original, y algunos cambios que debieron ser hechos durante la implementación. Se utilizaron Principios y Patrones de
+de Diseño y UML para obtener como resultado un diseño que respete las convenciones y políticas que tiene la fundación.
+%un diseño que respeta dos principios b\'asicos: Simplicidad, ocultamiento de la informaci\'on.
+
+    \item[Construcción de Código]
+Aproximadamente el 30 por ciento del tiempo fue dedicado a la construcción del código. Cada vez que se implemento un nuevo componente,
+este fue testeado para chequear la integración del mismo con todo el proyecto. Cuando superaba la prueba, el código era subido al
+repositorio.
+
+    \item[Revisiones]
+        La mayoría de las operaciones commits realizadas (incluyendo código, diagramas, documentos de responsabilidades...) fueron
+revisadas al menos por nuestro co-director o director como también otros miembros de \fude. No solo se resaltaron errores, sino también
+cuestiones en cuanto a calidad y eficiencia. Por cada una de las sugerencias y posterior a una discusión al respecto se realizo una nueva
+revisión conteniendo la modificación de común acuerdo respectiva.
+
+    \item[Testing]
+Esta etapa esta íntimamente relacionada con la etapa anterior (implementación), debido a que fueron realizadas en conjunto. Es decir,
+las pruebas eran abordadas luego de la implementación de cada fase distinguida  en análisis-diseño. Para ello se planteaban casos de
+prueba específicos para cada fase.
+
+    \item[Documentación]
+La documentación del código fuente fue abordada durante la implementación del mismo mediante el uso de la herramienta de generación de
+documentación \doxy. Esta etapa prioriza el hecho de clarificar detalles de implementación hacia la comunicación entre los desarrolladores,
+o posibles colaboradores externos al proyecto. Al final, hubo dedicación completa a la realización del informe y presentación
+del proyecto, el cual no solo sirve como parte de la tesis de grado sino también como documentación disponible para aquellos
+colaboradores de fudepan que quieran modificar o extender tanto \rc{} como \fud.
+
+    \item[Gestión de la Configuración de Software]
+Consistió en conocer el estado de todos los artefactos que componen el sistema, gestionar del estado
+de los mismos y liberar las distintas versiones del sistema.
+
+    \item[Seguimiento de issues]
+A lo largo de todo el proyecto se realizaron seguimientos de issues tanto de nuestro proyecto como así también de los demás
+proyectos de \fude{} involucrados en \rc{} mediante \gc{}. Esto involucró el reporte y resolución de bugs o bien modificación o creación
+de nuevas features en tales proyectos.
+
+\end{description}
+
+\section{Gestion de la configuración de Software}
+En el desarrollo de \rc{} y su aplicación de ejemplo, fue necesario utilizar un manejador de versiones. Por esto, se manipuló un
+repositorio Subversion alojado en \gc{} \footnote{code.google.com} con el fin de automatizar las tareas de guardado, recuperado, registrado,
+identificación y mezclado de versiones de todos los archivos que componen el proyecto.\\
+
+Para el uso de esta herramienta se siguió el libro de Sussman, Fitzpatrick y Pilato \cite{svn}.
+
+\section{Información Visual}
+A través del desarrollo se usó como lenguaje gráfico de modelado a \uml, con fines de comunicación entre los integrantes del grupo y los
+colaboradores de \fude{} como también de documentación y modelado estructural del sistema. La especificación de \uml{} puede ser encontrada
+en el sitio de Object Management Groups \footnote{\texttt{http://www.omg.org}} o bien en varios libros tales como \cite{uml}.
+
+\section{GNU/Linux y Software Libre}
+\linux{} es un Sistema Operativo similar a \unix{} bajo el cual se desarrolló la totalidad del proyecto. Tanto el sistema operativo como
+todas las herramientas que se usaron para el desarrollo del proyecto son libres y se encuentran licenciadas
+bajo GPL version 3 (General Public Licence)\footnote{http://www.gnu.org/licenses/gpl-3.0.txt}.
+
+La libertad reside en la capacidad de analizar y modificar el código fuente de la herramienta a mano. También es posible redistribuir el
+trabajo sin ninguna restricción, aparte de mantener la licencia y el mantenimiento de las referencias a los autores originales. Por lo
+tanto, este proyecto tiene como objetivo defender estos principios y se publica también con estas libertades .
+
+\subsection{GNU Toolchain}
+\linux{} cuenta con una serie de herramientas de gran utilidad e importancia. Las mas utilizadas durante el desarrollo fueron:
+\begin{description}
+  \item[gcc] GNU Compiler Collection, es un conjunto de compiladores creados por el proyecto GNU. GCC es software libre y se
+distribuye bajo licencia GPL. Estos compiladores se consideran est\'andar para sistemas operativos derivados de GNU 
+\footnote{http://gcc.gnu.org/}.
+
+  \item[gdb] GNU Debugger es un depurador portable que se puede utilizar en varias plataformas Unix y funciona para varios
+lenguajes de programaci\'on como C y C++ entre otros. GDB fue escrito por Richard Stallman en 1988, es software libre y se distribuye bajo
+licencia GPL \footnote{http://www.gnu.org/software/gdb/}.
+
+    \item[Make] es una herramienta que controla la generación de ejecutables, instalación y limpieza de archivos temporales de un
+programa a partir de sus archivos fuentes. \make{} lee cómo construir su salida a partir de un archivo llamado Makefile, que enumera cada
+uno de los archivos fuentes y especifica la forma de obtener el programa destino.   
+\end{description}
+
+\subsection{CMake}
+    Para la generación del Makefile correspondiente a \rc{} se utilizó la herramienta de generación y automatización de código \cmake{} la
+cual es una suite separada y de más alto nivel que el sistema \make{} común de \unix{}, siendo similar a las \autotools{}.
+CMake es una familia de herramientas diseñada para construir, probar y empaquetar software. Se utiliza para controlar el proceso de
+compilación del software usando ficheros de configuración sencillos e independientes de la plataforma. Generando makefiles nativos y
+espacios de trabajo que pueden usarse en el entorno de desarrollo deseado. Es comparable al GNU build system de \unix{} en que el proceso es
+controlado por ficheros de configuración, en el caso de \cmake{} llamados CMakeLists.txt. Al contrario que el GNU build system, que está
+restringido a plataformas \unix{}, \cmake{} soporta la generación de ficheros para varios sistemas operativos, lo que facilita el
+mantenimiento y elimina la necesidad de tener varios conjuntos de ficheros para cada plataforma.
+Existen generadores makefile para Unix, Borland make, Watcom make, MinGW, MSYS y Microsoft NMake. También es posible generar ficheros de
+proyecto para Code::Blocks, Eclipse CDT, Microsoft Visual Studio de la 6 a la 10 incluyendo versiones de 64 bits y KDevelop.
+
+\subsection{\LaTeXe}
+Es una herramienta para sistema de composición de textos, orientado especialmente a la creación de libros, documentos científicos y técnicos
+que contengan fórmulas matemáticas. Tanto éste documento como la presentación fueron escritas usando \LaTeXe.
+
+\subsection{Edici\'on}
+\begin{description}
+ \item[Gedit:]  editor de texto plano\footnote{http://projects.gnome.org/gedit/}.
+ \item[Kile:]   editor para \LaTeX\footnote{http://kile.sourceforge.net/}.
+\end{description}
+
+\subsection{Gráficos}
+\begin{description}
+  \item[gimp:]  editor de imágenes\footnote{http://www.gimp.org/}.
+  \item[Bouml:] editor de diagramas UML\footnote{http://bouml.free.fr/}.
+  \item[Dia:]   editor de diagramas de propósito general\footnote{http://live.gnome.org/Dia}.
+\end{description}
+
+\subsection{Documentación}
+\begin{description}
+    \item[Doxygen:] documentación del código\footnote{http://www.doxygen.org}.
+\end{description}
+
+\subsection{Análisis Estadístico}
+\begin{description}
+    \item[R:] lenguaje de programación para realizar análisis y gráficos estadísticos\footnote{http://www.r-project.org}.
+\end{description}
+
+
+\subsection{Análisis estático de código}
+\begin{description}
+    \item [Cloc:] es un programa para contar la cantidad de lineas del sistema\footnote{http://cloc.sourceforge.net/}.
+    \item [CCCC:] herramienta que analiza los fuentes \cpp{} y genera reportes en varias métricas asociadas al
+                  código\footnote{http://cccc.sourceforge.net/}.
+    \item [GCov:] es una herramienta GNU para realizar pruebas de cobertura sobre código fuente. Se utiliza en conjunto con
+                  \textbf{\textit{gcc}} para determinar el número de veces que cada línea de un programa se ejecuta durante una ejecución.
+                  Esto hace que sea posible encontrar áreas del código que no se utilizan, o que no se ejecutan en los casos de pruebas
+                  planteados\footnote{http://gcc.gnu.org/onlinedocs/gcc/Gcov.html}.
+\end{description}

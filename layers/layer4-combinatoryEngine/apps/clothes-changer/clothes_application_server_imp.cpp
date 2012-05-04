@@ -37,7 +37,8 @@
  *
  */
 
-
+//=================================
+// included dependencies
 #include "clothes_application_server_imp.h"
 #include <mili/mili.h>
 
@@ -45,13 +46,15 @@
 ClothesApplicationServerImp::ClothesApplicationServerImp()
     : L5ApplicationServer<Clothe>()
 {
-    std::list<Clothe> applicated;
-    _root_node = new ClothesNode(applicated, get_initial_set());
+    std::list<Clothe> applied;
+    std::list<Clothe> objects;
+    get_initial_set(objects);
+    _root_node = new ClothesNode(applied, objects);
 }
 
 ClothesApplicationServerImp::~ClothesApplicationServerImp()
 {
-
+	delete _root_node;	
 }
 
 void ClothesApplicationServerImp::get_initial_packet(recabs::Packet& pkt) const
@@ -59,9 +62,10 @@ void ClothesApplicationServerImp::get_initial_packet(recabs::Packet& pkt) const
     _root_node->serialize(pkt);
 }
 
+//Get from the stream the elements that I put in the method clothe_node::get_result().
 void ClothesApplicationServerImp::receive_result(const recabs::Packet& pkt)
 {
-    mili::bistream bis(pkt);
+    mili::bistream<> bis(pkt);
     float score;
     std::list<Clothe> clothes_applied;
     bis >> score >> clothes_applied;
@@ -82,15 +86,8 @@ void ClothesApplicationServerImp::manage_top_dressed(const float& score, const s
         _top_5_dressed.pop_back();
 }
 
-L4Node<Clothe>* ClothesApplicationServerImp::get_initial_node()
+void ClothesApplicationServerImp::get_initial_set(std::list<Clothe>& objects)
 {
-    _root_node->set_clothes_available(get_initial_set());
-    return _root_node;
-}
-
-std::list<Clothe> ClothesApplicationServerImp::get_initial_set()
-{
-    std::list<Clothe> objects;
     Clothe a("remera", "roja");
     Clothe b("remera", "amarilla");
     Clothe c("remera", "negra");
@@ -116,6 +113,4 @@ std::list<Clothe> ClothesApplicationServerImp::get_initial_set()
     mili::insert_into(objects, j);
     mili::insert_into(objects, k);
     mili::insert_into(objects, l);
-
-    return objects;
 }

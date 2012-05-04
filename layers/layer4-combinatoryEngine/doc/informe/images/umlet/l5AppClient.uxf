@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>440</x>
+      <y>290</y>
+      <w>250</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>comb_eng::L5ApplicationClient
+--
+--
++ L5ApplicationClient()
+/+ ~L5ApplicationClient()/
++ deserialize()
+bg=light_gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>460</x>
+      <y>150</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>recabs::DeserializerFunctor
+--
+--
+/+ deserialize()/
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>530</x>
+      <y>180</y>
+      <w>50</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;110</additional_attributes>
+  </element>
+</diagram>

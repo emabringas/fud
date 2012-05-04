@@ -1,4 +1,4 @@
-/* $Id: recabs.h 339 2010-10-19 12:42:28Z emab73 $ */
+/* $Id: recabs.h 564 2011-06-06 23:28:46Z marjobe $ */
 
 /**
  *  @file:      recabs.h
@@ -42,14 +42,19 @@
 #define RECABS_H
 
 /** Common side */
-#include ".private/serializable_recursive_functor.h"
+#include "serializable_recursive_functor.h"
+#include "common.h"
+#include "l4_client_app.h"
+//#include "by_size_result_sender.h"
 
 /** Client side */
-#include ".private/deserializer_functor.h"
+#include "deserializer_functor.h"
+#include "distributable_recursive_processor.h"
+//#include "distribution_policy.h"
 
 /** Server side */
-#include ".private/l4_server_app.h"
-#include ".private/recursion_manager.h"
+#include "l4_server_app.h"
+#include "recursion_manager.h"
 
 #endif
 

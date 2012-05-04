@@ -38,25 +38,23 @@
  */
 
 #include "clothes_application_client_imp.h"
-#include "../../libplugin/composed_combination_policy_parallel.cpp"
-#include "../../libplugin/list_combination_policy.cpp"
-
+#include <combeng/combeng.h>
 
 ClothesApplicationClientImp::ClothesApplicationClientImp()
     : L5ApplicationClient()
 {
-    Clothe* a = new Clothe("remera", "roja");
-    Clothe* b = new Clothe("remera", "amarilla");
-    Clothe* c = new Clothe("remera", "negra");
-    Clothe* d = new Clothe("pantalon", "azul");
-    Clothe* e = new Clothe("pantalon", "negro");
-    Clothe* f = new Clothe("pantalon", "marron");
-    Clothe* g = new Clothe("zapato", "goma");
-    Clothe* h = new Clothe("zapato", "deportivo");
-    Clothe* i = new Clothe("zapato", "cuero");
-    Clothe* j = new Clothe("media", "negra");
-    Clothe* k = new Clothe("media", "azul");
-    Clothe* l = new Clothe("media", "blanca");
+    Clothe a("remera", "roja");
+    Clothe b("remera", "amarilla");
+    Clothe c("remera", "negra");
+    Clothe d("pantalon", "azul");
+    Clothe e("pantalon", "negro");
+    Clothe f("pantalon", "marron");
+    Clothe g("zapato", "goma");
+    Clothe h("zapato", "deportivo");
+    Clothe i("zapato", "cuero");
+    Clothe j("media", "negra");
+    Clothe k("media", "azul");
+    Clothe l("media", "blanca");
 
     mili::insert_into(_remeras, a);
     mili::insert_into(_remeras, b);
@@ -73,9 +71,6 @@ ClothesApplicationClientImp::ClothesApplicationClientImp()
     mili::insert_into(_medias, j);
     mili::insert_into(_medias, k);
     mili::insert_into(_medias, l);
-
-    tabla_valores = new tables();
-
 }
 
 ClothesApplicationClientImp::~ClothesApplicationClientImp()
@@ -83,7 +78,7 @@ ClothesApplicationClientImp::~ClothesApplicationClientImp()
 
 void ClothesApplicationClientImp::deserialize(const recabs::Packet& pkt, recabs::SerializableRecursiveFunctor** rf) const
 {
-    mili::bistream bis(pkt);
+    mili::bistream<> bis(pkt);
     float score;
     std::list<Clothe> clothes_applied;
     std::list<Clothe> clothes_available;
@@ -110,7 +105,7 @@ void ClothesApplicationClientImp::deserialize(const recabs::Packet& pkt, recabs:
 
     node->set_combination_policy(composed);
     node->set_prune_policy(prune);
-    node->set_table(tabla_valores);
+    node->set_table();
 
     //Lleno el parametro **rf
     *rf = node;

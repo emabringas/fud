@@ -1,0 +1,594 @@
+\section{RecAbs}
+
+\begin{frame}\frametitle{¿Qué es \rc?}
+    \begin{itemize}
+        \item   Abstracción genérica para soluciones recursivas.
+                % Definición, problemas que ataca.
+        \item   Arquitectura cliente-servidor.
+                % Se creo con esta arquitectura para el posible montado con cualquier middleware de distribución.
+        \item   Técnica de descomposición de datos recursiva.
+                % Ciencia: principio de diseño de algoritmos paralelos.
+        \pause
+        \item   Se optó por implementarla como una nueva capa de \fud{}.
+    \end{itemize}
+
+    \begin{center}
+        \only<1>{\includegraphics[scale=.29]{images/recabs1.png}}
+        \only<2>{\includegraphics[scale=.29]{images/recabs2.png}}
+    \end{center}
+\end{frame}
+
+
+\begin{subsection}{Diseño}
+
+\begin{frame}{Principios de Diseño}
+
+    \begin{block}{Evitar}
+        \begin{itemize}
+            \item \textbf{Rigidez}: es difícil modificar porque cada cambio afecta a muchas otras partes del sistema.
+            \item \textbf{Fragilidad}: cuando hacemos un cambio, partes inesperadas del sistema se rompen.
+            \item \textbf{Inmovilidad}: es difícil reutilizar componentes en otra aplicación, ya que no se pueden desligar de la       
+                aplicación actual.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Principios \textbf{SOLID}}
+        \begin{itemize}
+            \item   \textbf{S}ingle Responsibility Principle (SRP)
+            \item   \textbf{O}pen-Closed Principle (OCP)
+            \item   \textbf{L}iskov Substitution Principle (LSP)
+            \item   \textbf{I}nterface Segregation Principle (ISP)
+            \item   \textbf{D}ependency Inversion Principle (DIP)
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}\frametitle{Diagrama de Clases}
+    \begin{center}
+        \includegraphics[scale=0.25]{images/class.png}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}\frametitle{Lado Común}
+    \begin{center}
+        \includegraphics[scale=0.25]{images/class-common-side.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Lado Común: Functor Recursivo}% Functor Recursivo
+    \textbf{Functor Recursivo}
+    \begin{itemize}
+     \item Abstracción que representa una función recursiva
+     \item Describe un estado particular de la función
+     \item Especifica de cada aplicación
+     \item Implementa su serialización.
+    \end{itemize}
+
+    \begin{center}
+        \includegraphics[scale=0.4]{images/srf.png}
+    \end{center}
+    
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Lado Servidor}
+    \begin{center}
+        \includegraphics[scale=0.25]{images/class-server-side.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Lado Servidor: Asistente del Servidor}% Asistente del Servidor
+
+    \textbf{Asistente del Servidor}
+
+    Especifica detalles de como iniciar el procesamiento y manipular mensajes.
+
+    \begin{block}{Responsabilidades}
+        \begin{itemize}
+            \item   Brindar el \textit{functor} inicial
+            \item   Definir que hará con los resultados a medida que lleguen
+            \item   Definir el tratamiento de los mensajes intermedios %(si es que los hubiera).
+        \end{itemize}
+    \end{block}
+
+    \begin{center}
+        \includegraphics[scale=0.4]{images/l4_server_app.png}
+    \end{center}
+
+% De estos requisitos, el primero es obligatorio y los dos restantes son opcionales en la medida de que la aplicación arroje resultados
+% y mensajes intermedios.
+\end{frame}
+
+\begin{frame}\frametitle{Lado Servidor: Administrador de la Recursión}% Administrador de la Recursión
+
+    \textbf{Administrador de la Recursión}  
+
+    \begin{itemize}
+     \item Inicia la ejecución
+     \item Organiza y manipula los functores pendientes
+     \item Interactúa con le middleware de distribución
+    \end{itemize}
+
+     \begin{block}{Tipos de Mensajes}
+        \begin{itemize}
+            \item  \textbf{Resultado}, parcial y relativo a la unidad de trabajo que se procesó
+            \item  \textbf{Mensaje Intermedio} es cualquier dato transmitido de cliente a servidor sin llegar a una hoja o
+                    estado final en el árbol
+            \item  \textbf{Unidad de Trabajo} functor intermedio a distribuir, la cuál será enviada a un cliente ocioso. Un \textit{trabajo}
+                arribado es una partición del trabajo del cliente que lo envió.
+        \end{itemize}
+     \end{block}
+
+
+\end{frame}
+
+\begin{frame}\frametitle{Lado Servidor: Administrador de la Recursión}% Administrador de la Recursión (Diagrama de Clases) 
+
+    \begin{center}
+       \includegraphics[scale=0.3]{images/fud_manager_dji.png}
+    \end{center}
+
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Lado Cliente}
+    \begin{center}
+        \includegraphics[scale=0.25]{images/class-client-side.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Lado Cliente: Procesador Recursivo} %Procesador Recursivo
+    \textbf{Procesador Recursivo}
+    
+    Engine de ejecución recursiva, se encarga de llevar a cabo el procesamiento total de un functor en un nodo.
+
+    \begin{block}{Responsabilidades}
+        \begin{itemize}
+        \item Administra la reproducción de functores hijos
+        \item Analizar y efectuar la redistribucion de los mismos
+        \item Permitir el envío de mensajes y resultados al servidor
+        \item Recolecta functores en caso base y los envía al servidor
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}\frametitle{Lado Cliente: Procesador Recursivo} %Procesador Recursivo, Diagrama de clases
+    \begin{center}
+         \includegraphics[scale=0.4]{images/frp.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Lado Cliente: Senders}
+    \textbf{Senders}
+
+    \begin{itemize}
+        \item Manipulan los mensajes a enviar
+        \item Interactúa con el middleware de distribución
+        \item Efectúan el envío
+    \end{itemize}
+
+    \begin{center}
+     \includegraphics[scale=0.3]{images/senders.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Lado Cliente: Asistente del Cliente y Deserializador}
+    \textbf{Asistente del Cliente}
+
+        Especifica el sender apropiado
+
+    \begin{center}
+        \includegraphics[scale=0.4]{images/l4_client_app.png}
+    \end{center}
+
+    \textbf{Deserializador}
+
+    Especifica la manera en que se realiza el método inverso a la serialización realizada en el lado servidor
+
+    \begin{center}
+        \includegraphics[scale=0.4]{images/deserializer.png}
+    \end{center}        
+
+\end{frame}
+
+\begin{frame}\frametitle{Lado Cliente: Política de Distribución}
+
+    \textbf{Política de distribución}
+    Políticas que rigen el envío de trabajo pendiente al servidor con el fin de aprovechar la disponibilidad de clientes ociosos
+
+    \pause
+    \begin{block}{Establece}
+        \begin{itemize}
+            \item Cuando un cliente debe distribuir
+            \item Cuanto trabajo debe distribuir
+        \end{itemize}
+    \end{block}
+
+    \pause  
+    Este tipo de políticas influye en la performance de una aplicación ya que el costo de comunicación varía dependiendo principalmente
+    de:
+    \begin{itemize}
+        \item   Nivel de procesamiento que requiera la aplicación concreta
+        \item   Recursos con que se cuenten (tanto en servidor como en clientes)
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Lado Cliente: Política de Distribución} %Diagrama de clases
+
+    \begin{center}
+        \includegraphics[scale=.25]{images/distribution_policy.png}
+    \end{center}
+    \pause
+    \begin{center}
+        $$fsd(x) = \frac{children-1}{1 + e^{-(\log_{children}{leafs}) * index + x - (children-1)}} $$
+        \only<2>{\includegraphics[scale=.25]{images/fsd.png}}
+    \end{center}
+\end{frame}
+
+
+
+\end{subsection}
+
+\subsection{Funcionamiento}
+
+\begin{frame}\frametitle{¿Cómo funciona una aplicación \rc?}
+    \begin{center}
+        \only<1>{\includegraphics[scale=.45]{images/recabs_working_1.png}}
+        \only<2>{\includegraphics[scale=.45]{images/recabs_working_2.png}}
+        \only<3>{\includegraphics[scale=.45]{images/recabs_working_3.png}}
+        \only<4>{\includegraphics[scale=.45]{images/recabs_working_4.png}}
+        \only<5>{\includegraphics[scale=.45]{images/recabs_working_5.png}}
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \begin{center}
+                \textbf{SERVER}\\
+                \textit{Inicio de recursión}
+            \end{center}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \centering
+            \includegraphics[scale=0.39]{images/ActivityRecAbs-1.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \begin{center}
+                \textbf{CLIENTE}\\
+                \textit{Procesamiento de functores}\\[1cm]
+                \only<2>{\includegraphics[scale=0.35]{images/DRP_Alg_1.png}}
+                \only<3>{\includegraphics[scale=0.35]{images/DRP_Alg_2.png}}
+                \only<4>{\includegraphics[scale=0.35]{images/DRP_Alg_3.png}}
+            \end{center}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \raggedleft
+            \includegraphics[scale=0.26]{images/ActivityRecAbs-2.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+    \begin{frame}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \begin{center}
+                \textbf{SERVER}\\
+                \textit{Manejo de mensajes}
+            \end{center}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \centering
+            \includegraphics[scale=0.39]{images/ActivityRecAbs-3.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\subsection{Implementación}
+
+\begin{frame}[fragile]\frametitle{Dependencias}
+
+    \rc{} usa las siguientes librerías:
+    \begin{description}
+        \item[\fud]: framework de distribución elegido.
+        \item[MiLi]: colección sencilla de pequeñas librerías útiles.
+    \end{description}
+
+    \lstset{language=C++}
+    \begin{lstlisting}[frame=single]
+/* The client sends a message. */
+OutputMessage out;
+out << _header << packet;
+_real_sender->send(out);
+
+/* The server receives the message. */
+void handle_receive_packet(InputMessage& input)
+{
+    RecabsPacketHeader header;
+    input >> header;
+    switch(header)
+    { ... }
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}\frametitle{Métricas}
+    \rc{} esta constituido por 23 archivos con un total de 2394 líneas de texto.
+
+    \begin{center}
+    \rowcolors{2}{verde!20}{verde!5}
+    \begin{tabular}{|l|r|r|r|r|c|}
+    \hline
+    \multicolumn{2}{|c|}{Files} & \multicolumn{3}{|c|}{Line Types} & \hspace{0.2cm}\% \\
+    \hline
+    \textbf{Type} & \textbf{Count} & \textbf{Blank} & \textbf{Comment} & \textbf{Source} & \small{\textbf{\#Comms./Tot.}}\\
+    \hline
+    \texttt{C++ source} & 7   &    102  &     301   &    381 & 44.13 \\
+    \hline
+    \texttt{C++ header} & 16   &    231  &    1010   &    369 &  73.24 \\
+    \hline
+    \textbf{Total}      &  23  &     333 & \color{blue}1311\color{black} & \color{blue}750\color{black} & \textbf{63.6} \\
+    \hline
+    \end{tabular}
+    \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Cobertura de código}
+    
+
+    \begin{center}
+        \rowcolors{2}{verde!20}{verde!5}
+        \begin{tabular}{|l|r|r|c|}
+            \hline
+            & \multicolumn{2}{|c|}{Líneas de código} & Porcentaje \\
+            \hline
+            \textbf{Archivo} & \textbf{Total} & \textbf{Ejecutado} & \hspace{0.2cm}\textbf{\%} \\
+            \hline
+            \scriptsize{distributable\_recursive\_processor.cpp} & 91 & 78 & \only<1>{85.7}\only<2>{\color{blue}85.7\color{black}} \\
+            \hline 
+            \scriptsize{distribution\_policy.cpp} & 27 & 17 & \only<1>{62.9}\only<2>{\color{red}62.9\color{black}} \\
+            \hline 
+            \scriptsize{by\_size\_result\_sender.cpp} & 18 & 18 & 100 \\
+            \hline 
+            \scriptsize{fud\_rprocessor.cpp} & 18 & 18 & 100 \\
+            \hline 
+            \scriptsize{recursion\_manager.cpp} & 37 & 34 & \only<1>{91.8}\only<2>{\color{blue}91.8\color{black}} \\
+            \hline 
+            \scriptsize{fud\_rmanager.cpp} & 36 & 35 & \only<1>{97.2}\only<2>{\color{blue}97.2\color{black}} \\
+            \hline 
+            \textbf{Total} & 227 & 200 & \textbf{88.1} \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \pause
+    \vspace{0.3cm}
+    \underline{Análisis}:
+    \begin{itemize}
+        \item   en el caso de \color{red}distribution\_policy.cpp \color{black} se debe a que se ejecuta un sólo algoritmo de distribución.
+        \item   en \color{blue}general\color{black}, por manejo de errores.
+    \end{itemize}
+
+\end{frame}
+
+
+\subsection{Proyectos sobre RecAbs}
+
+\begin{frame}\frametitle{Aplicación de prueba}
+    \begin{block}{Descripción del problema}
+        Dada una lista de números enteros $L$ y un número $b$, decir si $b \in L$, formalmente:\\
+        \centering$(\exists i: 0 \leq i < \#L : L[i] = b)$
+    \end{block}
+    \pause
+    \vspace{0.3cm}
+    \underline{Solución \rc}:\\
+    \begin{enumerate}
+        \item   Definir el \textit{functor}.
+        \item   Serialización y deserialización del \textit{functor}.
+        \item   Crear el \textit{functor} inicial.
+        \item   Manejo de resultados.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Definición del functor}
+    \begin{block}{}\centering functor = estado + algoritmo de auto-reproducción\end{block}
+    \vspace{0.3cm}
+    \pause
+    $estado \rightarrow$ \only<2>{atributos necesarios para resolver el problema}\only<3-5>{$\{ [e_1, e_2, ..., e_n], b \}$}
+    \vspace{0.3cm}
+    \pause
+    \pause
+
+    $algoritmo \rightarrow$ \only<4>{capaz de generar functores más pequeños hasta llegar al caso base en una cantidad
+                            finita de ejecuciones}
+                            \only<5>{método \texttt{call(children, result)}}
+    \pause
+    \vspace{0.2cm}
+    \begin{block}{}%{\texttt{call(children, result)}}
+        donde:\\
+        \begin{itemize}
+            \item \textbf{children} : lista que contendrá los functores hijos del functor en cuestión.
+            \item \textbf{result} : en casos base, será rellenado por resultados concretos.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}\frametitle{Definición del functor}
+    \begin{center}
+        \underline{Método \texttt{call} para el problema de la búsqueda}
+    \end{center}
+    \vspace{0.3cm}
+    Casos base:\\
+    \begin{enumerate}
+        \item   $[] \rightarrow$ \textbf{result} \texttt{<< false;}
+        \item   $[e_i] \rightarrow$ \textbf{result} \texttt{<< $e_i = b$;}
+    \end{enumerate}
+    \vspace{0.5cm}
+    \pause
+    Caso inductivo:\\
+    \begin{itemize}
+        \item   Tenemos $[e_1, ..., e_n]$
+        \pause
+        \item   $L1=[e_1, ..., e_{n/2}]$ y $L2=[e_{(n/2)+1}, ..., e_n]$
+        \pause
+        \item   \textbf{children} \texttt{<< $L1$ << $L2$;}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Serialización y deserialización}
+    \begin{block}{}\centering functor = \only<1>{estado}\only<2-3>{\textbf{estado}} + algoritmo de auto-reproducción\end{block}
+    \vspace{0.3cm}
+    \begin{center}
+        ¿Que serializamos y deserializamos?\\[0.2cm]
+        \pause
+        Solamente el \textit{estado}, el algoritmo reside en cada cliente.
+    \end{center}
+    \pause
+    \lstset{language=C++}
+    \begin{lstlisting}[frame=single]
+/* Serialize */
+mili::bostream bos;
+bos << this->_list << this->_searched;
+pkt = bos.str();
+
+/* Deserialize */
+mili::bistream bis(pkt);
+std::list<uint32_t> list;
+uint32_t searched;
+bis >> list >> searched;
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Functor inicial}
+    \begin{block}{}\centering Construir el estado inicial del problema\end{block}
+    \begin{center}
+        \only<1>{$\{ [e_1, e_2, ..., e_n], b \}$}\only<2>{$\{ [0, 1, ..., 9999999], -1 \}$}
+    \end{center}
+    \pause
+    \lstset{language=C++}
+    \begin{lstlisting}[frame=single]
+void L4ServerMS::get_initial_packet(recabs::Packet& pkt) const
+{
+    std::list<uint32_t> v;
+
+    for (uint32_t i = 0; i < 10000000; i++)
+        mili::insert_into(v, i);
+
+    MiddleSearch b(v, -1);
+
+    b.serialize(pkt);
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Manejo de resultados}
+    \begin{block}{}\centering Definir que se hace con cada resultado arribado\end{block}
+    \pause
+    \begin{center}
+        $\bigvee [res_0, ..., res_N] \equiv res_0 \vee ... \vee res_N$
+    \end{center}
+    \lstset{language=C++}
+    \begin{lstlisting}[frame=single]
+void L4ServerBS::receive_result(const recabs::Packet& pkt)
+{
+    mili::bistream bis(pkt);
+    bool res;
+    bis >> res;
+
+    _result = (_result || res);
+}
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}\frametitle{Análisis de performance}
+    \centering
+    Se ejecutó la búsqueda con la entrada $\{[0, 1, ..., 9999999], -1\}$
+    
+    \begin{columns}[T]
+        \begin{column}{.6\textwidth}
+            \flushright
+            \includegraphics[scale=0.3]{images/execution_boxplot.png}
+        \end{column}
+        \begin{column}{.4\textwidth}
+            \begin{center}
+                \textbf{Box Plot}\\[0.3cm]
+                10 ejecuciones por igual cantidad de clientes
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% \begin{frame}{Análisis de performance}
+%     \begin{columns}[T]
+%         \begin{column}{.5\textwidth}
+%             \centering
+%             \includegraphics[scale=0.3]{images/ts_vs_tp.png}\\
+%             \includegraphics[scale=0.3]{images/overhead.png}
+%         \end{column}
+%         \begin{column}{.5\textwidth}
+%             \centering
+%             \includegraphics[scale=0.3]{images/speedup.png}\\
+%             \includegraphics[scale=0.3]{images/eficiency.png}
+%         \end{column}
+%     \end{columns}
+% \end{frame}
+
+
+\begin{frame}\frametitle{CombEng}
+        % montada sobre \rc\ y por consecuencia sobre \fud\
+        Es una nueva capa  que engloba la familia de problemas cuya soluciones involucran un motor combinatorio.
+
+        \begin{block}{Características}
+            \begin{itemize}
+                \item Provee un motor combinatorio para la generación de árboles de combinaciones.
+                \item Utiliza mecanismos de poda sobre dichos árboles.
+                \item Posee un sistema de puntuación por cada una de las combinaciones (\textit{ranking} o \textit{scoring}).
+            \end{itemize}         
+        \end{block}
+         
+\end{frame}
+
+\begin{frame}\frametitle{CombEng}
+        En resumen:
+        \begin{center}
+            \only<1>{\includegraphics[scale=.3]{images/fud-l2.png}}
+            \only<2>{\includegraphics[scale=.3]{images/fud-l3.png}}
+            \only<3>{\includegraphics[scale=.3]{images/fud-l4.png}}
+        \end{center}
+\end{frame}
+
+\begin{frame}\frametitle{RNAFoldingFreeEnergy}
+    \textbf{HIV y los Antirretroviral}
+    \begin{itemize}
+     \item Un infectado con VIH es sometido a una intensiva terapia antirretroviral.
+     \item Una terapia es la suceción de aplicaciones de antirretrovirales en el tiempo
+     \item En cada paso se le suministra al paciente una combinación de uno o más antirretrovirales
+     \item Cuando a una persona se le aplica un antirretroviral, el virus comienza a mutar hasta que logra hacerse resistente. 
+    \end{itemize}
+
+
+% El orden en que se aplican los antirretrovirales y cómo éstos son combinados, son factores muy importantes que determinan, entre otras
+% cosas, el tiempo que transcurre hasta el momento en que el virus sea resistente a todos los antirretrovirales.
+
+\begin{block}{RNAFFE}
+    Recopila informaci\'on sobre como var\'ia la Energ\'ia Libre en la estructura secundaria del RNA viral a medida que los
+    antirretrovirales son aplicados sobre la persona infectada.
+\end{block}
+
+\end{frame}
+
+\begin{frame}\frametitle{RNAFoldingFreeEnergy}
+    \begin{center}
+        \includegraphics[width=\linewidth]{images/Arbol_ajedrez.png}
+    \end{center}
+\end{frame}

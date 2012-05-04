@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiqutous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,12 +77,25 @@ namespace fud
          * the message.
          *
          * @param id : The JobUnitID of the completed JobUnit.
-         * @param msg : The message from the processign client with the results.
          *
          * \sa DistributableJob
          * \sa JobUnit
          */
-        virtual void handle_job_unit_completed_event(JobUnitID id, std::string* msg)     = 0;
+        virtual void handle_job_unit_completed_event(JobUnitID id)     = 0;
+
+        /**
+         * Performs actions to handle the incoming message of a JobUnit.
+         * It will need to locate the corresponding DistributableJob and tell it to handle
+         * the message.
+         *
+         * @param id : the JobUnitID of the JobUnit.
+         * @param message_number : the number of the message.
+         * @param message : the message from the processing client.
+         *
+         * \sa DistributableJob
+         * \sa JobUnit
+         */
+        virtual void handle_incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message) = 0;
 
         //DistributableJob events
         /**
@@ -145,6 +164,12 @@ namespace fud
              * \sa start_scheduler
              */
             void   stop_scheduler();
+            
+            /**
+             * Verify if JobUnit given is incomplete and in this case enqueue to job queue. 
+             * @param  id : The JobUnitID to verify
+             */
+            void    rescue_inclomplete_job_unit(JobUnitID id);
 
         private:
             /* Override these, as per -Weffc++ warnings */
@@ -164,16 +189,18 @@ namespace fud
             void              create_another_job_unit();
 
             /* Enqueuing ClientsManager events */
-            virtual void      free_client_event();
-            virtual void      job_unit_completed_event(JobUnitID id, std::string* msg);
+            virtual void free_client_event();
+            virtual void job_unit_completed_event(JobUnitID id);
+            virtual void incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message);
 
             /* Enqueuing DistributableJob events */
-            virtual void      distributable_job_completed_event(DistributableJob* distjob);
+            virtual void distributable_job_completed_event(DistributableJob* distjob);
 
 
             /* handling ClientsManager events */
             virtual void handle_free_client_event();
-            virtual void handle_job_unit_completed_event(JobUnitID id, std::string* msg);
+            virtual void handle_job_unit_completed_event(JobUnitID id);
+            virtual void handle_incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message);
 
             /* handling DistributableJob events */
             virtual void handle_distributable_job_completed_event(DistributableJob* distjob);
@@ -184,6 +211,11 @@ namespace fud
             /* local events*/
             void              job_queue_not_full_event();
             void              handle_job_queue_not_full_event();
+
+            /**
+             *  Assign pending job units to a free clients when jobs queue is empty
+             */
+            void resend_pending_job_unit();
 
             /* Attr. */
             static JobManager*              _instance;
@@ -203,6 +235,7 @@ namespace fud
             boost::mutex                    _mutex;
 
             LockingQueue<Event<JobManagerEventHandler> *>    _event_queue;
+
     };
 }
 #endif

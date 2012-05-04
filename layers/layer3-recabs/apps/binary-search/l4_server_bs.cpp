@@ -1,4 +1,4 @@
-/* $Id: l4_server_bs.cpp 357 2010-11-05 14:42:13Z emab73 $ */
+/* $Id: l4_server_bs.cpp 629 2011-09-13 13:54:45Z marjobe $ */
 
 /**
  *  @file:      l4_server_bs.cpp
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,28 +53,32 @@ void L4ServerBS::get_initial_packet(recabs::Packet& pkt) const
 {
     BinarySearch::Elements v;
 
-    mili::insert_into(v, 6);
-    mili::insert_into(v, 8);
-    mili::insert_into(v, 6);
-    mili::insert_into(v, 4);
-    mili::insert_into(v, 9);
-    mili::insert_into(v, 6);
-    mili::insert_into(v, 2);
-    mili::insert_into(v, 1);
-    mili::insert_into(v, 5);
-    mili::insert_into(v, 7);
+    for (uint32_t i = 0; i < 1000000; i++)
+        mili::insert_into(v, i);
 
-    BinarySearch b(v, 7);
+    BinarySearch b(v, -1);
 
     b.serialize(pkt);
 }
 
+int count_results = 0;
+int count_message = 0;
+
 void L4ServerBS::receive_result(const recabs::Packet& pkt)
 {
+    count_results++;
+
     mili::bistream bis(pkt);
     bool res;
     bis >> res;
+//    std::cout << "Llego el resultado nro " << count_results << std::endl;
     _result = (_result || res);
+}
+
+void L4ServerBS::receive_message(const recabs::Packet&)
+{
+    count_message++;
+    std::cout << "Llego un mensaje" << count_message << std::endl;
 }
 
 void L4ServerBS::results_report() const
@@ -84,5 +88,5 @@ void L4ServerBS::results_report() const
         out = "True";
     else
         out = "False";
-    std::cout << out << std::endl;
+    std::cout << out << ", " << count_results << " results and " << count_message << " messages has been sent." << std::endl;
 }

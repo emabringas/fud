@@ -1,4 +1,4 @@
-/* $Id: l4_server_bs.h 334 2010-10-14 22:36:19Z emab73 $ */
+/* $Id: l4_server_bs.h 567 2011-06-07 20:06:32Z marjobe $ */
 
 /** 
  *  @file:      l4_server_bs.h
@@ -15,13 +15,13 @@
  *  @date       August 2010
  *  @version    0.1
  *
- * This file is part of RecAbs
- *
  * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
- * processes without data dependency for framework FuD.
- * <http://fud.googlecode.com/>
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Mariano Bessone and Emanuel Bringas
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
+ *
+ * This file is part of RecAbs project.
  *
  * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,8 +41,7 @@
 #ifndef L4_SERVER_BS_H
 #define L4_SERVER_BS_H
 
-//#include <recabs/recabs.h>
-#include "recabs_dev.h"
+#include "recabs.h"
 
 /**
  * Class that implements the interface L4ServerApp, therefore is an assistant
@@ -72,6 +71,14 @@ class L4ServerBS : public recabs::L4ServerApp
          *
          */
         virtual void receive_result(const recabs::Packet& pkt);
+
+        /**
+         * Manage a single result.
+         *
+         * @param pkt : the received packet that we handle as a result.
+         *
+         */
+        virtual void receive_message(const recabs::Packet&);
 
         /**
          * Result reporter. Print the final result.

@@ -1,10 +1,10 @@
-/* $Id: l4_client_app.h 356 2010-11-04 13:38:16Z emab73 $ */
+/* $Id: l4_client_app.h 607 2011-08-04 03:47:06Z marjobe $ */
 
 /** 
  *  @file:      l4_client_app.h
  *  @details    Header file for Recabs providing L4ClientApp class.
- *              System:     RecAbs              \n
- *              Language:   C++                 \n
+ *              System: RecAbs\n
+ *              Language: C++\n
  *  
  *  @author     Mariano Bessone
  *  @email      marjobe AT gmail.com
@@ -15,14 +15,17 @@
  *  @date       October 2010
  *  @version    0.1
  *
- * l4_client_app.h
- * This file is part of RecAbs
+ * RecAbs: Recursive Abstraction, an abstraction layer to any recursive
+ * process without data dependency for the framework FuD.
+ * See <http://fud.googlecode.com/>.
  *
- * Copyright (C) 2010 - Emanuel Bringas and Mariano Bessone
+ * Copyright (C) 2010, 2011 - Mariano Bessone & Emanuel Bringas, FuDePAN
  *
- * RecAbs is free software; you can redistribute it and/or modify
+ * This file is part of RecAbs project.
+ *
+ * RecAbs is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * RecAbs is distributed in the hope that it will be useful,
@@ -31,15 +34,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with RecAbs; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
- * Boston, MA  02110-1301  USA
+ * along with RecAbs.  If not, see <http://www.gnu.org/licenses/>.
+ *
  */
 
 #ifndef L4_CLIENT_APP_H
 #define L4_CLIENT_APP_H
 
 #include "result_sender.h"
+#include "by_size_result_sender.h"
 
 namespace recabs
 {
@@ -48,7 +51,17 @@ namespace recabs
      */
     struct L4ClientApp
     {
-        virtual ResultSender* createResultSender(ResultSender* realSender) {return realSender;};
+        /**
+         * Creates the result sender of your choice.
+         *
+         * @param realSender : final sender.
+         *
+         * @returns the result sender created by this implementation.
+         */
+        virtual MessageSender* createMessageSender(RecabsPacketHeader header) const
+        {
+            return new BySizeResultSender(new InmediatelySender(header), 10000);
+        };
     };
 
 }

@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +41,7 @@
 #ifndef CLIENTS_MANAGER_H
 #define CLIENTS_MANAGER_H
 
-#include <set>
+#include <map>
 #include <boost/thread.hpp>
 
 #include "client_proxy.h"
@@ -60,11 +66,20 @@ namespace fud
         /**
          * Signals completion of a JobUnit.
          * @param id : The ID of the completed JobUnit.
-         * @param message : The string representing the message.
          *
          * \sa JobUnit
          */
-        virtual void job_unit_completed_event(JobUnitID id, std::string* message) = 0;
+        virtual void job_unit_completed_event(JobUnitID id) = 0;
+
+        /**
+         * Signals a incoming message from a JobUnit.
+         *
+         * @param id : the ID of the JobUnit.
+         * @param message_number : the number of the message.
+         * @param message : the incoming message.
+         *
+         */
+        virtual void incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message) = 0;
     };
 
     /**
@@ -81,11 +96,20 @@ namespace fud
              * Informs completion of a JobUnit. It will generate an event signaling
              * this fact.
              * @param id : The ID of the completed JobUnit.
-             * @param message : The string representing the message.
              *
              * \sa JobUnit
              */
-            void inform_completion(JobUnitID id, std::string* message);
+            void inform_completion(JobUnitID id);
+
+            /**
+             * Informs a incoming message from id-th JobUnit.
+             *
+             * @param id : the ID of the JobUnit.
+             * @param message_number : the number of the message.
+             * @param message : the incoming message.
+             *
+             */
+            void inform_incoming_message(JobUnitID id, fud_uint message_number, std::string* message);
 
             /**
              * Tells the listener that a client is free.
@@ -104,12 +128,12 @@ namespace fud
 
             /**
              * Disconnects a proxy from the system.
-             * @param client : The client proxy that needs to be disconnected.
+             * @param id : the client proxy ID that needs to be disconnected.
              *
              * \sa ClientProxy
              * \sa register_client
              */
-            void  deregister_client(ClientProxy* client);
+            void  deregister_client(ClientID id);
 
             /* Interface for Job Manager */
             /**
@@ -129,6 +153,33 @@ namespace fud
              * \sa JobUnit
              */
             bool assign_job_unit  (const JobUnit& job_unit);
+
+            /**
+             * Handles the "FreeClients" request. This method returns the number of free
+             * clients that the server is abble to give us.
+             *
+             * @param clients_requested : the number of clients that a client request.
+             *
+             * @returns the number of free clients that the server is abble to give us.
+             */
+            virtual fud_uint handle_free_clients_request(fud_uint clients_requested);
+
+            /**
+             * Gets the id-th client.
+             *
+             * @param id : the id of the client you want.
+             *
+             * @returns the client proxy with ID id.
+             */
+            virtual ClientProxy* get_client(ClientID id);
+
+            /**
+             * Place orders for idle clients.
+             *
+             * @param id : the client ID who place orders.
+             * @param count : number of orders to reserve.
+             */
+            void place_orders(fud_uint count);
 
         protected:
             /**
@@ -160,11 +211,11 @@ namespace fud
             void  register_client  (ClientProxy* client);
 
         private:
+
             void update_time_average(JobUnitSize ju_size, uint32_t ms_elapsed);
 
-
-            std::list<ClientProxy*>         _client_proxies;
-            boost::mutex                    _client_proxies_mutex;
+            std::map<ClientID, ClientProxy*>    _client_proxies;
+            boost::mutex                        _client_proxies_mutex;
 
             size_t                          _completed_job_units;
 
@@ -172,6 +223,33 @@ namespace fud
             static ClientsManager*          _instance;
 
             ClientsManagerListener*         _listener;
+
+            /* Orders management */
+
+            /**
+             * Place an order reservation.
+             *
+             * @param id : the client ID who place the order.
+             */
+            void place_an_order();
+
+            /**
+             * Take an order reservation.
+             */
+            void take_an_order();
+
+            /**
+             * Number of order reservations.
+             *
+             * @returns the number of current reservations.
+             */
+            fud_uint orders();
+
+            /* Attributes about reservation. */
+            fud_uint    _free_clients;
+            fud_uint    _available_clients;
+            fud_uint    _reservations;
+
     };
 
     /**

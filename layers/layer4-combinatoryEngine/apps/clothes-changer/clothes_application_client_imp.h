@@ -44,21 +44,19 @@
 
 //=================================
 // included dependencies
-#include "../../client/l5_application_client.h"
+#include <mili/mili.h>
 #include "clothes_node.h"
-
 
 using namespace comb_eng;
 class ClothesApplicationClientImp : public comb_eng::L5ApplicationClient
 {
 private:
     // conjuntos de referencias para las diferentes politicas
-    std::set<Clothe*> _pantalones;
-    std::set<Clothe*> _remeras;
-    std::set<Clothe*> _medias;
-    std::set<Clothe*> _zapatos;
+    std::list<Clothe> _pantalones;
+    std::list<Clothe> _remeras;
+    std::list<Clothe> _medias;
+    std::list<Clothe> _zapatos;
 
-    tables* tabla_valores;
 public:
     /**
      * Constructor method.
@@ -71,8 +69,9 @@ public:
     ~ClothesApplicationClientImp();
 
     /**
-     * For implementation. From L5ApplicationClient (comb_eng)
+     * To Implement. From L5ApplicationClient (comb_eng)
      */
-    virtual void deserialize(const recabs::Packet& pkt, recabs::SerializableRecursiveFunctor** rf) const;
+    void deserialize(const recabs::Packet& pkt, recabs::SerializableRecursiveFunctor** rf) const;
+
 };
 #endif  /* _CLOTHES_APPLICATION_MAIN_CLIENT_H */

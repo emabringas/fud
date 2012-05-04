@@ -46,6 +46,6 @@
  *
  */
 
-#include ".private/common.h"
-#include ".private/distributable_job.h"
-#include ".private/job_unit.h"
+#include "common.h"
+#include "distributable_job.h"
+#include "job_unit.h"

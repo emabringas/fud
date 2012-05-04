@@ -1,0 +1,118 @@
+\documentclass[xcolor=pdftex,hyperref={pdfpagelabels=false},table,10pt]{beamer}
+
+\definecolor{fudepan}{HTML}{006c63}
+\definecolor{verde}{RGB}{0, 127, 63}
+\definecolor{gris}{RGB}{86, 86, 86}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+
+\usetheme{Warsaw}
+\usecolortheme[named=verde]{structure}
+
+% \setbeamercolor{frametitle}{bg=black}
+% \setbeamercolor{frametitle right}{bg=verde}
+
+\usefonttheme{structurebold}
+\useinnertheme{rounded}
+\setbeamercovered{transparent}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\defbeamertemplate*{footline}{shadow theme}
+{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertframenumber\,/\,\inserttotalframenumber\hfill\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle:\ Abstracción de distribución de procesos recursivos
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,6
+    rulecolor=,
+    language=matlab,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=true,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0.1,0.1,0.6}\bfseries,
+        commentstyle=\color[rgb]{0.133,0.545,0.133},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+\title{RecAbs}
+\subtitle{Abstracción de distribución de procesos recursivos implementada sobre FuD}
+\author{Mariano Bessone \& Emanuel Bringas}
+\institute[UNRC]{
+    
+    %Escudos
+    \begin{minipage}{0.45\textwidth}
+        \begin{center}
+            %Escudo UNRC
+            \includegraphics[scale=0.23]{images/unrc.jpg}\\
+            \begin{scriptsize}
+                \textsc{Universidad Nacional de Río Cuarto} \\
+            \end{scriptsize}
+            \vfill
+            \begin{tiny}
+                \textsc{Fac. de Cs. Exactas, Fco-Qcas y Naturales} \\
+                \textsc{Departamento de Computación} \\[1cm]
+            \end{tiny}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \begin{center}
+            %Escudo FuDePAN
+            \includegraphics[scale=0.1]{images/fudepan.png}\\
+            \vfill
+            \begin{scriptsize}
+                \textsc{FuDePAN} \\
+            \end{scriptsize}
+            \begin{tiny}
+                \textsc{Fundación para el Desarrollo de la Programación en Ácidos Nucleicos} \\[1cm]
+            \end{tiny}
+        \end{center}
+    \end{minipage}
+}
+\date{19 de Diciembre de 2011}
+
+\newcommand{\fude}{\textbf{FuDePAN}}
+\newcommand{\rc}{\textbf{RecAbs}}
+\newcommand{\fud}{\textbf{FuD}}
+\newcommand{\combeng}{\textbf{CombEng}}
+\newcommand{\rnaffe}{\textbf{RnaFFE}}
+\newcommand{\cpp}{\textbf{C++}}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Temario}
+    \tableofcontents
+\end{frame}
+
+\input{01-introduction}
+\input{02-recabs}
+\input{03-refactoring-fud}
+\input{04-conclusion}
+
+\end{document}

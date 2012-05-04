@@ -45,7 +45,7 @@
 //=================================
 // include dependencies
 #include <string>
-//using namespace comb_eng;
+#include <mili/mili.h>
 
 class Clothe
 {
@@ -62,8 +62,6 @@ public:
         return ((_name == other._name) && (_colour == other._colour));
     }
 
-    void print_obj();
-
     inline std::string get_name() const
     {
         return _name;
@@ -72,6 +70,39 @@ public:
     inline std::string get_colour() const
     {
         return _colour;
+    }
+
+    bool operator < (const Clothe& other) const
+    {
+        return (_name < other.get_name());
+    }
+
+
+    friend inline mili::bostream<>& operator<< (mili::bostream<>& bos, const Clothe& clo)
+    {
+        bos << clo._name;
+        bos << clo._colour;
+
+        return bos;
+    }
+
+    friend inline mili::bistream<>& operator>> (mili::bistream<>& bis, Clothe& clo)
+    {
+        std::string aux;
+        bis>>clo._name;
+        bis>>clo._colour;
+        return bis;
+    }
+
+    inline Clothe operator = (const Clothe& clo)
+    {
+        Clothe ret (clo._name,clo._colour);
+        return ret;
+    }
+
+    void print_obj()
+    {
+        std ::cout << this->get_name() << " " << this->get_colour() << " ";
     }
 
 private:

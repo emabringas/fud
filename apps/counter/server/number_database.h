@@ -1,6 +1,6 @@
 #include <cstdlib>
 
-#include "fud/fud_client.h"
+#include "fud_client.h"
 
 #ifndef NUMBER_DATABASE_H
 #define NUMBER_DATABASE_H

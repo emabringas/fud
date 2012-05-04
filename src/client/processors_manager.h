@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +97,27 @@ namespace fud
              */
             const  std::string get_return_message() const;
 
+            /**
+             * Returns the results of the processing of a message.
+             *
+             * @param result : If there wasn't an error during computation. If this
+             * is true then it will send the message with the results.
+             */
+            void inform_result(bool result);
+
+            /**
+             * Returns the message number to be send to the server.
+             * It helps helps to differentiate messages from the same JobUnit.
+             *
+             * @returns the current message number.
+             */
+            inline fud_uint get_next_message_number() {return _message_number++;};
+
+            /**
+             * Destructor.
+             */
             virtual ~ProcessorsManager() {}
+
         private:
             /*methods*/
             ProcessorsManager();
@@ -104,6 +130,8 @@ namespace fud
 
             InputMessage              _input;   /* Used for efficiency. */
             OutputMessage             _output;  /* Idem. */
+
+            fud_uint _message_number;    /* It has the next number of message to be send. */
     };
 }
 

@@ -1,0 +1,46 @@
+\chapter{Proyectos sobre \rc}
+
+Sobre la capa desarrollada pueden ir tanto aplicaciones como otras capas abstractas para la creación de aplicaciones aún más específicas
+que se adaptan a otro tipo de características.
+
+A continuación, presentaremos una capa montada sobre \rc{}, la cuál se define para proyectos, en general bioinformáticos. Ademas, será
+mencionada una aplicación que corre sobre esta nueva capa, y por lo tanto, también ejecutada bajo \rc.
+
+\section{Motor Combinatorio}
+
+\textbf{\textit{CombEng}} es un motor combinatorio creado también por necesidad de \fude. Constituye una capa más sobre el framework \fud,
+más específicamente sobre \rc{}, por lo que también termina siendo un soporte para implementaciones de aplicaciones distribuidas. En la
+fundación se presentan, de manera recurrente, problemas de carácter bioinformático, y una familia de ellos se ve caracterizada por compartir
+una o más de las siguientes características:
+\begin{itemize}
+    \item Requerir un motor combinatorio para la generación de árboles de combinaciones.
+    \item Utilizar mecanismos de poda sobre dichos árboles.
+    \item Requerir un sistema de puntuación por cada una de las combinaciones (\textit{ranking} o \textit{scoring}).
+\end{itemize}
+Aquellos problemas que comparten al menos una de estas propiedades, es posible atacarlo con el motor combinatorio.
+
+El principal objetivo de este proyecto es crear una capa que permita, a usuarios sin altos conocimientos en programación, implementar
+soluciones a este tipo de problemas.
+
+La elección de acoplar \textbf{\textit{CombEng}} como una nueva capa del framework \fud{} en lugar de crear un proyecto aparte, se debió a
+que la mayoría de los problemas antes mencionados requieren un elevado nivel de cómputo, lo que en una única computadora se podría lograr
+recién en años o siglos.
+
+
+\subsection{Aplicación \textit{RNA Folding Free Energy}}
+
+En la actualidad, los tratamientos para personas infectadas con \textit{HIV} consisten de una intensiva terapia antirretroviral. Esta
+terapia puede ser vista como una sucesión de aplicaciones de antirretrovirales en el tiempo, donde en cada paso de la sucesión se le
+suministra al paciente una combinación de uno o más antirretrovirales.
+
+Cuando a una persona se le aplica un antirretroviral, el virus comienza a mutar hasta que logra hacerse resistente. Ésto implica que el
+antirretroviral deje de cumplir sus funciones principales y se deba buscar uno nuevo para continuar con el tratamieinto. El orden en que se
+aplican los antirretrovirales y cómo éstos son combinados, son factores muy importantes que determinan, entre otras cosas, el tiempo que
+transcurrirá hasta el momento en que el virus sea resistente a todos los antirretrovirales.
+
+Hasta el momento, el impacto del escape a los antirretrovirales sobre la estructura secundaria no ha sido estudiada.
+\textit{\textbf{RnaFEE}} recopila información sobre como varía la Energía Libre en la estructura secundaria del \textit{RNA} viral a medida
+que los antirretrovirales son aplicados sobre la persona infectada.\\
+
+Como el árbol combinatorio a construir posee gran cantidad de nodos y calcular la energía libre de una secuencia es muy costoso, esta
+herramienta esta implementada con el motor combinatorio \textit{\textbf{CombEng}} la cual usa \rc{}.

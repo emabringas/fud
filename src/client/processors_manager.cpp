@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009 Guillermo Biset, FuDePAN
+ * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,8 +14,14 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * Author:         Guillermo Biset
- * E-Mail:         billybiset AT gmail.com
+ * @author     Guillermo Biset
+ * @email      billybiset AT gmail.com
+ *  
+ * @author     Mariano Bessone
+ * @email      marjobe AT gmail.com
+ *
+ * @author     Emanuel Bringas
+ * @email      emab73 AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +42,7 @@
 
 #include "distribution_client.h"
 #include "processors_manager.h"
+#include "sender.h"
 
 using namespace fud;
 
@@ -55,13 +62,15 @@ void ProcessorsManager::wrap_process(const std::string& message)
 {
     _input.str(message);
     _output.clear();
-    DistributionClient::get_instance()->inform_result(_processor->process(_input,_output));
+
+    inform_result(_processor->process(_input,_output));
 }
 
 // boost::thread ProcessorsManager::deliver_message(const std::string& message)
 void ProcessorsManager::deliver_message(const std::string& message)
 {
 //     return boost::thread(boost::bind(&ProcessorsManager::wrap_process,this,message));
+    _message_number = 0;
     wrap_process(message);
 }
 
@@ -79,3 +88,24 @@ const std::string ProcessorsManager::get_return_message() const
 {
     return _output.str();
 }
+
+void ProcessorsManager::inform_result(bool result)
+{
+    if (result)
+    {
+        /* First, it sends the result. */
+        if (!_output.str().empty())
+        {
+            Sender s;
+            s.send(_output);            
+        }
+        /* Then, it sends the finalization signal. */
+        OutputMessage bos;
+        const fud_size size_of_message = HEADER_SIZE + CLIENT_HEADER_LENGTH;
+        bos << size_of_message << kJobUnitCompleted;
+        DistributionClient::get_instance()->dispatch(bos.str());
+    }
+    else // will be done differently
+        std::cerr << "ERROR obtaining results " << std::endl;
+}
+
