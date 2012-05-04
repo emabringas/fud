@@ -1,0 +1,16 @@
+There are two ways to install FuD:
+
+1 - a. Install CMake. For example, in ubuntu: sudo apt-get install cmake 
+    b. Build FuD with cmake with the following:
+       * cmake <options> <fud-path>
+       * make 
+2 - Use the fixed Makefile ( Deprecated )
+
+To instal FuD you need to agree to the terms of the License included
+in file LICENSE.txt.
+
+To compile FuD you will need:
+    - Boost library collection.
+    - MiLi :
+        * Download latest version from : mili.googlecode.com
+        * Install to any directory where common libraries are located

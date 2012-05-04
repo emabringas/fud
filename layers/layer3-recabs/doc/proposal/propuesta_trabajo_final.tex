@@ -1,0 +1,82 @@
+% $Id$
+
+\documentclass[a4paper,12pt]{article}
+\usepackage[left=2.5cm,top=3.5cm,right=2.5cm,bottom=4cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+
+\def\rc {\textbf{\textit{recabs}}}
+\def\fud {\textbf{\textit{FuD}}}
+\def\fude {\textbf{\textit{FuDePAN}}}
+
+
+\title{Propuesta de Trabajo Final Para la Carrera de Licenciatura en Ciencias de la Computación}
+\author{Mariano Bessone y Emanuel Bringas}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+    \begin{center}
+        \begin{large}
+            \rc{}
+        \end{large}
+    \end{center}
+    \begin{description}
+    \item[Tema:] Abstracción de distribución de procesos recursivos implementada sobre \fud{}. %Desarrollo de una capa de
+    \item[Director:] Guillermo Biset.
+    \item[Co-Director:] Daniel Gutson. 
+    \item[Alumnos:] Bessone, Mariano José - Bringas, Emanuel César.
+    \end{description}
+
+    \section{Descripción del problema}
+
+    Este proyecto nace como una sugerencia de \fude{}\footnote{Fundación para el desarrollo de la programación en Ácidos Nucleicos. http://www.fudepan.org.ar/ }
+    , donde se le presentan un gran número de problemas que son resueltos recursivamente y poseen muchos factores de implementación
+    en común. La idea es proveer un mecanismo de distribución utilizando el framework \fud{}\footnote{\fude{} Ubiquitous Distribution\cite{clus09}.
+    http://code.google.com/p/fud/} que abstraiga la funcionalidad otorgada por implementaciones recursivas, abarcando un basto número
+    de problemas bioinformáticos.\\
+
+    La meta de este proyecto es identificar abstracciones genéricas que se amolden a una estructura común de las soluciones recursivas a
+    resolver y al mismo tiempo proveer una solución algorítmicamente eficiente para dichas abstracciones. Esta abstracción abarcará sólo
+    los algoritmos recursivos en los cuales haya independencia de datos entre los pasos de la recursión.\\
+
+    Se espera que esta capa facilite el desarrollo de soluciones para cualquier problema de este tipo mediante la implementación de las 
+    interfaces identificadas y definidas en este proyecto. Se piensa lograr que el trabajo sea distribuible, para lo 
+    cual se decide aprovechar las características del framework FuD, ya que permitirá obtener mayor provecho de los recursos disponibles 
+    para resolver problemas de alta complejidad computacional.\\
+
+    Para balencear el trabajo sobre clientes disponibles se usará un modelo colaborativo para cómputos de altas prestaciones (HPC) que 
+    permite distribuir programas de naturaleza recursiva\cite{LauGar09}.
+ 
+    \section{Recursos}
+    Para la obtención del material bibliográfico se cuenta con la biblioteca de la Universidad Nacional de Río Cuarto en conjunto con la 
+    amplia cantidad de información que se puede encontrar en Internet y la bibliografía disponible en el Departamento de Computación mediante 
+    suscripciones a publicaciones científicas.\\
+
+    La redacción en formato digital de la tesis se llevará a cabo mediante la utilización del procesador de texto \LaTeXe. El sistema 
+    operativo a utilizar será \texttt{GNU/Linux} y la herramienta final deberá ser software libre (bajo licencia GPL , versión 3 o superior).\\
+
+
+    \section{Resultados Esperados}
+
+    Usando esta capa de abstracción, se espera que la implementación de soluciones recursivas de un problema particular se realize de manera
+    sencilla. Se presentarán interfaces claras para la interacción con el usuario, simplificando las tareas de diseño e implementación.\\
+
+    Como esta capa estará montada sobre FuD, la idea es obtener una versión distribuible de la implementación sin que el usuario tenga que 
+    preocuparse por lograr esta funcionalidad. De esta manera, se pueden aprovechar los recursos disponibles en proyectos de alto
+    costo computacional para lograr un mejor rendimiento en cuanto a tiempo de ejecución.
+
+    \nocite{fud09}
+    \nocite{oosc}
+    \nocite{cpluplus}
+    \nocite{uml}
+
+    \newpage
+    \bibliographystyle{ieeetr}
+    \bibliography{biblio}
+    
+
+\end{document}
