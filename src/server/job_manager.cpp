@@ -80,6 +80,12 @@ JobManager::JobManager() :
     _clients_manager->set_listener(this);
 }
 
+JobManager::~JobManager() 
+{
+    delete _clients_manager;
+}
+
+
 DistributableJob* JobManager::jobs_available() //will eventually change policy
 {
     if (_producingJobs.empty())

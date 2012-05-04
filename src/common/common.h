@@ -117,10 +117,10 @@ namespace fud
     typedef fud_uint Port;
 
     /** A message you take data from. */
-    typedef mili::bistream InputMessage;
+    typedef mili::bistream<> InputMessage;
 
     /** A message you put data into. */
-    typedef mili::bostream OutputMessage;
+    typedef mili::bostream<> OutputMessage;
 
     /** mili::substr needs this Pos(ition) class. */
     typedef mili::_Pos      Pos;
