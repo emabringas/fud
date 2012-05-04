@@ -1,0 +1,27 @@
+window_sizes 1366 715 162 1198 641 0
+diagrams
+  active  classdiagram_ref 128008 // diagramaDeClases
+    1198 641 100 27 0 26
+end
+show_stereotypes
+selected 
+package_ref 129 // diagramaDeClases
+open
+  attribute_ref 128023 // _combination_policy
+  attribute_ref 141704 // _prune_policy
+  operation_ref 128904 // set_child
+  operation_ref 183944 // use_as_result
+  operation_ref 183816 // set_result
+  operation_ref 143624 // set_prune_policy
+  operation_ref 128023 // set_combination_policy
+  operation_ref 129160 // score
+  classrelation_ref 143240 // <generalisation>
+  classrelation_ref 172552 // <dependency>
+  classrelation_ref 180872 // <dependency>
+  classrelation_ref 181000 // <dependency>
+  class_ref 128520 // CombinationObserver
+  class_ref 142472 // RecursiveFunctor
+  class_ref 149128 // DeserealizerFunctor
+  class_ref 155656 // Result
+end
+end

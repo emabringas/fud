@@ -1,0 +1,228 @@
+\documentclass[a4paper,12pt,english]{article}
+
+\usepackage{babel}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,
+    rulecolor=,
+    language=matlab,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=true,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0.1,0.1,0.6}\bfseries,
+        commentstyle=\color[rgb]{0.133,0.545,0.133},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+\newcommand{\fud}{\textbf{FuD}}
+\newcommand{\cpp}{\texttt{C++}}
+\renewcommand{\DJ}{\texttt{DistributableJob}}
+\newcommand{\DJI}{\texttt{DistributableJobImplementation}}
+\newcommand{\JU}{\texttt{JobUnit}}
+\newcommand{\CP}{\texttt{ClientProcessor}}
+\newcommand{\CM}{\texttt{ClientsManager}}
+
+\title{Extending \fud \ to use a different Distributing Middleware\\ \small{A Tutorial}}
+\author{Guillermo J.~Biset}
+
+\begin{document}
+
+\maketitle
+
+\section{About this document}
+
+This document provides a simple tutorial to extend the \fud \ framework into using a new distributing middleware. For a good description about \fud  \ and some interesting applications that use it you should see the thesis document instead of this one.
+
+\section{Required knowledge}
+To extend \fud \ you don't need to know the intricacies of distributed programming, multithreading or any advanced topic in computer programming or computer science. However, some knowledge is necessary:
+\begin{itemize}
+ \item \cpp \ programming.
+ \item Some basic Object Oriented programming concepts.
+\end{itemize}
+
+About \cpp \ programming, the definitive book on the subject comes from its creator: Bjarne Stroustrup\cite{cplusplus}. For good theory on Object Orientation and related topics, Bertrand Meyer has an excellent book on the subject\cite{oosc}.
+
+\section{Basic \fud \ Topology}
+
+There are two kinds of entities in a \fud \ application: the \textbf{Server} and the \textbf{Clients}. As their plurality suggests, for a particular running \fud \ application there will be exactly one server and many (or none) connected clients.
+
+The \textbf{server} will be in charge of the overall status of the application and the \textbf{clients} will perform the basic computations needed to complete the work.
+
+\section{Required \fud \ Concepts}
+
+The purpose of \fud \ is to help a developer (be it an experienced one or not) solve a particular computational problem. So, if you are looking to use \fud, its because you have a problem to solve, and it can be solved by programming an application.
+
+In turn, \fud \ is ideal if the problem is relatively simple, but a large amount of data must be manipulated.
+
+Now, every application must perform work (or a Job) on some data (in this case, even doing nothing on no data could be considered as doing something).
+
+In order to carry out work, some central notions from \fud \ must be comprehended:
+\begin{description}
+\item[Distributable Job]: A \DJ \ is an abstract work concept encapsulating any work that is to be performed. The notion is supposed to be taken as a \emph{large scale} job. Now, a property of these large scale jobs is that they can be subdivided into smaller jobs (or Job Units).
+\item[Job Unit]: A \JU \ is an abstract work concept encapsulating a simple task to be performed. A \JU \ is atomic, therefore it cannot be subdivided into other Job Units. The task itself must be represented by a message, which will later be passed on to a processing client.
+\item[Processing Client]: A \CP \ is a processing node. Its only task is to wait for messages, process them and, once finished, inform that the results are ready.
+\end{description}
+
+\subsection{The relationship of the Job Concepts}
+
+The division of a \DJ \ is a \emph{transactional} process, meaning that if a \DJ \ produces a \JU \ then it must change state in some way, i.e. it must not produce the same \JU \ again.
+
+In turn, \fud \ assures you that your \JU \ won't be forgotten. Under fair conditions of processing client availability and if the code to compute it terminates, every \JU \ will eventually be computed.
+
+A \DJ \ can be decomposed into zero\footnote{Although a \DJ \ consisting of zero Job Units is not a useful thing.} or more\footnote{It is possible to have non terminating Distributable Jobs with an infinite amount of Job Units, which can be useful.} Job Units, and each \JU \ \emph{belongs to} a particular \DJ.
+
+\subsection{Job States}
+
+A \DJ \ may be in many different states, usually depending on the status of the data. The states and their meaning are:
+\begin{description}
+\item[ReadyToProduce]: The Job is ready to produce another Job Unit.
+\item[WaitingMoreData]: The Job is waiting for more data or some event, can't produce a Job Unit at the moment.
+\item[FinishedGenerating]: From here on, the Job won't produce any more Job Units.
+\end{description}
+
+It is your responsibility to know which of these states a \DJ \ is in. There is, nonetheless, a fourth (and very important) state for a \DJ: \emph{finished}. However, a \emph{finished} state is calculated automatically (i.e. you can't change when a \DJ \ is \emph{finished} or not) and is computed by the fact that the \DJ \ has \emph{FinishedGenerating} and all generated Job Units are \emph{Completed}. 
+
+For Job Units, however, you don't need to know their state, but for reference, these are the possible ones:
+\begin{description}
+\item[Created]: The \JU \ hasn't been asigned to any \CP.
+\item[Assigned]: The \JU \ has been asigned to one or more processing clients but none of them has, as of yet, returned the results of the computation.
+\item[Completed]: At least one \CP \ has returned the results of the computation of this \JU.
+\end{description}
+
+
+\subsection{Job Responsibilities}
+
+A \DJ \ must:
+\begin{itemize}
+ \item Know how to divide itself into a \JU.
+ \item Know how to handle the results of a \JU.
+ \item Know the state it is in.
+\end{itemize}
+
+Again, the division from a \DJ \ to a \JU \ must be \emph{transactional}, \fud \ will only call upon you to generate another \JU \ if you are in a \emph{ReadyToProduce} state. However, if by mistake or some obscure reason you can't produce a \JU \ when requested, there is a way for the corresponding method to return a non-\JU \ value\footnote{Since the method should return a pointer, a \texttt{NULL} value would suffice.}. 
+
+The framework will call upon you to  handle the results of every \JU \ you generated only \textbf{once}, s  o you needn't worry about this when handling them.
+
+As for the state, you should know that returning \emph{FinishedGenerating} once will unlink that \DJ \ from the processing part of the framework, but this does not mean that the \DJ \ itself has been completely computed (or \emph{finished}). 
+
+On the other hand, a \JU \ must:
+\begin{itemize}
+\item Provide a message (a standard \texttt{string}) for a \CP.
+\item Be able to inform its \textbf{size}, which is a user-defined (i.e. \textbf{you} define what it means) concept.
+\end{itemize}
+
+\section{Responsibilities of a Distributing Middleware}
+
+A Distributing Middleware must implement the communication procedures of the \fud \ framework. On the server side, that involves the server setup of the \CM \ (to handle client registration) and the communication primitives of client proxies. 
+
+To implement these features, the constructor of \CM's subclass of must execute the client registration server. It will later use methods from \CM \ to perform the registration. Table \ref{cmhdr} shows the interface of class \CM. 
+
+\begin{table}[!htb]
+\lstset{language=C++}%
+\begin{lstlisting}[frame=single]
+class ClientsManager
+{
+    public:
+        void inform_completion(JobUnitID id, std::string* message);
+        void free_client_event();
+        inline static ClientsManager* get_instance() {return _instance;}
+        void  deregister_client(ClientProxy* client);
+        void set_listener(ClientsManagerListener* const listener);
+        bool assign_job_unit  (const JobUnit& job_unit);
+
+    protected:
+        virtual ClientProxy* get_available_client();
+
+        void  register_client  (ClientProxy* client);
+    private:
+        /* ... */
+};
+\end{lstlisting}
+\centering \caption{Excerpt from class \CM.} \label{cmhdr}
+\end{table}
+
+Table \ref{asiohdr} shows the header file for the subclass of \CM. Note that the only \emph{public} method is its constructor. The constructor then starts its own server thread that listens for incoming connections. 
+
+\begin{table}[!htb]
+\lstset{language=C++}%
+\begin{lstlisting}[frame=single]
+namespace fud
+{
+    class AsyncIOClientsManager : public ClientsManager
+    {
+        public:
+          AsyncIOClientsManager(const size_t& port);
+
+          ~AsyncIOClientsManager(){};
+        private:
+          class AsyncIOClientProxy : public ClientProxy
+          {
+              public:
+                AsyncIOClientProxy(boost::asio::io_service& io_service);
+
+                virtual ~AsyncIOClientProxy() {};
+
+                tcp::socket& socket();
+              private:
+                virtual void process(const JobUnit& job_unit);
+                virtual bool busy() const;
+
+                void handle_response(ResponseCode code,JobUnitID id);
+
+                void handle_send   (const boost::system::error_code& ec);
+                void handle_receive(const boost::system::error_code& ec);
+
+                void destroy();
+
+                tcp::socket  _socket;
+                ClientState  _state;
+                boost::mutex _proxy_mutex;
+
+                char      _code_buf[RESPONSE_HEADER_LENGTH];
+                JobUnitID _current_id;
+          };
+
+          void handle_accept (const boost::system::error_code& ec,
+                                        AsyncIOClientProxy* client);
+
+          static void run_acceptor_thread(AsyncIOClientsManager* obj);
+
+          void run_and_die();
+
+          void _async_accept();
+
+          boost::asio::io_service _io_service;
+          tcp::acceptor           _acceptor;
+    };
+}
+\end{lstlisting}
+\centering \caption{Header file for class \texttt{AsyncIOClientsManager}.} \label{asiohdr}
+\end{table}
+
+Implementation of these methods depends on the technology (i.e. library) used in that particular case. 
+
+
+\clearpage
+
+\vfill
+
+\bibliography{../thesis/biblio}
+\bibliographystyle{apalike}
+
+\end{document}

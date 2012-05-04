@@ -1,0 +1,13 @@
+There are two ways to install RecAbs:
+
+1 - a. Install CMake. For example, in ubuntu: sudo apt-get install cmake 
+    b. Build RecAbs with cmake with the following:
+       * cmake <options> <recabs-path>
+       * make 
+2 - Use the fixed Makefile ( Deprecated )
+
+To instal RecAbs you need to agree to the terms of the License included
+in file LICENSE.txt.
+
+To compile RecAbs you will need:
+    - FuD : download latest version from : fud.googlecode.com

@@ -1,0 +1,24 @@
+window_sizes 1366 695 204 1156 616 0
+diagrams
+  active  classdiagram_ref 128008 // diagramaDeClases
+    1156 605 100 27 0 163
+end
+show_stereotypes
+selected operation_ref 163720 // run
+open
+  class_ref 128008 // L5ApplicationServer
+  operation_ref 143240 // change_combination_policy
+  operation_ref 134679 // get_objects_to_combine
+  operation_ref 129288 // get_new_child
+  operation_ref 128023 // set_combination_policy
+  class_ref 128392 // ObserverAux
+  class_ref 128520 // CombinationObserver
+  operation_ref 136456 // notify
+  class_ref 128904 // ComposedCombinationPolicySecuencial
+  class_ref 129032 // ComposedCombinationPolicyParallel
+  class_ref 128023 // L4ServerApp
+  class_ref 128407 // L5ApplicationClient
+  class_ref 128535 // L5ApplicationClientImpl
+  class_ref 128663 // RecursiveProcessor
+end
+end

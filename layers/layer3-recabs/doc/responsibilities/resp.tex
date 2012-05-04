@@ -1,0 +1,140 @@
+% $Id$
+
+\documentclass[a4paper,12pt,twoside]{article}
+\usepackage[left=2.5cm,top=3.5cm,right=2.5cm,bottom=4cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+
+\def\ra {\textbf{\textit{recabs}}}
+
+\title{
+    \includegraphics[width=50pt,height=70pt]{unrc.jpg}\\
+    \begin{large}\textsc{Tesis}\\ \end{large}
+    \small
+        \textbf{Departamento de Computación} \\
+        \textbf{F.C.E.F.Q. y N.} \\
+        \textbf{U.N.R.C.}
+     \\ [4cm]
+    \begin{Huge}\ra        \end{Huge} \\
+    \small Informe de Diseño\\[3cm]
+}
+
+\author{\textbf{Bessone}, \textit{Mariano José} \hspace{4cm} \textbf{Bringas}, \textit{Emanuel César}\\
+        \small{\texttt{marjobe@gmail.com}}  \hspace{6cm}  \small{\texttt{emab73@gmail.com}} \\[3cm]
+}
+
+\date{16 de Junio de 2010}
+
+\begin{document}
+
+    \pagestyle{myheadings}
+    \markboth{recabs}{Bessone - Bringas}  
+    
+    \maketitle
+    \newpage
+    \tableofcontents
+    \newpage
+
+    \section{Arquitectura}
+        La arquitectura de este proyecto sigue el modelo cliente/servidor, la cual tiene distintas responsabilidades y las mismas
+        se detallan a continuación.
+
+        \begin{itemize}
+         \item \textbf{Servidor:} Tiene la responsabilidad de iniciar el proceso recursivo, administrar los pasos de recursión que 
+            realizan los clientes y llevar el control de los resultados.
+         \item \textbf{Cliente:} Encargado de la resolución de un solo functor recursivo, lo cuál puede involucrar pedir ayuda y 
+            solicitar el envío de functores intermedios \textit{(Veasé} \texttt{RecursiveFunctor}\textit{)} y resultados al servidor.
+        \end{itemize}
+
+        \subsection{Capas}
+            \begin{itemize}
+                
+               \item \textbf{Subyacente.} Esta capa debe mantener la arquitectura cliente/servidor teniendo las siguientes responsabilidades.
+                \begin{itemize}
+                    \item \textit{Servidor:} brindar un servicio de distribución de trabajos a clientes conectados de alguna manera, permitir
+                        una interacción con ellos y además informar el resultado final de los trabajos de cada cliente.
+                    \item \textit{Cliente:} recibir un trabajo particular delegando la implementación de este a la capa superior así como 
+                        soportar interacción con el servidor, lo cuál provee una manera de tratar con trabajos incompletos.
+                \end{itemize}
+               
+                \item \textbf{Aplicación.} De la misma forma que en la capa anterior, se mantiene la separación cliente/servidor y además una
+                    parte común entre ambas, con las siguientes responsabilidades:
+    
+                \begin{itemize}
+                    \item \textit{Servidor:} iniciar el proceso recursivo declarando el estado del \texttt{RecursiveFunctor} inicial.
+                    \item \textit{Common:} definir la generación de hijos de un functor, la serialización del mismo y determinar 
+                        la reducción de resultados.
+                    \item \textit{Cliente:} iniciar el proceso del cliente y especificar la deserialización de un functor.
+                \end{itemize}
+            
+            \end{itemize}
+
+    \section{Interfaces}
+    A continuación se detalla las responsabilidad de cada una de las interfaces empleadas en el diseño de \ra. 
+    
+    \subsection{Server side}
+    
+        \texttt{\underline{RecursionManager}.}
+        Es el cerebro de la recursión, quien maneja la pila y quien lleva los resultados parciales de cada paso de la recursión. 
+        Provee los siguientes servicios:
+        \begin{itemize}
+         \item comienzo del proceso recursivo,
+         \item información de resultado final.
+        \end{itemize}
+
+        \textit{Colaborador:}\texttt{ResultReducer} \\
+    
+        \texttt{\underline{L4ServerApp}.}
+        Esta interfaz provee el servicio de obtención del functor inicial del problema. Quien la implemente deberá 
+        especificar este functor y serializarlo.
+
+    \subsection{Common side}
+        
+        \texttt{\underline{ResultReducer}.}
+        Es el encargado de manejar los resultados y su finalidad es llegar a deducir el resultado final. El servicio que provee es el 
+        de registrar o acumular un resultado parcial. Los requisitos para el implementador son:
+        \begin{itemize}
+         \item definir el tipo de resultado que se opera,
+         \item realizar la operación de reducción de un resultado parcial, adecuado al problema.
+        \end{itemize}
+
+        \texttt{\underline{RecursiveFunctor}.}
+        Es quién representa un estado particular de una función recursiva. Nos brinda el servicio de generación de hijos, es decir, 
+        retornar sus estados siguientes en una lista de functores hijos. El implementador deberá, dependiendo en que etapa se 
+        encuentre el functor, calcular:
+        \begin{itemize}
+         \item \textit{Etapa Inductiva:} rellenar la lista de functores hijos.
+         \item \textit{Caso Base:} devolver un resultado del tipo apropiado.
+        \end{itemize}
+
+        De esta manera la representación de cualquier función recursiva solo pasa por la implementación de esta clase abstracta, 
+        especificando el modo de generación de hijos.\\
+
+        \texttt{\underline{SerializableRecursiveFunctor}.}
+        Es un \texttt{RecursiveFunctor} para proyectos distribuidos, por ende, se agrega el servicio de serialización de un functor. 
+        Requisito: serializar los atributos necesarios y suficientes de un functor en particular.
+    
+    
+    \subsection{Client side}
+        
+        \texttt{\underline{RecursiveProcessor}.}
+        Es el encargado de realizar la ejecución total (o parcial) del functor asignado a un cliente, manipulando los resultados parciales 
+        de esta ejecución con la colaboración de un \texttt{ResultReducer}.\\ 
+            
+        \texttt{\underline{DistributableRecursiveProcessor}.}
+        Es la versión distribuible de RecursiveProcessor, por lo que se añaden dos primitivas de colaboración requeridas para interactuar 
+        con el servidor, las cuales son:
+        \begin{itemize}
+         \item pedir colaboradores para realizar un trabajo particular,
+         \item despachar unidades de trabajo, para que el servidor las asigne a otros clientes.
+        \end{itemize}
+        El servicio de ejecución que provee esta interfaz está implementado en base al proyecto ``Implementación del modelo HPC colaborativo 
+        aplicable a problemas de bio-informática'' de Intel, adaptado para una arquitectura cliente/servidor. \\
+
+        \texttt{\underline{DeserializerFunctor}.}
+        Provee los servicios de transformación de un paquete serializado en el functor correspondiente. Cabe aclarar que quién la implemente
+        deberá tener en cuenta la implementación del functor para una correcta extracción de datos del paquete.
+
+\end{document}

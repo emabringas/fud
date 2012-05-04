@@ -1,0 +1,1008 @@
+format 70
+"diagramaDeClases"
+  revision 23
+  modified_by 8 "diego"
+
+
+  
+  // class settings
+  default_attribute_visibility private default_relation_visibility private default_operation_visibility public
+  //class diagram settings
+  draw_all_relations yes hide_attributes no hide_operations no hide_getset_operations no show_members_full_definition no show_members_visibility no show_members_stereotype no show_members_multiplicity no show_members_initialization no show_attribute_modifiers no member_max_width 127 show_parameter_dir yes show_parameter_name yes package_name_in_tab no class_drawing_mode natural drawing_language uml show_context_mode no auto_label_position yes show_relation_modifiers no show_relation_visibility no show_infonote no shadow yes show_stereotype_properties no
+  //use case diagram settings
+  package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes class_drawing_mode actor shadow yes show_stereotype_properties no
+  //sequence diagram settings
+  show_full_operations_definition no write_horizontally yes class_drawing_mode natural drawing_language uml draw_all_relations yes shadow yes show_stereotype_properties no
+  //collaboration diagram settings
+  show_full_operations_definition no show_hierarchical_rank no write_horizontally yes drawing_language uml package_name_in_tab no show_context no draw_all_relations yes shadow yes show_stereotype_properties no
+  //object diagram settings
+   write_horizontally yes package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes show_stereotype_properties no
+  //component diagram settings
+  package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes
+  draw_component_as_icon no show_component_req_prov no show_component_rea no show_stereotype_properties no
+  //deployment diagram settings
+  package_name_in_tab no show_context no write_horizontally yes auto_label_position yes draw_all_relations yes shadow yes
+  draw_component_as_icon no show_component_req_prov no show_component_rea no show_stereotype_properties no
+  //state diagram settings
+  package_name_in_tab no show_context no auto_label_position yes write_trans_label_horizontally yes show_trans_definition no draw_all_relations yes shadow yes
+  show_activities yes region_horizontally yes drawing_language uml show_stereotype_properties no
+  //activity diagram settings
+  package_name_in_tab no show_context no show_opaque_action_definition no auto_label_position yes write_flow_label_horizontally no draw_all_relations yes shadow yes
+  show_infonote yes drawing_language uml show_stereotype_properties no
+  
+  class_color yellow duration_color transparent continuation_color gray note_color blue fragment_color transparent subject_color transparent usecase_color yellow package_color transparent component_color green artifact_color green deploymentnode_color gray state_color yellow stateaction_color transparent activity_color transparent activityregion_color transparent activitypartition_color transparent activityaction_color transparent parameterpin_color white 
+  font_size 9
+  diagram_format A4
+
+  mark_for_import
+  
+  classview 128008 "diagramaDeClases"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    classdiagram 128008 "diagramaDeClases"
+      draw_all_relations no hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility yes show_members_stereotype default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      size Ledger
+    end
+
+    class 128008 "L5ApplicationServer"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 163592 "run"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 128392 "get_initial_node"
+	abstract cpp_virtual public explicit_return_type "L4Node"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      classrelation 128008 // <dependency>
+	relation 128008 -_->
+	  a default
+	    classrelation_ref 128008 // <dependency>
+	  b parent class_ref 128008 // L5ApplicationServer
+      end
+
+      classrelation 128264 // <dependency>
+	relation 128264 -_->
+	  a default
+	    classrelation_ref 128264 // <dependency>
+	  b parent class_ref 128136 // L4Node
+      end
+
+      operation 150408 "get_initial_set"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      classrelation 134551 // <generalisation>
+	relation 134551 ---|>
+	  a public
+	    classrelation_ref 134551 // <generalisation>
+	  b parent class_ref 128023 // L4ServerApp
+      end
+
+      classrelation 173704 // <unidirectional association>
+	relation 172808 --->
+	  a role_name "" private
+	    classrelation_ref 173704 // <unidirectional association>
+	  b parent class_ref 142600 // RecursionManager
+      end
+
+      classrelation 188040 // <dependency>
+	relation 187144 -_->
+	  a default
+	    classrelation_ref 188040 // <dependency>
+	  b parent class_ref 155656 // Result
+      end
+    end
+
+    class 128136 "L4Node"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 128023 "_combination_policy"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 141704 "_prune_policy"
+	private type class_ref 128264 // PrunePolicy
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 128904 "set_child"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "l4_node" type class_ref 128136 // L4Node
+	
+	
+	
+	
+	
+      end
+
+      operation 143240 "change_combination_policy"
+	abstract cpp_virtual private return_type class_ref 128648 // CombinationPolicy
+	nparams 1
+	  param in name "comb" type class_ref 128648 // CombinationPolicy
+	
+	
+	
+	
+	
+      end
+
+      operation 134679 "get_objects_to_combine"
+	abstract cpp_virtual private explicit_return_type "Combination<T>"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 129288 "get_new_child"
+	abstract cpp_virtual private explicit_return_type ""
+	nparams 1
+	  param in name "new_combination" explicit_type "Combination<T>"
+	
+	
+	
+	
+	
+      end
+
+      operation 170248 "get_combination_if_failure"
+	abstract cpp_virtual private explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 183944 "use_as_result"
+	abstract cpp_virtual private explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 183816 "set_result"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "res_serialized" explicit_type "Pkt"
+	
+	
+	
+	
+	
+      end
+
+      operation 143624 "set_prune_policy"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "prune_policy" type class_ref 128264 // PrunePolicy
+	
+	
+	
+	
+	
+      end
+
+      operation 128023 "set_combination_policy"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "combinationPolicy" type class_ref 128648 // CombinationPolicy
+	
+	
+	
+	
+	
+      end
+
+      operation 129160 "score"
+	abstract cpp_virtual public explicit_return_type "float"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      classrelation 142359 // <realization>
+	relation 142359 -_-|>
+	  a public
+	    classrelation_ref 142359 // <realization>
+	  b parent class_ref 128520 // CombinationObserver
+      end
+
+      classrelation 143240 // <generalisation>
+	relation 143112 ---|>
+	  a public
+	    classrelation_ref 143240 // <generalisation>
+	  b parent class_ref 142472 // RecursiveFunctor
+      end
+
+      classrelation 172552 // <dependency>
+	relation 172040 -_->
+	  a default
+	    classrelation_ref 172552 // <dependency>
+	  b parent class_ref 128264 // PrunePolicy
+      end
+
+      classrelation 143127 // <dependency>
+	relation 143127 -_->
+	  a default
+	    classrelation_ref 143127 // <dependency>
+	  b parent class_ref 128264 // PrunePolicy
+      end
+
+      classrelation 180872 // <dependency>
+	relation 179976 -_->
+	  a default
+	    classrelation_ref 180872 // <dependency>
+	  b parent class_ref 128648 // CombinationPolicy
+      end
+
+      classrelation 181000 // <dependency>
+	relation 180104 -_->
+	  a default
+	    classrelation_ref 181000 // <dependency>
+	  b parent class_ref 155656 // Result
+      end
+    end
+
+    class 128264 "PrunePolicy"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 128776 "is_useful"
+	abstract cpp_virtual public explicit_return_type "bool"
+	nparams 1
+	  param in name "new_combination" explicit_type "Combination<T>"
+	
+	
+	
+	
+	
+      end
+
+      attribute 148232 "_name"
+	private explicit_type "string"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+    end
+
+    class 128392 "ObserverAux"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 128392 "_partial_combination"
+	private explicit_type "list<Combination<T>>"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 134920 "_next_observer_aux"
+	private explicit_type "ObserverAux"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 135944 "add_new_combination_to_partial_result"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "new_combination" explicit_type "Combination<T>"
+	
+	
+	
+	
+	
+      end
+
+      attribute 134551 "_comb_policy_observed"
+	private type class_ref 128648 // CombinationPolicy
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 134551 "combine_observer"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "partial_combination" explicit_type "Combination<T>"
+	  param in name "items_available" explicit_type "Combination<T>"
+	
+	
+	
+	
+	
+      end
+
+      attribute 141335 "_is_mandatory"
+	private explicit_type "bool"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 141463 "_reference_set"
+	private explicit_type "Combination<T>"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 142487 // <realization>
+	relation 142487 -_-|>
+	  a public
+	    classrelation_ref 142487 // <realization>
+	  b parent class_ref 128520 // CombinationObserver
+      end
+
+      classrelation 149655 // <dependency>
+	relation 149655 -_->
+	  a default
+	    classrelation_ref 149655 // <dependency>
+	  b parent class_ref 128520 // CombinationObserver
+      end
+
+      attribute 147991 "_final_observer"
+	private type class_ref 128520 // CombinationObserver
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+    end
+
+    class 128520 "CombinationObserver"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 136072 "update"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 1
+	  param in name "combination" explicit_type "Combination<T>"
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128648 "CombinationPolicy"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 135048 "_observed_by"
+	private type class_ref 128520 // CombinationObserver
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 136456 "notify"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "combination" explicit_type "Combination<T>"
+	
+	
+	
+	
+	
+      end
+
+      operation 136328 "attach"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "comb_observer" type class_ref 128520 // CombinationObserver
+	
+	
+	
+	
+	
+      end
+
+      operation 136200 "combine"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 2
+	  param in name "objects_to_combine" explicit_type "Combination<T>"
+	  param in name "status" explicit_type "CombinationStatus"
+	
+	
+	
+	
+	
+	comment "combinationStatus iria en los observadores de dichas politicas. Ya sean simples o compuestas"
+      end
+
+      attribute 148360 "_name"
+	private explicit_type "string"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 142231 // <dependency>
+	relation 142231 -_->
+	  a default
+	    classrelation_ref 142231 // <dependency>
+	  b parent class_ref 128520 // CombinationObserver
+      end
+    end
+
+    class 128904 "ComposedCombinationPolicySequencial"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 150152 "add_new_comb_policy"
+	public explicit_return_type ""
+	nparams 3
+	  param in name "policy" type class_ref 128648 // CombinationPolicy
+	  param in name "ref_set" explicit_type "Combination<T>"
+	  param in name "mandatory" explicit_type "bool"
+	
+	
+	
+	
+	
+      end
+
+      classrelation 187912 // <realization>
+	relation 187016 -_-|>
+	  a public
+	    classrelation_ref 187912 // <realization>
+	  b parent class_ref 128648 // CombinationPolicy
+      end
+    end
+
+    class 129032 "ComposedCombinationPolicyParallel"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 150280 "add_new_comb_policy"
+	public explicit_return_type ""
+	nparams 3
+	  param in name "policy" type class_ref 128648 // CombinationPolicy
+	  param in name "ref_set" explicit_type "Combination<T>"
+	  param in name "mandatory" explicit_type "bool"
+	
+	
+	
+	
+	
+      end
+
+      attribute 141079 "_first_aux_obs"
+	private explicit_type "ObserverAux*"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 141207 "_last_aux_obs"
+	private explicit_type "FinalObserver*"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 142871 // <realization>
+	relation 142871 -_-|>
+	  a public
+	    classrelation_ref 142871 // <realization>
+	  b parent class_ref 128648 // CombinationPolicy
+      end
+
+      classrelation 187784 // <dependency>
+	relation 186888 -_->
+	  a default
+	    classrelation_ref 187784 // <dependency>
+	  b parent class_ref 128392 // ObserverAux
+      end
+    end
+
+    class 135560 "L5ApplicationImpl"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 136328 // <dependency>
+	relation 136200 -_->
+	  a default
+	    classrelation_ref 136328 // <dependency>
+	  b parent class_ref 135688 // L5Node
+      end
+
+      classrelation 164872 // <generalisation>
+	relation 164616 ---|>
+	  a public
+	    classrelation_ref 164872 // <generalisation>
+	  b parent class_ref 128008 // L5ApplicationServer
+      end
+
+      classrelation 188168 // <dependency>
+	relation 187272 -_->
+	  a default
+	    classrelation_ref 188168 // <dependency>
+	  b parent class_ref 155784 // L5Result
+      end
+    end
+
+    class 135688 "L5Node"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135944 // <generalisation>
+	relation 135816 ---|>
+	  a public
+	    classrelation_ref 135944 // <generalisation>
+	  b parent class_ref 128136 // L4Node
+      end
+
+      classrelation 136584 // <dependency>
+	relation 136456 -_->
+	  a default
+	    classrelation_ref 136584 // <dependency>
+	  b parent class_ref 135944 // ConcreteCombinationPolicy
+      end
+
+      classrelation 172424 // <dependency>
+	relation 171912 -_->
+	  a default
+	    classrelation_ref 172424 // <dependency>
+	  b parent class_ref 135816 // ConcretePrunePolicy
+      end
+    end
+
+    class 135816 "ConcretePrunePolicy"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 172296 // <generalisation>
+	relation 171784 ---|>
+	  a public
+	    classrelation_ref 172296 // <generalisation>
+	  b parent class_ref 128264 // PrunePolicy
+      end
+    end
+
+    class 135944 "ConcreteCombinationPolicy"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 136200 // <generalisation>
+	relation 136072 ---|>
+	  a public
+	    classrelation_ref 136200 // <generalisation>
+	  b parent class_ref 128648 // CombinationPolicy
+      end
+
+      classrelation 172680 // <dependency>
+	relation 172168 -_->
+	  a default
+	    classrelation_ref 172680 // <dependency>
+	  b parent class_ref 135688 // L5Node
+      end
+    end
+
+    class 142472 "RecursiveFunctor"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 176776 "call"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 176904 "serialize"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 142600 "RecursionManager"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 156936 "start"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      classrelation 173448 // <unidirectional association>
+	relation 172680 --->
+	  a role_name "" private
+	    classrelation_ref 173448 // <unidirectional association>
+	  b parent class_ref 128023 // L4ServerApp
+      end
+    end
+
+    class 128023 "L4ServerApp"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 141207 "get_initial_packet"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 141335 "receive_result"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128151 "MainServer"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 134807 // <realization>
+	relation 134807 -_-|>
+	  a public
+	    classrelation_ref 134807 // <realization>
+	  b parent class_ref 135560 // L5ApplicationImpl
+      end
+
+      classrelation 134935 // <dependency>
+	relation 134935 -_->
+	  a default
+	    classrelation_ref 134935 // <dependency>
+	  b parent class_ref 135560 // L5ApplicationImpl
+      end
+    end
+
+    class 128279 "MainClient"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135063 // <generalisation>
+	relation 135063 ---|>
+	  a public
+	    classrelation_ref 135063 // <generalisation>
+	  b parent class_ref 128407 // L5ApplicationClient
+      end
+
+      classrelation 135447 // <dependency>
+	relation 135447 -_->
+	  a default
+	    classrelation_ref 135447 // <dependency>
+	  b parent class_ref 128535 // L5ApplicationClientImpl
+      end
+    end
+
+    class 128407 "L5ApplicationClient"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135575 // <dependency>
+	relation 135575 -_->
+	  a default
+	    classrelation_ref 135575 // <dependency>
+	  b parent class_ref 128663 // RecursiveProcessor
+      end
+
+      classrelation 135703 // <unidirectional association>
+	relation 135703 --->
+	  a role_name "" private
+	    classrelation_ref 135703 // <unidirectional association>
+	  b parent class_ref 128663 // RecursiveProcessor
+      end
+
+      operation 163720 "run"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      classrelation 180232 // <realization>
+	relation 179336 -_-|>
+	  a public
+	    classrelation_ref 180232 // <realization>
+	  b parent class_ref 149128 // DeserealizerFunctor
+      end
+    end
+
+    class 128535 "L5ApplicationClientImpl"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 173192 // <generalisation>
+	relation 172552 ---|>
+	  a public
+	    classrelation_ref 173192 // <generalisation>
+	  b parent class_ref 128407 // L5ApplicationClient
+      end
+    end
+
+    class 128663 "RecursiveProcessor"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 141719 "init"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      classrelation 172808 // <unidirectional association>
+	relation 172296 --->
+	  a role_name "" private
+	    classrelation_ref 172808 // <unidirectional association>
+	  b parent class_ref 149128 // DeserealizerFunctor
+      end
+    end
+
+    class 149128 "DeserealizerFunctor"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 163464 "deserealize"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 155656 "Result"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 177160 "serialize_result"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 177288 "deserialize_result"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 155784 "L5Result"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 181128 // <generalisation>
+	relation 180232 ---|>
+	  a public
+	    classrelation_ref 181128 // <generalisation>
+	  b parent class_ref 155656 // Result
+      end
+    end
+  end
+end
