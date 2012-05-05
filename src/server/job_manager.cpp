@@ -51,10 +51,8 @@ namespace fud
 
 void finish()
 {
-    delete _instance;
-    _instance = NULL;
+    JobManager::destroy();
 }
-
 
 JobManager* JobManager::_instance = NULL; // initialize pointer
 
@@ -65,6 +63,12 @@ JobManager* JobManager::get_instance ()
         _instance = new JobManager; // create sole instance
     }
     return _instance; // address of sole instance
+}
+
+void JobManager::destroy()
+{
+    delete _instance;
+    _instance = NULL;
 }
 
 JobManager::JobManager() :
