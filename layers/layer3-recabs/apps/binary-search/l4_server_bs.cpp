@@ -68,7 +68,7 @@ void L4ServerBS::receive_result(const recabs::Packet& pkt)
 {
     count_results++;
 
-    mili::bistream bis(pkt);
+    mili::bistream<> bis(pkt);
     bool res;
     bis >> res;
 //    std::cout << "Llego el resultado nro " << count_results << std::endl;

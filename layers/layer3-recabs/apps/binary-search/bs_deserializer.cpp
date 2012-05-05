@@ -46,7 +46,7 @@
 
 void BSDeserializer::deserialize(const recabs::Packet& pkt, recabs::SerializableRecursiveFunctor** rf) const
 {
-    mili::bistream bis(pkt);
+    mili::bistream<> bis(pkt);
 
     uint32_t searched;
     BinarySearch::Elements v;
