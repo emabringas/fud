@@ -71,6 +71,11 @@ namespace fud
              * @param port : Port to use for the connection. The server should have opened it.
              */
             AnaDistribution(std::string address, Port port);
+            
+            /**
+             * Standard destructor.
+             */
+            virtual ~AnaDistribution();
 
             /**
              * Start communication. It will try to connect to the server using
