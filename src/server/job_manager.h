@@ -136,7 +136,7 @@ namespace fud
              * \sa DistributableJob
              * \sa Event
              */
-            inline DistributableJobListener* const get_distributable_job_listener() {return this;}
+            inline DistributableJobListener* get_distributable_job_listener() {return this;}
 
             /**
              * Enqueues a DistributableJob in the system.
