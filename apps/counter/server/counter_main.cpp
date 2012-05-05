@@ -54,4 +54,8 @@ int main(int argc, char** argv)
     jobs[jobs_n-1]->wait_completion();
 
     std::cout << "Last number is: " << db->current_number() << std::endl;
+
+    delete db;
+    for (size_t i(0); i < jobs_n; ++i)
+        delete jobs[i];
 }
