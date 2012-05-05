@@ -74,7 +74,7 @@ JobManager::JobManager() :
     timeval tm;
     gettimeofday(&tm, NULL);
 
-    openlog ("FUD",NULL, LOG_LOCAL1);
+    openlog ("FUD", 0, LOG_LOCAL1);
     syslog(LOG_NOTICE,"Started FuD.");
 
     _clients_manager->set_listener(this);
