@@ -129,7 +129,7 @@ namespace fud
              * Singleton method.
              */
             static JobManager* get_instance();
-            ~JobManager();
+            static void destroy();
 
             /**
              * Returns a pointer to the listener of DistributableJob events.
@@ -181,6 +181,7 @@ namespace fud
             enum Status {kStopped, kPaused, kRunning};
 
             JobManager(); 
+            ~JobManager();
 
             /*methods*/
             void              run_scheduler();
