@@ -46,7 +46,14 @@
 
 #include "job_manager.h"
 
-using namespace fud;
+namespace fud
+{
+
+void finish()
+{
+    delete JobManager::get_instance();
+}
+
 
 JobManager* JobManager::_instance = NULL; // initialize pointer
 
@@ -83,8 +90,8 @@ JobManager::JobManager() :
 JobManager::~JobManager() 
 {
     delete _clients_manager;
+    //delete events
 }
-
 
 DistributableJob* JobManager::jobs_available() //will eventually change policy
 {
@@ -369,3 +376,4 @@ void JobManager::enqueue(DistributableJob* distjob)
     _waitingJobs.push_back(distjob);
 }
 
+}

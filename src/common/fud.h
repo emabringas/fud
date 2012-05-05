@@ -49,3 +49,9 @@
 #include "common.h"
 #include "distributable_job.h"
 #include "job_unit.h"
+
+namespace fud
+{
+    void finish();
+}
+

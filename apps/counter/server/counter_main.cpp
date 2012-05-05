@@ -27,6 +27,7 @@
     along with Parallel Clusterer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "fud.h"
 #include "counter.h"
 #include "getoptpp/getopt_pp.h"
 
@@ -54,4 +55,10 @@ int main(int argc, char** argv)
     jobs[jobs_n-1]->wait_completion();
 
     std::cout << "Last number is: " << db->current_number() << std::endl;
+
+    delete db;
+    for (size_t i(0); i < jobs_n; ++i)
+        delete jobs[i];
+    
+    fud::finish();
 }
