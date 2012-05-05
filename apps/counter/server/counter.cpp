@@ -15,9 +15,12 @@ Counter::Counter(NumberDatabase& num_db, size_t my_id) :
 
 const char* Counter::get_name() const
 {
+/*
     std::ostringstream oss;
     oss << "Counter " << _id;
     return oss.str().c_str();
+*/
+    return "Counter";
 }
 
 void Counter::handle_results (JobUnitID id,InputMessage& input)
