@@ -55,7 +55,7 @@ void BinarySearch::call(recabs::ChildrenFunctors& children, recabs::Packet& resu
     /* Base case 1 */
     if (_v.empty())
     {
-        mili::bostream bos;
+        mili::bostream<> bos;
         bos << false;
         result = bos.str();
     }
@@ -63,7 +63,7 @@ void BinarySearch::call(recabs::ChildrenFunctors& children, recabs::Packet& resu
     /* Base case 2 */
     if (uint32_t (_v.size()) == 1)
     {
-        mili::bostream bos;
+        mili::bostream<> bos;
         bos << (_v.front() == _searched);
         result = bos.str();
     }
@@ -83,7 +83,7 @@ void BinarySearch::call(recabs::ChildrenFunctors& children, recabs::Packet& resu
 
 void BinarySearch::serialize(recabs::Packet& pkt)
 {
-    mili::bostream bos;
+    mili::bostream<> bos;
     bos << this->_v << this->_searched;
     pkt = bos.str();
 }

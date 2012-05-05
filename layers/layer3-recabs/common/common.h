@@ -61,8 +61,8 @@ namespace recabs
     typedef std::list<Packet> PacketContainer;
 
     /** MiLi input/output stream for packet streaming. */
-    typedef mili::bistream  InputMessage;
-    typedef mili::bostream  OutputMessage;
+    typedef mili::bistream<>  InputMessage;
+    typedef mili::bostream<>  OutputMessage;
 
     typedef std::string Address;
     typedef size_t      Port;
