@@ -72,7 +72,7 @@ namespace fud
              */
             AnaClientsManager(const Port& port);
 
-            ~AnaClientsManager(){};
+            virtual ~AnaClientsManager();
         private:
 
             virtual void handle_connect   (ana::error_code, ana::net_id);
