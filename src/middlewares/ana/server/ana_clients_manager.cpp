@@ -62,6 +62,12 @@ AnaClientsManager::AnaClientsManager(const Port& port) :
     _server->run( ss.str() );
 }
 
+AnaClientsManager::~AnaClientsManager()
+{
+    _server->cancel_pending();
+    delete _server;
+}
+
 void AnaClientsManager::handle_connect (ana::error_code ec, ana::net_id id)
 {
     if (! ec )
