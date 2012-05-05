@@ -43,10 +43,14 @@ int main(int argc, char** argv)
     GetOpt_pp ops(argc, argv);
     ops >> Option('a', "address", address) >> Option('p', "port", port) ;
 
-    new CounterProcessor();
+    CounterProcessor* cp = new CounterProcessor();
 
     DistributionClient* distribution_client = create_distribution_client(address,port);
     distribution_client->run();
 
+    /* Clean up */
+    delete cp;
+    delete distribution_client;
+    
     return 0;
 }
