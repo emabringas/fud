@@ -51,6 +51,7 @@
 #include "events.h"
 #include "synchronized_containers.h"
 
+
 namespace fud
 {
     /**
@@ -128,6 +129,7 @@ namespace fud
              * Singleton method.
              */
             static JobManager* get_instance();
+            ~JobManager();
 
             /**
              * Returns a pointer to the listener of DistributableJob events.
@@ -178,8 +180,7 @@ namespace fud
 
             enum Status {kStopped, kPaused, kRunning};
 
-            JobManager();
-            ~JobManager(); 
+            JobManager(); 
 
             /*methods*/
             void              run_scheduler();
