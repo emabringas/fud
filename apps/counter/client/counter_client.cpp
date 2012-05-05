@@ -27,7 +27,7 @@
     You should have received a copy of the GNU General Public License
     along with Parallel Clusterer.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include "fud_client.h"
 #include "counter_processor.h"
 #include "getoptpp/getopt_pp.h"
 
@@ -48,9 +48,11 @@ int main(int argc, char** argv)
     DistributionClient* distribution_client = create_distribution_client(address,port);
     distribution_client->run();
 
-    /* Clean up */
+    /* Clean up */  
     delete cp;
     delete distribution_client;
-    
+
+    finish_client();
+
     return 0;
 }

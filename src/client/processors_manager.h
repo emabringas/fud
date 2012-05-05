@@ -61,6 +61,9 @@ namespace fud
             /** Singleton method. */
             static ProcessorsManager* get_instance();
 
+            /** */
+            static void destroy();
+
             /**
              * Deliver the incoming message to the ClientProcessor.
              *
@@ -116,7 +119,7 @@ namespace fud
             /**
              * Destructor.
              */
-            virtual ~ProcessorsManager() {}
+            virtual ~ProcessorsManager();
 
         private:
             /*methods*/

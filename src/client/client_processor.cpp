@@ -44,3 +44,7 @@ ClientProcessor::ClientProcessor()
     ProcessorsManager::get_instance()->register_processor(this); 
 }
 
+ClientProcessor::~ClientProcessor()
+{
+	
+}

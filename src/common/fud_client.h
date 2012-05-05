@@ -44,3 +44,8 @@
 #include "job_unit.h"
 #include "sender.h"
 #include "interactive_helper.h"
+
+namespace fud
+{
+	void finish_client();
+}
