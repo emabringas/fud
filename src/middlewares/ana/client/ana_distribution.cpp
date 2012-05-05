@@ -55,6 +55,11 @@ AnaDistribution::AnaDistribution(std::string address, Port port) :
    _client = ana::client::create( address, ss.str() );
 }
 
+AnaDistribution::~AnaDistribution()
+{
+    delete _client;
+}
+
 void AnaDistribution::run()
 {
     _client->connect( this );
