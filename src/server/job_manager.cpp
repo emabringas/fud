@@ -51,7 +51,8 @@ namespace fud
 
 void finish()
 {
-    delete JobManager::get_instance();
+    delete _instance;
+    _instance = NULL;
 }
 
 
