@@ -44,7 +44,13 @@
 #include "processors_manager.h"
 #include "sender.h"
 
-using namespace fud;
+namespace fud
+{
+    
+void finish_client()
+{
+    ProcessorsManager::destroy();
+}
 
 DistributionClient* DistributionClient::_instance = NULL;
 
@@ -56,6 +62,17 @@ ProcessorsManager* ProcessorsManager::get_instance ()
         _instance = new ProcessorsManager; // create sole instance
 
     return _instance; // address of sole instance
+}
+
+void ProcessorsManager::destroy()
+{
+    delete _instance;
+    _instance = NULL;
+}
+
+ProcessorsManager::~ProcessorsManager() 
+{
+
 }
 
 void ProcessorsManager::wrap_process(const std::string& message)
@@ -109,3 +126,4 @@ void ProcessorsManager::inform_result(bool result)
         std::cerr << "ERROR obtaining results " << std::endl;
 }
 
+}
