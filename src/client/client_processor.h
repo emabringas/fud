@@ -61,7 +61,7 @@ namespace fud
              */
             virtual bool process(InputMessage& input, OutputMessage& output) = 0;
 
-            virtual ~ClientProcessor(){}
+            virtual ~ClientProcessor();
         protected:
             ClientProcessor();
     };
