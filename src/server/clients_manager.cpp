@@ -61,6 +61,12 @@ ClientsManager::ClientsManager() :
     _instance = this;
 }
 
+ClientsManager::~ClientsManager()
+{
+    for (std::map<ClientID, ClientProxy*>::iterator it(_client_proxies.begin()); it != _client_proxies.end(); it++)
+        delete it->second;
+}
+
 void ClientsManager::register_client(ClientProxy* client)
 {
     boost::mutex::scoped_lock glock(_client_proxies_mutex);

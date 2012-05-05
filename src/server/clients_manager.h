@@ -181,7 +181,7 @@ namespace fud
              */
             void place_orders(fud_uint count);
 
-            virtual ~ClientsManager(){};
+            virtual ~ClientsManager();
         protected:
             /**
              * Standard constructor. Initializes the lists and singleton attributes.
