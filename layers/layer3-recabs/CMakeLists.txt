@@ -28,7 +28,8 @@ set ( distribution ${dist} )
 
 set ( client_srcs   client/distributable_recursive_processor.cpp
                     client/by_size_result_sender.cpp
-                    client/distribution_policy.cpp)
+                    client/distribution_policy.cpp
+                    client/result_sender.cpp)
 set ( server_srcs   server/recursion_manager.cpp )
 
 add_subdirectory( distribution )

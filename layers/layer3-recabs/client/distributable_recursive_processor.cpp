@@ -58,7 +58,8 @@ DistributableRecursiveProcessor::DistributableRecursiveProcessor(const L4ClientA
 
 DistributableRecursiveProcessor::~DistributableRecursiveProcessor()
 {
-
+    delete _result_sender;
+    delete _message_sender;
 }
 
 void DistributableRecursiveProcessor::start_execution(const Packet& init_packet)

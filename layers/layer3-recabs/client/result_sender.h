@@ -159,6 +159,11 @@ class InmediatelySender : public FinalSender
             FinalSender(header),
             _real_sender( create_real_sender() )
         {};
+        
+        /**
+         * Destructor.
+         */
+        virtual ~InmediatelySender();
 
         /**
          * Reimplementation of method send.
