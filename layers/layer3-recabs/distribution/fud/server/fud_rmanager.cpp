@@ -48,6 +48,11 @@ FuDRManager::FuDRManager(L4ServerApp& app) :
 {
 }
 
+FuDRManager::~FuDRManager()
+{
+    fud::finish();
+}
+
 void FuDRManager::start()
 {
     /* Get the initial packet. */

@@ -63,6 +63,11 @@ class FuDRProcessor  :  public DistributableRecursiveProcessor,
          * @param app : the concrete L4ServerApp that handles the results.
          */
         FuDRProcessor(const L4ClientApp& app, const DeserializerFunctor& df, const DistributablePolicy& dp);
+        
+        /**
+         * Destructor.
+         */
+        virtual ~FuDRProcessor();
 
         /**
          *  Should be implemented as a way to start the exectution of a single node.
