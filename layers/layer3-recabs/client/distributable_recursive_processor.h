@@ -57,6 +57,12 @@ namespace recabs
 
 class DistributableRecursiveProcessor : public RecursiveProcessor
 {
+    public:
+
+        /**
+         *  Destructor.
+         */
+        ~DistributableRecursiveProcessor();
 
     protected:
 
@@ -64,11 +70,6 @@ class DistributableRecursiveProcessor : public RecursiveProcessor
          *  Constructor.
          */
         DistributableRecursiveProcessor(const L4ClientApp& app, const DeserializerFunctor& df, const DistributablePolicy& dp);
-
-        /**
-         *  Destructor.
-         */
-        ~DistributableRecursiveProcessor();
 
         /**
          *  Sends functors to the server if it needs. The maximum number of delivered functors

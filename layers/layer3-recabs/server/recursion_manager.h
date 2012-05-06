@@ -55,6 +55,10 @@ namespace recabs
     class RecursionManager
     {
         public:
+            /**
+             * Destructor.
+             */
+             virtual ~RecursionManager();
 
             /**
              * Should be start the recursion.

@@ -62,6 +62,11 @@ class FuDRManager :  public RecursionManager,
          * @param app : the concrete L4ServerApp that handles the results.
          */
         FuDRManager(L4ServerApp& app);
+        
+        /**
+         * Destructor.
+         */
+        virtual ~FuDRManager();
 
         /**
          * Starts the recursion.
