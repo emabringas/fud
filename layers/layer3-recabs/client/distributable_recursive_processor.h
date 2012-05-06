@@ -62,7 +62,7 @@ class DistributableRecursiveProcessor : public RecursiveProcessor
         /**
          *  Destructor.
          */
-        ~DistributableRecursiveProcessor();
+        virtual ~DistributableRecursiveProcessor();
 
     protected:
 
