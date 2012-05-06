@@ -183,7 +183,7 @@ namespace fud
             enum Status {kStopped, kPaused, kRunning};
 
             JobManager(); 
-            ~JobManager();
+            virtual ~JobManager();
 
             /*methods*/
             void              run_scheduler();
