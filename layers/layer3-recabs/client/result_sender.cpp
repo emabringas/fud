@@ -40,14 +40,7 @@
 
 using namespace recabs;
 
-RealResultSender::RealResultSender(RecursionManager& rm):
-    _comm(create_communication(rm))
+InmediatelySender::~InmediatelySender()
 {
-
+    delete _real_sender;
 }
-
-void RealResultSender::send(const Packet& packet)
-{
-    _comm->send(packet);
-}
-
