@@ -53,7 +53,7 @@ void L4ServerBS::get_initial_packet(recabs::Packet& pkt) const
 {
     BinarySearch::Elements v;
 
-    for (uint32_t i = 0; i < 1000000; i++)
+    for (uint32_t i = 0; i < 1000; i++)
         mili::insert_into(v, i);
 
     BinarySearch b(v, -1);

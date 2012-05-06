@@ -52,6 +52,10 @@ RecursionManager::RecursionManager(L4ServerApp& app):
 {
 }
 
+RecursionManager::~RecursionManager()
+{
+}
+
 void RecursionManager::handle_receive_packet(InputMessage& input)
 {
     PacketContainer packet_container;

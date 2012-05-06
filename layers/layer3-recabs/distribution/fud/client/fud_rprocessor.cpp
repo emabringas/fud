@@ -49,6 +49,11 @@ FuDRProcessor::FuDRProcessor(const L4ClientApp& app, const DeserializerFunctor& 
 {
 }
 
+FuDRProcessor::~FuDRProcessor()
+{
+    fud::finish_client();
+}
+
 void FuDRProcessor::run(const Address& address, Port port)
 {
     fud::DistributionClient* distribution_client = fud::create_distribution_client(address, port);
