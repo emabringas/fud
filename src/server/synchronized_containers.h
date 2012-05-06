@@ -73,6 +73,7 @@
             return synchQueuePPC;
         }
 
+        virtual ~SynchronizedQueue() {}
     };
 
 
@@ -129,6 +130,11 @@
                 _condition(),
                 _queue(other)
             {
+            }
+
+            virtual ~LockingQueue()
+            {
+                 _condition.notify_all();
             }
 
             /**
