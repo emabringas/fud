@@ -111,6 +111,8 @@ namespace fud
          * \sa JobUnitSize
          */
         virtual float get_millisecs_per_size_unit()      = 0;
+
+        virtual ~WorkHistory() {}
     };
 }
 #endif

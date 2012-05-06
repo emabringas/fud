@@ -59,6 +59,8 @@ namespace fud
          * @param i : Pointer to the object handling the events.
          */
         virtual void call(Interface* i) = 0;
+
+        virtual ~Event() {}
     };
 
     /**
