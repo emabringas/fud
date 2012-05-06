@@ -38,7 +38,6 @@
 
 #include <syslog.h>
 #include <memory>
-#include <boost/thread.hpp>
 
 #include "async_io_clients_manager.h"
 
@@ -50,7 +49,7 @@ AsyncIOClientsManager::AsyncIOClientsManager(const Port& port) :
     _acceptor(_io_service, tcp::endpoint(tcp::v4(), port))
 {
     // To connect clients
-    boost::thread acceptor( boost::bind( &AsyncIOClientsManager::run_acceptor_thread, this));
+    boost::thread acceptor(boost::bind(&AsyncIOClientsManager::run_acceptor_thread, this));
 }
 
 void AsyncIOClientsManager::run_acceptor_thread(AsyncIOClientsManager* obj)
@@ -69,34 +68,64 @@ void AsyncIOClientsManager::_async_accept()
 {
     AsyncIOClientProxy* client = new AsyncIOClientProxy(_io_service);
     _acceptor.async_accept(client->socket(),
-            boost::bind(&AsyncIOClientsManager::handle_accept,this,boost::asio::placeholders::error,client));
+                           boost::bind(&AsyncIOClientsManager::handle_accept, this, boost::asio::placeholders::error, client));
 }
 
 void AsyncIOClientsManager::handle_accept(const boost::system::error_code& ec, AsyncIOClientProxy* client)
 {
     if (! ec)
-    {
         register_client(client);
-        client->run();
-    }
     else
     {
-        syslog(LOG_NOTICE,"Error accepting client connection.");
+        syslog(LOG_NOTICE, "Error accepting client connection.");
         delete client;
     }
     _async_accept();
 }
 
+
+bool AsyncIOClientsManager::should_resend_job_units()
+{
+    return true;
+}
+
 AsyncIOClientsManager::AsyncIOClientProxy::AsyncIOClientProxy(boost::asio::io_service& io_service) :
     ClientProxy(),
     _socket(io_service),
-    _proxy_mutex()
+    _state(kIdle),
+    _proxy_mutex(),
+    _code_buf(),
+    _current_id(0)
 {
 }
 
-void AsyncIOClientsManager::AsyncIOClientProxy::run()
+void AsyncIOClientsManager::AsyncIOClientProxy::handle_response(ResponseCode code, JobUnitID id)
 {
-    boost::thread thr( boost::bind( &AsyncIOClientsManager::AsyncIOClientProxy::handle_receive, this ) );
+    try
+    {
+        if (code == JobUnitCompleted) // get result
+        {
+            char size_buf[RESPONSE_HEADER_LENGTH];
+            boost::asio::read(_socket, boost::asio::buffer(size_buf, RESPONSE_HEADER_LENGTH));
+
+            JobUnitSize size;
+
+            InputMessage bis2(std::string(size_buf, RESPONSE_HEADER_LENGTH));
+            bis2 >> size;
+
+            if (size > 0)
+            {
+                std::auto_ptr<char> msg(new char[size]);
+                boost::asio::read(_socket, boost::asio::buffer(msg.get(), size));
+                ClientsManager::get_instance()->inform_completion(id, new std::string(msg.get(), size));
+            }
+        }
+    }
+    catch (std::exception& e)
+    {
+        syslog(LOG_NOTICE, "Error(handle_response): %s.", e.what());
+        destroy();
+    }
 }
 
 tcp::socket& AsyncIOClientsManager::AsyncIOClientProxy::socket()
@@ -104,61 +133,80 @@ tcp::socket& AsyncIOClientsManager::AsyncIOClientProxy::socket()
     return _socket;
 }
 
-void AsyncIOClientsManager::AsyncIOClientProxy::handle_receive()
+void AsyncIOClientsManager::AsyncIOClientProxy::handle_receive(const boost::system::error_code& ec)
 {
-    try
+    if (!ec)
     {
-        char header_size[HEADER_SIZE];
-        boost::asio::read(socket(), boost::asio::buffer(header_size, HEADER_SIZE) );
-        {
-            boost::mutex::scoped_lock glock(_proxy_mutex);
+        boost::mutex::scoped_lock glock(_proxy_mutex);
+        InputMessage bis(std::string(_code_buf, RESPONSE_HEADER_LENGTH));
 
-            fud_size size;
-            InputMessage bis( std::string(header_size, HEADER_SIZE) );
-            bis >> size;
-            assert (size > 0);
+        ResponseCode code;
+        bis >> code;
 
-            std::auto_ptr<char> body(new char[size - HEADER_SIZE]);
-            boost::asio::read(socket(), boost::asio::buffer(body.get(), size - HEADER_SIZE) );
+        handle_response(code, _current_id);
 
-            handle_response( std::string(body.get(), size - HEADER_SIZE) );
-        }
+        //Mandatory order of things! first set status to idle before invoking free_client_event.
+        //You risk deadlock otherwise.
+        _state = kIdle;
+        i_am_free();
     }
-    catch (std::exception& e)
+    else
     {
-        syslog(LOG_NOTICE, "Error receiving data from client %u.", get_id());
+        syslog(LOG_NOTICE, "Error receiving results in client %u.", get_id());
         destroy();
     }
-    /* Listen again */
-    handle_receive();
 }
 
-void AsyncIOClientsManager::AsyncIOClientProxy::send(const std::string& message)
+void AsyncIOClientsManager::AsyncIOClientProxy::handle_send(const boost::system::error_code& ec)
+{
+    if (!ec)
+    {
+        syslog(LOG_NOTICE, "Sending Job Unit %u to Client %u", _current_id, get_id());
+        boost::asio::async_read(_socket, boost::asio::buffer(_code_buf, RESPONSE_HEADER_LENGTH),
+                                boost::bind(&AsyncIOClientsManager::AsyncIOClientProxy::handle_receive, this,
+                                            boost::asio::placeholders::error));
+    }
+    else
+    {
+        syslog(LOG_NOTICE, "Error sending JobUnit %u to Client %u", _current_id, get_id());
+        destroy();
+    }
+}
+
+void AsyncIOClientsManager::AsyncIOClientProxy::process(const JobUnit& job_unit)
 {
     try
     {
         boost::mutex::scoped_lock glock(_proxy_mutex);
+        _current_id = job_unit.get_id();
+        _state      = kBusy;
 
-        boost::asio::write(socket(), boost::asio::buffer(message));
-        syslog(LOG_NOTICE,"Sending something to Client %u", get_id());
+        boost::asio::async_write(_socket, boost::asio::buffer(job_unit.serialize()),
+                                 boost::bind(&AsyncIOClientsManager::AsyncIOClientProxy::handle_send, this,
+                                             boost::asio::placeholders::error));
     }
-    catch(std::exception& e)
+    catch (std::exception& e)
     {
-        syslog(LOG_NOTICE,"Error(process/write): %s.",e.what());
+        syslog(LOG_NOTICE, "Error(process/write): %s.", e.what());
         destroy();
     }
 }
 
 void AsyncIOClientsManager::AsyncIOClientProxy::destroy()
 {
-    ClientsManager::get_instance()->deregister_client( get_id() );
+    ClientsManager::get_instance()->deregister_client(this);
 }
 
+bool AsyncIOClientsManager::AsyncIOClientProxy::busy() const
+{
+    // I could lock proxy_mutex here, at the expense of removing the const above
+    return _state == kBusy;
+}
 
 namespace fud
 {
-    ClientsManager* create_clients_manager()
-    {
-        return new AsyncIOClientsManager(31337);
-    }
+ClientsManager* create_clients_manager()
+{
+    return new AsyncIOClientsManager(31337);
+}
 }

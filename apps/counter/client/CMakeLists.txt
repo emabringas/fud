@@ -1,20 +1,15 @@
+# $Id:$
+
 find_package( Boost 1.37 REQUIRED COMPONENTS thread system)
 
 find_file ( MILI mili/mili.h )
 
-find_library( GETOPT getopt_pp REQUIRED )
-
-
 if ( MILI )
-    if ( GETOPT )
-        set ( server_srcs counter_client.cpp  counter_processor.cpp )
+    set ( client_srcs counter_client.cpp  counter_processor.cpp )
 
-        add_executable( counter-client ${server_srcs} )
+    add_executable( counter-client ${client_srcs} )
 
-        target_link_libraries( counter-client fud_client ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${GETOPT} )
-    else ( GETOPT )
-        message ( FATAL_ERROR "Install GetOpt_pp: getoptpp.googlecode.com" )
-    endif (GETOPT )
+    target_link_libraries( counter-client fud_client )
 else ( MILI )
     message ( FATAL_ERROR "Install MiLi: mili.googlecode.com" )
 endif ( MILI )

@@ -1,21 +1,24 @@
+# $Id:$
+  
 find_package( Boost 1.37 REQUIRED COMPONENTS thread system)
 
 find_file ( MILI mili/mili.h )
 
-find_library( GETOPT getopt_pp REQUIRED )
+set ( BOINC_LIBS ${SCHED} ${MYSQL_CLIENT} ${BOINC_CRYPT} )
 
-# find_library( FUD fud REQUIRED )
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+    message ( STATUS "Compiling with debbug support." )
+    add_definitions( -ggdb3 )
+endif (CMAKE_BUILD_TYPE MATCHES Debug)
 
 if ( MILI )
-    if ( GETOPT )
-        set ( server_srcs counter.cpp counter_main.cpp  number_database.cpp )
 
-        add_executable( counter ${server_srcs} )
 
-        target_link_libraries( counter fud ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${GETOPT} )
-    else ( GETOPT )
-        message ( FATAL_ERROR "Install GetOpt_pp: getoptpp.googlecode.com" )
-    endif (GETOPT )
+    set ( server_srcs counter.cpp counter_main.cpp  number_database.cpp )
+
+    add_executable( counter ${server_srcs} )
+
+    target_link_libraries( counter fud_server ${BOINC_LIBS} )
 else ( MILI )
     message ( FATAL_ERROR "Install MiLi: mili.googlecode.com" )
 endif ( MILI )

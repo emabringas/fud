@@ -4,6 +4,8 @@ find_file ( MILI mili/mili.h )
 
 find_library( GETOPT getopt_pp REQUIRED )
 
+add_definitions( -DMILI_NAMESPACE )
+
 if ( MILI )
     if ( GETOPT )
         set ( client_srcs counter_processor.cpp counter_client.cpp )

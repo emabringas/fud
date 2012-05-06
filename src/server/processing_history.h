@@ -71,25 +71,26 @@ namespace fud
      */
     class ProcessingHistory : public WorkHistory
     {
-        public:
-            /**
-             * Constructs a Simple Moving Average implementation using
-             * the last <b>max_size</b> data points.
-             *
-             * @param max_size : The maximum size of the data points list.
-             */
-            ProcessingHistory(size_t max_size);
-        private:
-            virtual void  start_work(JobUnitID id, JobUnitSize size);
-            virtual void  end_work  (JobUnitID id);
+    public:
+        /**
+         * Constructs a Simple Moving Average implementation using
+         * the last <b>max_size</b> data points.
+         *
+         * @param max_size : The maximum size of the data points list.
+         */
+        ProcessingHistory(size_t max_size);
+    private:
+        virtual void  start_work(JobUnitID id, JobUnitSize size);
+        virtual void  end_work(JobUnitID id);
 
-            virtual float get_millisecs_per_size_unit();
+        virtual float get_millisecs_per_size_unit();
 
-            std::list<StatisticalJobUnitInfo> _history;
+        std::list<StatisticalJobUnitInfo> _history;
 
-            size_t                            _max_size;
+        size_t                            _max_size;
 
-            std::list<CompletedWork>          _sizes_and_times; /* Its size won't go above max_size. */
+        std::list<CompletedWork>          _sizes_and_times; /* Its size won't go above max_size. */
     };
 }
 #endif
+

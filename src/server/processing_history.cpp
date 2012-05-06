@@ -45,18 +45,19 @@ ProcessingHistory::ProcessingHistory(size_t max_size) :
 
 void  ProcessingHistory::start_work(JobUnitID id, JobUnitSize size)
 {
-    _history.push_back(StatisticalJobUnitInfo(id, size,boost::posix_time::ptime(boost::posix_time::microsec_clock::local_time())) );
+    _history.push_back(StatisticalJobUnitInfo(id, size, boost::posix_time::ptime(boost::posix_time::microsec_clock::local_time())));
 }
 
-void  ProcessingHistory::end_work  (JobUnitID id)
+void  ProcessingHistory::end_work(JobUnitID id)
 {
     std::list<StatisticalJobUnitInfo>::iterator it;
     for (it = _history.begin(); it != _history.end() && it->id != id; ++it)
         ;
 
     if (it != _history.end())
-    {         // add elapsed time
-        _sizes_and_times.push_back(CompletedWork(it->size, boost::posix_time::time_period(it->time, boost::posix_time::ptime(boost::posix_time::microsec_clock::local_time())).length().total_milliseconds() ));
+    {
+        // add elapsed time
+        _sizes_and_times.push_back(CompletedWork(it->size, boost::posix_time::time_period(it->time, boost::posix_time::ptime(boost::posix_time::microsec_clock::local_time())).length().total_milliseconds()));
 
         if (_max_size > 0)
             --_max_size;
@@ -79,3 +80,4 @@ float ProcessingHistory::get_millisecs_per_size_unit()
     }
     return static_cast<float>(acum_time) / static_cast<float>(acum_size);
 }
+

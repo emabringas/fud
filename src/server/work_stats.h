@@ -100,7 +100,7 @@ namespace fud
          *
          * @param id : ID of the JobUnit being processed.
          */
-        virtual void  end_work  (JobUnitID id)              = 0;
+        virtual void  end_work(JobUnitID id)              = 0;
 
         /**
          * Results on the calculated Running Average.
@@ -114,3 +114,4 @@ namespace fud
     };
 }
 #endif
+

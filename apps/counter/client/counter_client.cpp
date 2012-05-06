@@ -1,7 +1,7 @@
 /*
   Parallel Clusterer: A distributed protein backbone clusterer.
     Copyright (C) 2009 Guillermo Biset, FuDePAN
-    
+
     This file is part of the Parallel Clusterer Project.
 
     File:           main_clusterer_client.cpp
@@ -10,10 +10,10 @@
 
     System:         Parallel Clusterer
     Language:       C++
-  
+
     Author:         Guillermo Biset
     E-Mail:         billybiset AT gmail.com
-  
+
     Parallel Clusterer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -27,32 +27,19 @@
     You should have received a copy of the GNU General Public License
     along with Parallel Clusterer.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "fud_client.h"
-#include "counter_processor.h"
-#include "getoptpp/getopt_pp.h"
 
-using namespace fud;
-using namespace GetOpt;
+#include "counter_processor.h"
+
+
 
 /* main program*/
 int main(int argc, char** argv)
 {
-    size_t      port(31337);
-    std::string address("127.0.0.1");
+    new CounterProcessor();
 
-    GetOpt_pp ops(argc, argv);
-    ops >> Option('a', "address", address) >> Option('p', "port", port) ;
-
-    CounterProcessor* cp = new CounterProcessor();
-
-    DistributionClient* distribution_client = create_distribution_client(address,port);
+    fud::DistributionClient* distribution_client = fud::create_distribution_client(argc, argv);
     distribution_client->run();
-
-    /* Clean up */  
-    delete cp;
-    delete distribution_client;
-
-    finish_client();
 
     return 0;
 }
+

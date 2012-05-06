@@ -10,6 +10,12 @@
  * Author:         Guillermo Biset
  * E-Mail:         billybiset AT gmail.com
  *
+ *
+ *  @Last Update:
+ *      $Id: 
+ *      $URL: 
+ *      $LastChangedBy: 
+ *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -28,17 +34,16 @@
 #ifndef COUNTER_PROCESSOR_H
 #define COUNTER_PROCESSOR_H
 
-#include "fud_client.h"
+#include "fud.h"
 
-namespace fud
+
+class CounterProcessor : fud::ClientProcessor
 {
-    class CounterProcessor : ClientProcessor
-    {
-        public:
-            CounterProcessor();
+public:
+    CounterProcessor();
 
-            virtual bool process(InputMessage& input, OutputMessage& output);
-    };
-}
+    virtual bool process(fud::InputMessage& input, fud::OutputMessage& output);
+};
 
 #endif
+

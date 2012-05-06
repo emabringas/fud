@@ -1,0 +1,178 @@
+\chapter{Pruebas}
+\label{chapter:pruebas}
+
+El desarrollo de software implica una serie de actividades de producción en donde las posibilidades de que aparezcan fallos humanos son muy probables. Los errores pueden empezar a darse desde el primer momento del proceso. Es por eso que el desarrollo de software debe ir acompañado de una actividad que garantice la calidad del mismo.
+
+En este capítulo se presentan los distintos casos de prueba y aplicaciones implicadas en las correspondientes pruebas realizadas sobre FuD-BOINC.
+
+\section{Aplicaciones de prueba}
+
+Desde los comienzos y durante el desarrollo de este proyecto, se realizaron severas pruebas utilizando algunas aplicaciones ofrecidas por BOINC y FuDePAN. Dichas pruebas fueron aplicadas durante toda la fase de implementación, con el fin de reducir errores, mejorar la funcionalidad y detectar posibles fallas.
+
+A continuación se realiza una breve descripción de las aplicaciones utilizadas.
+
+\subsection{Aplicaciones uppercase y create-work}
+
+BOINC provee de varias aplicaciones de ejemplo junto con su código fuente. Entre ellas se encuentra la aplicación \textbf{uppercase} la cual dado un archivo de entrada conteniendo texto en minúscula genera un archivo de salida con el texto traducido a mayúsculas. 
+
+La aplicación fue utilizada durante el proceso de investigación para entender cómo trabaja BOINC desde adentro. Se analizó 
+su código fuente y se la ejecutó sobre el proyecto BOINC para corroborar que este último funcionara correctamente.
+
+Debido a que esta aplicación sólo fue desarrollada como cliente (sin contar con un servidor que genere trabajos), para la creación y envío de trabajos a la misma se debió hacer uso de la aplicación \texttt{create\_work} ofrecida por BOINC para ayudar a desarrolladores en las pruebas de sus aplicaciones. La aplicación \texttt{create work} permite crear \texttt{workunits} desde la línea de comandos manteniendo así el flujo constante de unidades de trabajo para una determinada aplicación.
+
+Estas pruebas fueron claves para comprender desde adentro cómo funciona la creación de trabajos de BOINC. Además, a partir del código fuente de la aplicación \textbf{uppercase} se obtuvieron las primeras ideas y una estructura base que fueron necesarias en la etapa de diseño para poder desarrollar una solución para la integración de FuD y BOINC.
+
+
+\subsection{Aplicación de juguete Counter}
+
+Counter es una aplicación simple provista por FuD como aplicación de ejemplo junto con su código fuente. Su función es contar hasta un número N dado usando X contadores. La tarea de cada contador es incrementar en 1 el número recibido e informarlo al servidor. Por lo tanto, cada \texttt{JobUnit} encapsula un número que el contador debe incrementar.
+
+Las primeras pruebas realizadas sobre FuD-BOINC se llevaron a cabo utilizando esta aplicación las cual permitió probar cada implementación parcial durante las primeras versiones de nuestro proyecto logrando así detectar errores y flaquezas de la nueva implementación.
+
+\subsection{Aplicación Parallel-Clusterer}
+\label{seccion:pruebas:clusterer}
+
+\textbf{Clustering} o \textbf{Data Clustering:} es un método que permite crear grupos de ciertos objetos (clúster). Los objetos pertenecientes a un clúster son muy similares y los objetos de distintos clústers son muy diferentes.\\
+
+\textbf{Parallel-clusterer:} es una aplicación desarrollada por la organización FuDePAN para realizar clustering de proteínas.\\ 
+
+\textbf{Clustering de proteínas:} dado un conjunto de diferentes posibilidades geométricas de una sola proteína (cada una representada como un vector de átomos) agrupa estos elementos según una función de similitud en las posiciones de sus átomos. El resultado final es un conjunto de agrupaciones o clústers donde cada uno tiene proteínas cuya estructura geométrica es muy similar.
+
+El conjunto que toma como entrada la aplicación es pasado a la misma mediante un archivo generado con la aplicación \textit{Backbone-Generator} explicada a continuación.\\
+
+\textbf{Backbone-Generator:}\label{subsection:bbgen} el generador de backbones de proteínas busca proporcionar nuevas respuestas y/o soluciones a los inconvenientes y dificultades que surgen en la predicción de estructura de proteínas a partir de una secuencia de aminoácidos.
+
+Esta aplicación toma como entrada un archivo con los pares de ángulos posibles a combinar y un número de residuos (conjunto de 3 átomos). pasado mediante el flag ``-r'' que indica la longitud del backbone resultante. Como salida, se genera un archivo resultado con una secuencia de átomos que representa el backbone o estructura de una proteína. Dependiendo de la cantidad de residuos y cantidad de pares de ángulos que tome la aplicación, el tamaño del archivo resultante puede llegar a ser extremadamente pesado debido a que sobre el mismo se escriben todas las posibles combinación entre los residuos y los pares de ángulos. Por ejemplo, la ejecución de la aplicación con 15 residuos (\texttt{-r15}) y cuatro pares de ángulos, generó un archivo con un tamaño de \texttt{160,3 MB}.
+
+
+\section{Casos de prueba}
+
+En esta sección se presentan los distintos casos de prueba realizados mediante el uso de las aplicaciones Counter y Parallel-clusterer compiladas con FuD-BOINC. 
+El objetivo de estos casos de prueba consistió en testear las distintas versiones que se obtuvieron durante todo el desarrollo de este proyecto hasta la versión final del mismo.
+
+A continuación se especifican las características del ordenador servidor y de las computadoras clientes que se utilizaron en las pruebas:
+
+\textbf{\\Servidor:}\\
+
+Las aplicaciones servidoras se ejecutaron siempre sobre una computadora con las siguientes características:
+
+\begin{itemize}
+ \item \textbf{Sistema Operativo}: Ubuntu 10.10 Maverick Meerkat(32 bits).
+ \item \textbf{Procesador}: Intel Core i5
+ \item \textbf{N° Núcleos del procesador}: 4
+ \item \textbf{Memoria RAM}: 4Gb
+ \item \textbf{Velocidad de conexión}: conexión hogareña de 3MB.
+\end{itemize}
+
+\textbf{\\Cliente:}\\
+
+En cambio, las aplicaciones clientes fueron ejecutadas sobre ordenadores con las siguientes características:
+
+\begin{itemize}
+ \item \textbf{Sistemas Operativos}: Ubuntu 10.10(32 bits), Microsoft Windows XP (32 bits) y Windows 7 (32 bits).
+ \item \textbf{Procesador}: Variaron entre modelos antiguos como es el Amd Athlon Xp 2000 a modelos más actuales como el Intel® Core™2 Duo Processor P8600.
+ \item \textbf{N° Núcleos del procesador}: entre 1 y 2.
+ \item \textbf{Memoria RAM:} entre 512MB y 3Gb.
+ \item \textbf{Velocidad de conexión}: conexiones hogareñas entre 256Kbps y 3MB.
+\end{itemize}
+
+
+\subsection{Funcionamiento de Counter con FuD-BOINC}
+
+El Counter es una aplicación pequeña la cual no requiere demasiados recursos de red y procesamiento debido a que simplemente se envía un número como contenido de cada tarea para que éste sea incrementado en uno por el cliente. Por dicho motivo, se optó por utilizarla para realizar las pruebas iniciales del desarrollo donde se crearon los casos de prueba detallados a continuación.
+
+\subsubsection{Verificar envío y recepción de trabajos}
+Esta prueba consistió en ejecutar la aplicación Counter compilada con FuD-BOINC sobre un proyecto BOINC con el fin de verificar la correctitud del servidor a la hora de enviar trabajos al cliente, y del cliente a la hora de computar tareas y devolver resultados al servidor.
+
+Mediante esta prueba se pudo detectar que la aplicación servidora en ningún momento generaba trabajos debido a que no se efectuaba la registración del cliente en el servidor. La solución a dicho problema derivó en un rediseño de la capa de manejo de trabajos de FuD explicado en la sección \ref{seccion:jobmanager:post:init}. Luego de aplicar la correspondiente solución al problema, se volvió a realizar este caso de prueba y la aplicación funcionó correctamente.
+
+\subsubsection{Ejecutar cliente sobre Microsoft Windows} 
+Esta prueba consistió en compilar la aplicación Counter para plataformas Windows y correr un cliente BOINC sobre este sistema operativo con el fin de evaluar su funcionamiento. Por lo tanto, por un lado se ejecutó la aplicación servidora del Counter sobre un proyecto BOINC, y por el otro se conectó al proyecto con un cliente Windows. 
+
+Mediante esta prueba detectamos un error por linkeo de librerías dinámicas. Es decir, que en el momento que el \texttt{BOINC Manager} intentó ejecutar la aplicación cliente del Counter, ésta falló por no encontrar las librería necesarias instaladas en dicho sistema operativo. 
+
+Cabe destacar, que este problema no había sido detectado en Linux ya que la implementación y ejecuciones, tanto del servidor como del cliente, eran realizadas en el mismo ordenador el cual contenía instaladas todas las librerías requeridas.
+
+Para solucionar este problema se debió compilar la aplicación cliente con linkeo estático de librerías tanto para Linux como para Windows.
+
+Luego de resolver este problema, se volvieron a realizar las pruebas con clientes conectados desde Windows y Linux en donde no se detectaron nuevas fallas. Es decir, que en esta instancia, la aplicación Counter compilada con FuD-BOINC quedó funcionando correctamente.
+
+
+\subsection{Funcionamiento de Parallel-Clusterer con FuD-BOINC}
+
+Las pruebas más relevantes sobre FuD-BOINC se realizaron utilizando la aplicación Parallel-Clusterer debido a que ésta envía información más grande que un simple número como es el caso de la aplicación Counter. Mediante dichas pruebas se pudo chequear de manera completa la interacción \texttt{cliente-servidor} de FuD-BOINC. 
+
+Del lado servidor, las pruebas se focalizaron en la creación de nuevos trabajos y en la asimilación de resultados (\ref{seccion:asimilador}). 
+
+Por el contrario, del lado cliente las pruebas se focalizaron en la lectura e interpretación del archivo de entrada y en la escritura de los resultados en el archivo de salida. 
+
+Debemos destacar que el objetivo de estas pruebas consistió en complementar las pruebas realizadas con la aplicación Counter. Por ello, se crearon varios casos de prueba detallados a continuación.
+
+\subsubsection{Ejecutar Parallel-Clusterer con FuD-BOINC}
+
+Esta prueba tuvo como único objetivo probar una nueva aplicación compilada sobre FuD-BOINC con el fin de chequear que el correcto funcionamiento obtenido, luego de probar la aplicación Counter, se seguía manteniendo.
+
+En esta instancia, se detectó que la capa L2 de FuD sólo entregaba de a dos trabajos, problema que motivó el rediseño de la capa L2 de FuD explicada en la sección \ref{seccion:multiples:jobunits:clientes} de este informe. 
+
+Luego de aplicar la correspondiente solución al problema, la aplicación Parallel-Clusterer funcionó correctamente enviando más de un trabajo a cada cliente BOINC conectado al proyecto.
+
+\subsubsection{Ejecutar Parallel-Clusterer sobre Microsoft Windows}
+
+Una de los casos de pruebas que se realizó para esta aplicación, consistió en ejecutarla con un cliente conectado desde Linux y un cliente conectado desde Windows. A partir de esta prueba, se descubrió que la aplicación cliente corriendo sobre Windows generaba un error al intentar leer el archivo de entrada que recibía desde el servidor.
+
+Para descubrir la causa por la que se generaba este error, se escribió una aplicación de prueba que realizaba los mismos pasos para la lectura del archivo que se llevaba a cabo en la aplicación cliente. El test fue compilado y ejecutado tanto en Linux como en Windows produciéndose el mismo error comentado. 
+
+El código \ref{listing:test:binary:file} muestra la implementación de la aplicación de prueba.
+
+\begin{lstlisting}[frame=shadowbox, language=C++, numbers=left, xleftmargin=8mm, framexleftmargin=22pt, basicstyle=\scriptsize, numberstyle=\footnotesize, breaklines=true, breakatwhitespace=false, caption={Test de lectura realizada por un cliente FuD-BOINC}, label=listing:test:binary:file, backgroundcolor=\color{gris}, keywordstyle=\color{Blue}]
+#include <iostream>
+#include <string>
+#include <vector>
+#include "mili/mili.h"
+#include <fstream>
+
+typedef mili::bistream InputMessage;
+typedef uint32_t      JobUnitID;
+
+int main(int argc, char** argv)
+{
+    JobUnitID _current_id;
+
+    std::clog << "FuD: starting FuD computation." << std::endl;
+       
+    std::string file_name(argv[1]);
+    std::ifstream ifs(file_name.c_str(), std::ios::binary);
+//    std::ifstream ifs(file_name.c_str()); Linea original reemplazada por el anterior
+
+    // Enable file exceptions.
+    ifs.exceptions(std::ifstream::eofbit | std::ifstream::failbit | std::ifstream::badbit);
+
+    std::clog << "FuD: extracting the input file for computation." << std::endl;
+        
+    // Extract the content of the input file to deliver.
+    std::stringstream oss;
+    oss << ifs.rdbuf();
+    InputMessage input_msg (oss.str() );
+
+    // Get the message and _current_id
+    std::string message;
+    input_msg >> _current_id >> message;
+    
+    std::clog << "FuD: id=" << _current_id << std::endl;
+    std::clog << "FuD: message=" << message.c_str() << "FIN" << std::endl;
+
+    ifs.close();
+    std::clog << "FuD: exit." << std::endl;
+
+    exit(0);
+}
+\end{lstlisting}
+
+\hspace{2mm}
+
+\textbf{Causa del error:} la causa de este error, se debió a que Windows diferencia la manera en que maneja los archivos de texto y los binarios, mientras que Linux los trata a todos como binarios. Por consiguiente, el servidor de FuD-BOINC envíaba un archivo binario mientras que el cliente FuD-BOINC lo intentaba leer como archivo de texto causando así el error de lectura del mismo. 
+
+\textbf{Solución:} simplemente se debió especificar el tipo de fichero a escribir y a leer tanto en el servidor como en el cliente, agregando el flag \texttt{std::ios::binary} a la operación \texttt{open} del archivo. Este cambio primero se corroboró en el código \ref{listing:test:binary:file} agregando el flag mencionado en la línea 17.
+
+Para finalizar, se efectuaron diversas pruebas utilizando clientes BOINC corriendo sobre diferentes distribuciones Windows en donde no se encontraron nuevas fallas. Se obtuvo así una versión estable y final de FuD-BOINC.
+

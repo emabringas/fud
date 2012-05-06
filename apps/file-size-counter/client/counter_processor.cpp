@@ -1,23 +1,23 @@
 /*
   Parallel Clusterer: A distributed protein backbone clusterer.
     Copyright (C) 2009 Guillermo Biset, FuDePAN
-    
+
     This file is part of the Parallel Clusterer Project.
 
     File:           clusterer_client.cpp
-    Contents:       Implementation file for Parallel Cluster providing class 
+    Contents:       Implementation file for Parallel Cluster providing class
                     CounterProcessor. This type of client is designed to solve
-                    job units from each of the three concrete distributable 
+                    job units from each of the three concrete distributable
                     jobs of the clusterer. There is also an implementation
                     of the create_client method, which will later be linked at
                     compile time.
 
     System:         Parallel Clusterer
     Language:       C++
-  
+
     Author:         Guillermo Biset
     E-Mail:         billybiset AT gmail.com
-  
+
     Parallel Clusterer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or

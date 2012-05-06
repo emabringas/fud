@@ -1,7 +1,4 @@
-include_directories( ../src/common )
-include_directories( ../src/client )
-include_directories( ../src/server )
+# $Id: CMakeLists.txt 265 2010-08-18 14:48:33Z lbesso $
 
 add_subdirectory( counter )
-add_subdirectory( counter-msg )
-add_subdirectory( file-size-counter )
+#add_subdirectory( file-size-counter )

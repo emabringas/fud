@@ -20,7 +20,7 @@
 
 AsioServerClient::AsioServerClient(std::string address, Port dest_port, Port port) :
     AsioServer(port),
-    AsioClient(address,dest_port)
+    AsioClient(address, dest_port)
 {
     run();
 }
@@ -31,5 +31,5 @@ void AsioServerClient::handle_received_message(const std::string& msg)
 
     output << msg.size() + HEADER_LENGTH << msg;
 
-    send_all( output.str() );
+    send_all(output.str());
 }
