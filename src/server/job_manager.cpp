@@ -95,7 +95,10 @@ JobManager::JobManager() :
 JobManager::~JobManager() 
 {
     delete _clients_manager;
-    //delete events
+    
+    stop_scheduler();
+
+    _scheduler_thread.join();
 }
 
 DistributableJob* JobManager::jobs_available() //will eventually change policy
@@ -118,7 +121,7 @@ bool JobManager::job_queue_full() //const
 
 void JobManager::stop_scheduler()
 {
-    _status = kStopped;
+    _event_queue.push(new_event(&JobManagerEventHandler::quit_event));
 }
 
 void JobManager::create_another_job_unit()
@@ -345,7 +348,7 @@ void JobManager::start_scheduler() /*start the scheduler thread, return*/
         if (_status == kStopped)
         {
             _status = kRunning;
-            boost::thread thr1( boost::bind( &JobManager::run_scheduler, this ) );
+            _scheduler_thread = boost::thread( boost::bind( &JobManager::run_scheduler, this ) );
         }
     }
     handle_new_job_event();
@@ -373,6 +376,12 @@ void JobManager::handle_new_job_event()
             }
         }
     }
+}
+
+void JobManager::quit_event()
+{
+    boost::mutex::scoped_lock glock(_mutex);
+    _status = kStopped;
 }
 
 void JobManager::enqueue(DistributableJob* distjob)

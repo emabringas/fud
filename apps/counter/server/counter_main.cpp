@@ -56,9 +56,9 @@ int main(int argc, char** argv)
 
     std::cout << "Last number is: " << db->current_number() << std::endl;
 
+    fud::finish();
+
     delete db;
     for (size_t i(0); i < jobs_n; ++i)
         delete jobs[i];
-
-    fud::finish();
 }
