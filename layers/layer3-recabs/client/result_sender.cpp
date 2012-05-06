@@ -44,3 +44,8 @@ InmediatelySender::~InmediatelySender()
 {
     delete _real_sender;
 }
+
+ChainableSender::~ChainableSender()
+{
+    delete _nextSender;
+}

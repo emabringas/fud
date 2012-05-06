@@ -121,7 +121,7 @@ class ChainableSender: public MessageSender
         /**
          *  Destructor
          */
-    	virtual ~ChainableSender(){};
+    	virtual ~ChainableSender();
 
         /**
          *  Reimplementation of method send.
