@@ -109,6 +109,8 @@ namespace fud
          * \sa DistributableJob
          */
         virtual void handle_distributable_job_completed_event(DistributableJob* distjob) = 0;
+
+        virtual void quit_event() = 0;
     };
 
     /**
@@ -208,12 +210,12 @@ namespace fud
             /* handling DistributableJob events */
             virtual void handle_distributable_job_completed_event(DistributableJob* distjob);
 
-
             void              handle_new_job_event();
 
             /* local events*/
             void              job_queue_not_full_event();
             void              handle_job_queue_not_full_event();
+            void              quit_event();
 
             /**
              *  Assign pending job units to a free clients when jobs queue is empty
@@ -233,9 +235,10 @@ namespace fud
 
             JobUnitSize                     _current_job_unit_size;
 
-            Status                          _status;
+            volatile Status                 _status;
 
             boost::mutex                    _mutex;
+            boost::thread                   _scheduler_thread;
 
             LockingQueue<Event<JobManagerEventHandler> *>    _event_queue;
 
