@@ -41,10 +41,6 @@ using namespace fud;
 
 ClientProcessor::ClientProcessor()
 {
-    ProcessorsManager::get_instance()->register_processor(this); 
+    ProcessorsManager::get_instance()->register_processor(this);
 }
 
-ClientProcessor::~ClientProcessor()
-{
-	
-}

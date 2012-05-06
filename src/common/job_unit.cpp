@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
+ * Copyright (C) 2009 Guillermo Biset, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,14 +14,8 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * @author     Guillermo Biset
- * @email      billybiset AT gmail.com
- *  
- * @author     Mariano Bessone
- * @email      marjobe AT gmail.com
- *
- * @author     Emanuel Bringas
- * @email      emab73 AT gmail.com
+ * Author:         Guillermo Biset
+ * E-Mail:         billybiset AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,10 +54,8 @@ void  JobUnit::set_size(JobUnitSize size)
 const std::string& JobUnit::serialize() const
 {
     if (_string_pending)  /* header + message */
-    {
-        fud_size size_of_message = HEADER_SIZE + SERVER_HEADER_LENGTH + sizeof(JobUnitID) + sizeof(fud_size) + get_message().size() * sizeof(char);
-        _output_message << size_of_message << kJob << get_id() << get_message();
-    }
+        _output_message << get_id() << get_message(); // inserting the string completes the header
+
     return _output_message.str();
 }
 
@@ -76,3 +68,4 @@ const std::string& StreamingJobUnit::get_message() const
 {
     return _output.str();
 }
+

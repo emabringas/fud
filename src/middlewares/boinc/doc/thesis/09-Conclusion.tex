@@ -1,0 +1,12 @@
+\chapter{Conclusión}
+\label{chapter:conclusion}
+
+Gracias a las tareas realizadas a lo largo de este proyecto, se han obtenido diferentes resultados; algunos positivos y otros no tan alentadores. Sin embargo, la evaluación final resulta ser muy positiva debido a que todas las metas propuestas al comienzo del proyecto fueron cumplidas satisfactoriamente.
+
+En principio se logró implementar la nueva capa de distribución FuD-BOINC manteniendo la compatibilidad con las aplicaciones que actualmente utilizan al modelo original de FuD.
+
+En segundo lugar, realizando un análisis de los resultados obtenidos tanto de las pruebas efectuadas con la aplicación \textit{Counter} como con \textit{Parallel Clusterer}, se puede afirmar que la implementación de FuD-BOINC junto con los rediseños llevados a cabo sobre FuD no afectan al modelo propuesto por el mismo, ni a su correcto funcionamiento. De esta manera, los desarrolladores que utilicen a FuD en sus implementaciones pueden variar de una capa de distribución a otra con la certeza de que los resultados obtenidos al ejecutar sus aplicaciones serán realmente los esperados.
+
+Como tercer punto, se logró compilar la aplicación cliente de \textit{Parallel Clusterer} para que pueda correr sobre sistemas Windows suministrando así una configuración base la cual servirá de guía para la compilación de futuras aplicaciones FuD que necesiten correr sobre este sistema operativo mediante el middleware BOINC.
+
+Por último, basándose de los resultados obtenidos en el análisis de rendimiento de una aplicación compilada con FuD-BOINC, donde sus JobUnits no requieren gran cantidad de procesamiento para su computación, se puede afirmar que el tiempo total de ejecución en general, serán más elevados que su solución secuencial cuando la cantidad de voluntarios sea muy reducida. Esto se debe a cómo funciona BOINC en la distribución de sus trabajos, la cual se basa en requerimientos de tareas por parte de clientes, efectuados en intervalos de tiempos variables. Por el contrario, si la cantidad de voluntarios es elevada, los tiempos entre cada requerimiento de tarea recibidos por el servidor será mínimo por lo que las tareas serán distribuidas rápidamente. A su vez, el paralelismo en este caso sería aún mayor.

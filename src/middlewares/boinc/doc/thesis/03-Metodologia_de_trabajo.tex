@@ -1,0 +1,169 @@
+\chapter{Metodología de trabajo}
+\label{chapter:metodologia}
+
+\section{Prácticas de software}
+
+Para el desarrollo de este proyecto se optó por utilizar una metodología de trabajo basada en las buenas prácticas de software establecidas en el artículo publicado por IBM \textit{Best practices for software development projects} \footnote{\url{http://www.ibm.com/developerworks/websphere/library/techarticles/0306_perks/perks2.html}}. De las prácticas mencionadas en este artículo, las siguientes fueron implementadas satisfactoriamente:
+
+\subsection{Captura de requisitos}
+
+Reunir y acordar los requerimientos es una etapa fundamental para el éxito de un proyecto. Esto no implica necesariamente que todos los requerimientos deban ser corregidos antes de que el diseño y codificación sean efectuados, pero es importante que el equipo de desarrollo entienda qué necesita construir.
+
+Para comenzar con el desarrollo de FuD-BOINC, dedicamos un tiempo considerable en comprender las necesidades que la organización FuDePAN\footnote{\url{http://fudepan.org.ar/}} deseaba cubrir con nuestro proyecto. 
+
+\subsection{Diseño}
+
+Aún con una buena arquitectura es posible tener un mal diseño. Los dos principios básicos aquí son ``mantener la simplicidad'' y ``ocultar la información''. En muchos proyectos es importante llevar a cabo un Análisis y Diseño Orientado a Objetos usando UML \footnote{\url{http://www.uml.org/}}.
+
+Debido a las características del problema planteado para el desarrollo de este proyecto y considerando que FuD ya provee de un diseño que permite contar con varias implementaciones de su capa de distribución, nuestra labor en esta etapa fue, en un principio, entender su diseño e investigar la arquitectura de BOINC para luego rediseñar las partes que iban a ser afectadas por nuestra implementación.
+
+\subsection{Construcción de código}
+
+Sin duda, una importante etapa del desarrollo fue la construcción del código fuente. Para ello fue necesario disponer de una aplicación ``juguete'' que utilizara a FuD en su implementación y que nos permitiera corroborar el funcionamiento de FuD con el middleware BOINC. En este contexto fue que se decidió utilizar la aplicación ejemplo \textit{Counter} provista por el framework.
+
+Cada cambio realizado en el código, por más mínimo que fuera, fue debidamente testeado en su entorno final para corroborar que su funcionamiento y adaptación con el proyecto BOINC fuesen el esperado.
+
+\subsection{Testing}
+
+El testing es una parte importante de todo proceso de desarrollo de software. En nuestro caso, se utilizaron las aplicaciones de ejemplo que el framework ofrece para probar diferentes características o secciones de nuestro proyecto. Dichas pruebas permitieron determinar varias fallas o errores que debieron ser corregidos para el correcto funcionamiento de las aplicaciones.  
+
+\subsection{Gestión de la configuración}
+
+La gestión de la configuración consiste en conocer el estado de todos los artefactos de que componen el sistema o proyecto, gestionar el estado de esos artefactos, y la liberación de diferentes versiones de un sistema
+
+\subsection{Control de calidad y defectos}
+
+A medida que el proyecto se codifica y se prueban las funcionalidades involucradas en cada revisión, los defectos encontrados, con sus respectivas soluciones, ayudan a medir la madurez del código. Por ello, es importante utilizar un sistema de seguimientos de errores que esté conectado con el sistema de control de versiones.
+
+
+\section{Gestión de la configuración}
+
+Cuando se construye software de computadora, los cambios son inevitables. Además, cada cambio puede aumentar el grado de confusión entre los participantes que se encuentren trabajando en el proyecto. La confusión surge cuando no se han analizado los cambios antes de realizarlos, no se han registrado antes de implementarlos, no se les han comunicado a aquellas personas que necesitan saberlo o no se han controlado de manera que mejoren la calidad y reduzcan los errores.
+
+En este contexto, para desarrollar \textit{FuD-BOINC}, fue necesario llevar el estado de cada elemento del software: código fuente, diagramas, archivos de configuración, etc. Se utilizó entonces un repositorio \textbf{svn} alojado en \textbf{googlecode} que nos permitió controlar cada cambio realizado sobre cada elemento del software. 
+
+Información sobre subversion (svn) y sus características pueden ser encontradas en el libro de O'Reilly's\cite{svn}. Información sobre el uso de \textbf{googlecode} puede ser consultada en su sitio web\footnote{\url{http://code.google.com/projecthosting/}}.
+
+
+\section{Seguimiento de errores}
+
+A lo largo de todo el proceso fue necesario hacer diversos seguimientos de errores, tanto de este proyecto como así también de proyectos y librerías importantes para la aplicación Parallel Clusterer\ref{seccion:pruebas:clusterer}
+
+Todos los errores, defectos y cambios sobre el proyecto, e inclusive sobre los proyectos externos utilizados, fueron reportados usando el issue tracker de googlecode\footnote{\url{http://code.google.com/p/support/wiki/IssueTrackerAPI/}} mediante el cual se pudo hacer un seguimiento de cada detalle informado. 
+
+Para dudas o consultas referidas a los proyectos mencionados anteriormente, se utilizaron diversos medios de comunicación que la misma fundación provee y que permitieron contactarnos directamente con los desarrolladores del proyecto. Para tal fin, se utilizó un grupo de discusión y un canal de chat, ambos integrados por todos los miembros de FuDePAN\footnote{\url{http://www.fudepan.org.ar/}}.
+
+
+\section{Herramientas}
+
+\subsection{GNU/Linux y Software Libre}
+
+Es un sistema operativo basado en GNU/Linux que está conformado por varios componente, entre ellos el núcleo Linux y los programas desarrollados por el proyecto GNU.
+Linux es un sistema operativo libre del tipo Unix sobre el cual se desarrolló la mayor parte de este proyecto. Tanto este proyecto como así también la mayoría de las herramientas utilizadas a lo largo de su desarrollo se encuentran bajo la licencia \textbf{GPL} \footnote{\url{http://www.gnu.org/licenses/gpl-3.0.txt}}, siglas que provienen del inglés \textbf{\textit{General Public License}}. 
+
+El termino ``Libre'' se refiere a la capacidad de poder analizar y modificar el código fuente de la herramienta, permitiendo redistribuir 
+el trabajo sin restricción alguna, excepto que se debe mantener la licencia y la referencia a los autores originales. 
+
+\subsection{GNU Toolchain}
+
+Linux ofrece una serie de herramientas de gran utilidad para desarrolladores, de las cuales varias fueron utilizadas para el desarrollo de este proyecto:
+
+\begin{itemize}
+\item \textbf{GCC ( GNU Compiler Collection )}: es un conjunto de compiladores creados por el proyecto GNU. Es software libre y distribuido bajo la licencia GPL. 
+Originalmente GCC significaba GNU C Compiler (compilador GNU para C), porque sólo compilaba el lenguaje \textit{C}. Posteriormente se extendió para compilar \textit{C++}, \textit{Fortran}, \textit{Ada} y otros.
+
+\item \textbf{GDB ( The GNU Project Debbuger )}: es el depurador estándar desarrollado para  sistema operativo GNU. Es un depurador portable que se puede utilizar en varias plataformas Unix y funciona para varios lenguajes de programación como C, C++ y Fortran.
+
+\item \textbf{CMake}\label{tool:cmake}: el nombre viene de la abreviatura Cross Platform Make\footnote{\url{http://www.cmake.org/}}. Es una herramienta multiplataforma y de código abierto utilizada para la generación o automatización de código. 
+Fue diseñado para soportar jerarquía de directorios y aplicaciones que dependen de múltiples librerías. 
+
+\item \textbf{\LaTeX}: es una herramienta para la composición de textos y está orientada especialmente a la creación de libros,
+ documentos científicos y técnicos que contengan fórmulas matemáticas. También es muy utilizado para la composición de artículos académicos,
+ tesis y libros técnicos, dado que la calidad tipográfica de los documentos realizados con LaTeX es comparable a la de una editorial científica de primera línea.
+
+\item \textbf{Edición}
+\begin{description}
+ \item \textbf{Gedit}: es el editor de textos predeterminado de GNOME. Básicamente es un editor de textos de propósito general, 
+ cuyo diseño se enfatizó en la simplicidad y facilidad de  uso. Incluye herramientas para la edición de código fuentes,
+ textos estructurados y lenguajes de marcado. Este es compatible con UTF-8 para GNU/Linux, Mac OS X y Microsoft Windows
+\item \textbf{Texmaker / Kile}: editores de Tex/LaTeX utilizados para la documentación de este proyecto.
+
+\end{description}
+
+\item \textbf{Gráficos}
+
+\begin{description}
+
+\item \textbf{Bouml}: editor de diagramas \textbf{\textit{UML}}. Más información en \url{http://bouml.free.fr/}
+\item \textbf{Día}: editor de diagramas de propósito general. Más información en \url{http://live.gnome.org/Dia/}.
+
+\end{description}
+
+\item \textbf{Documentación de código}
+
+\begin{description}
+ \item \textbf{Doxygen}: es un generador de documentación para código fuente. Se aplica en los lenguajes \textit{C}, \textit{C++}, \textit{Java}, \textit{Objective-C} entre otros.
+\end{description}
+
+\item \textbf{Análisis estático de código}
+
+\begin{description}
+
+ \item \textbf{Cloc}: es un programa desarrollado en Perl para contar la cantidad de líneas de código  de un sistema. Cuenta líneas en blanco, líneas de comentarios y líneas de código fuente.
+
+\item \textbf{CCCC}: herramienta para el análisis de los archivos fuentes “\textit{.cpp}”. Esta genera reportes y genera un informe sobre diversas métricas del código. 
+
+\item \textbf{GCov}: es una herramienta que se utiliza en conjunción con \textit{GCC} para hacer pruebas de cobertura de código de un programa. 
+Su tarea consiste en informar cuantas veces se ejecuta un línea de código, que línea de código se ejecuta actualmente y cuánto tiempo de computación usa cada sección de código.
+Esta herramienta es útil por ejemplo para encontrar ciertas líneas de código que no se utilizan.
+
+\end{description}
+\end{itemize}
+
+\subsection{Aplicaciones BOINC}
+
+Para la creación del proyecto BOINC sobre el cual se ejecutó la aplicación servidor compilada con FuD utilizando el middleware BOINC
+ se utilizó el script \textbf{\textit{make\_project}} que ofrece BOINC en su código fuente. 
+
+Para participar como clientes de nuestro proyecto \textit{BOINC} utilizamos las aplicaciones cliente \textit{BOINC-Client} y \textit{BOINC-Clients-manager}.
+Dichas aplicaciones se pueden descargar de la página \url{http://boinc.berkeley.edu/download_all.php}
+
+Tanto el Script como las aplicaciones cliente fueron explicadas en la sección \textbf{\textit{2.5.BOINC}} de este documento.
+
+
+\subsection{Microsoft Windows}
+
+Para este proyecto se realizó la compilación del lado cliente de ciertas aplicaciones utilizando la herramienta \textit{Visual Studio} 
+desarrollado por Microsoft para los  sistemas operativos \textit{Microsoft Windows}. 
+
+\vspace{0.5cm}
+
+\begin{description}
+
+ \item \textbf{Visual Studio}
+
+Microsoft Visual Studio soporta varios lenguajes de programación tales como \texttt{Visual C++}, \texttt{Visual C\#}, \texttt{Visual J\#}, 
+\texttt{ASP.NET} y \texttt{Visual Basic .NET} y actualmente desarrollaron extensiones para dar soporte a otros lenguajes.
+
+Visual Studio permite a los desarrolladores crear aplicaciones, sitios y aplicaciones web, así como servicios web en
+ cualquier entorno que soporte la plataforma \texttt{.NET} (versión 2002 o superior) . 
+
+Para la compilación de las aplicaciones cliente se utilizo el Visual Studio 2005 Express Edition. La edición express ha sido diseñada para principiantes, aficionados y pequeños negocios, 
+siendo esta gratuita. Las ediciones Express carecen de algunas herramientas avanzadas de programación así como de opciones de extensibilidad.\\
+Esta edición, está disponible en la página \url{http://msdn.microsoft.com/es-es/express/aa975050}. 
+
+\end{description}
+
+\vspace{0.4cm}
+
+Para obtener ciertas librerías necesarias desde repositorios \textbf{SVN} y \textbf{Mercurial} respectivamente, se utilizaron las siguientes herramientas:
+
+\begin{description}
+ \item \textbf{TortoiseSVN}
+TortoiseSVN es un cliente de Subversion implementado como extensión para el Shell de Windows. Es software libre liberado bajo la licencia GNU GPL. Más información en \url{http://tortoisesvn.net/}
+
+\item \textbf{TortoiseHg}
+TortoiseHG es un cliente del control de versiones Mercurial, implementado como una extensión para el Shell de Windows. 
+También incluye extensiones para GNOME/Nautilus. Más información en \url{http://tortoisehg.bitbucket.org/}
+
+\end{description}

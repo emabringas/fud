@@ -4,7 +4,7 @@
  *
  * FuD: FuDePAN Ubiquitous Distribution, a framework for work distribution.
  * <http://fud.googlecode.com/>
- * Copyright (C) 2009, 2010, 2011 - Guillermo Biset & Mariano Bessone & Emanuel Bringas, FuDePAN
+ * Copyright (C) 2009 Guillermo Biset, FuDePAN
  *
  * This file is part of the FuD project.
  *
@@ -14,14 +14,8 @@
  * Homepage:       <http://fud.googlecode.com/>
  * Language:       C++
  *
- * @author     Guillermo Biset
- * @email      billybiset AT gmail.com
- *  
- * @author     Mariano Bessone
- * @email      marjobe AT gmail.com
- *
- * @author     Emanuel Bringas
- * @email      emab73 AT gmail.com
+ * Author:         Guillermo Biset
+ * E-Mail:         billybiset AT gmail.com
  *
  * FuD is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,22 +86,12 @@ namespace fud
         /**
          * Wrapper invoked to handle the results of a particular JobUnit. It will forward the
          * call to handle_results, implemented by the inhereting class.
-         * @param id             : ID of the completed JobUnit.
-         * @param message_number : the number of the message.
-         * @param message        : The result itself (contains the message from the processing client.)
+         * @param id      : ID of the completed JobUnit.
+         * @param message : The result itself (contains the message from the processing client.)
          *
          * \sa handle_results
          */
-        virtual void process_results  (JobUnitID id, fud_uint message_number, const std::string* message) = 0;
-
-        /**
-         * Wrapper invoked to handle the finalization of a particular JobUnit.
-         * @param id             : ID of the completed JobUnit.
-         *
-         * \sa JobUnit
-         */
-        virtual void process_finalization (JobUnitID id) = 0;
-
+        virtual void        process_results(JobUnitID id, const std::string* message) = 0;
         /**
          * Produces a JobUnit. It wraps a call to produce_next_job_unit and generates the
          * corresponding event. The DistributableJob must change state after generating it,
@@ -141,133 +125,105 @@ namespace fud
      */
     class DistributableJobImplementation : protected DistributableJob
     {
-        public:
-            /* Interface for main*/
-            /**
-             * Standard way to get the job started. The Job will enqueue itself on the JobManager.
-             * The L3-Implementer should only call this method if the Job will be ready to answer
-             * to get_status(), so whatever data is used in the project should be initialized.
-             * \sa JobManager
-             */
-            void  run();
-            /**
-             * Standard way to wait for the completion of this Job. This method will lock the calling
-             * thread until it completes.
-             */
-            void  wait_completion();
+    public:
+        /* Interface for main*/
+        /**
+         * Standard way to get the job started. The Job will enqueue itself on the JobManager.
+         * The L3-Implementer should only call this method if the Job will be ready to answer
+         * to get_status(), so whatever data is used in the project should be initialized.
+         * \sa JobManager
+         */
+        void  run();
+        /**
+         * Standard way to wait for the completion of this Job. This method will lock the calling
+         * thread until it completes.
+         */
+        void  wait_completion();
 
-            virtual ~DistributableJobImplementation(){};
-        protected:
-            /**
-             * Used internally, enqueues itself on the JobManager.
-             * \sa JobManager
-             */
-            DistributableJobImplementation();
+        virtual ~DistributableJobImplementation() {};
+    protected:
+        /**
+         * Used internally, enqueues itself on the JobManager.
+         * \sa JobManager
+         */
+        DistributableJobImplementation();
 
-        private:
+    private:
 
-            /**
-             * Adds the JobUnit completion.
-             * Checks to see if this JobUnit was completed before.
-             * @param id : The JobUnitID to check for.
-             * \sa JobUnit
-             * \sa JobUnitID
-             */
-            void add_completion(JobUnitID id);
+        /**
+         * Checks to see if this JobUnit was completed. To prevent the handling of duplicate
+         * results this method checks with the set of completed JobUnitIDs.
+         * @param id : The JobUnitID to check for.
+         * \sa JobUnit
+         * \sa JobUnitID
+         */
+        bool  completion_accepted(JobUnitID id);
 
-            /**
-             * Checks to see if this JobUnit was completed.
-             * @param id : The JobUnitID to check for.
-             * \sa JobUnit
-             * \sa JobUnitID
-             */
-            bool completed(JobUnitID id);
+        /* For app-layer developer.*/
+        /**
+         * Handle the results of a completed JobUnit.
+         * The method is called upon completion of a JobUnit, the resulting message is
+         * encapsulated by the processing client in the input parameter.
+         *
+         * @param id    : The JobUnitID of the completed JobUnit.
+         * @param input : The stream of data with the results.
+         *
+         * \sa JobUnit
+         * \sa JobUnitID
+         */
+        virtual void                   handle_results(JobUnitID id, InputMessage& input) = 0;
+        /**
+         * To produce another JobUnit. It will only be called on a DistributableJob whose status is
+         * ReadyToProduce.
+         *
+         * @param size : The size of the expected JobUnit, it is to be used as a guide and is not
+         *               mandatory.
+         *
+         * The concept of size is user defined and will generally be problem dependant.
+         * It is advised that the size definition for a particular implementation is proportional to
+         * the actual size of the message.
+         *
+         * \sa JobUnit
+         */
+        virtual JobUnit*               produce_next_job_unit(JobUnitSize  size)             = 0;
+        /**
+         * Returns the status of a DistributableJob. This method is used for synchronization with the
+         * rest of the system, so care must be taken in its implementation. It is imperative that the
+         * method returns ReadyToProduce iff it is immediately ready to produce a JobUnit and also
+         * return FinishedGenerating iff it won't produce any more JobUnits in the future.
+         * \sa DistributableJobStatus
+         */
+        virtual DistributableJobStatus get_status()                                   const = 0;
+        /** Returns the name of this particular DistributableJob. Used for logging purposes. */
+        virtual const char*            get_name()                                     const = 0;
 
-            /* For app-layer developer.*/
-            /**
-             * Handle the results of a completed JobUnit.
-             * The method is called upon completion of a JobUnit, the resulting message is
-             * encapsulated by the processing client in the input parameter.
-             *
-             * @param id    : The JobUnitID of the completed JobUnit.
-             * @param input : The stream of data with the results.
-             *
-             * \sa JobUnit
-             * \sa JobUnitID
-             */
-            virtual void handle_results(JobUnitID id, InputMessage& input) = 0;
+        /* Implemented here, checks with completion_accepted first, then calls handle_results. */
+        virtual void        process_results(JobUnitID id, const std::string* message);
 
-            /* For app-layer developer.*/
-            /**
-             * Handle the finalization of a completed JobUnit.
-             * The method is called upon completion of a JobUnit.
-             * Default implementation does nothing.
-             *
-             * @param id    : The JobUnitID of the completed JobUnit.
-             *
-             * \sa JobUnit
-             * \sa JobUnitID
-             */
-            virtual void handle_finalization(JobUnitID){};
+        /* Calls produce_next_job_unit, if not null, calls inform_generation. */
+        JobUnit* get_next_job_unit(JobUnitSize  size);
 
-            /**
-             * To produce another JobUnit. It will only be called on a DistributableJob whose status is
-             * ReadyToProduce.
-             *
-             * @param size : The size of the expected JobUnit, it is to be used as a guide and is not
-             *               mandatory.
-             *
-             * The concept of size is user defined and will generally be problem dependant.
-             * It is advised that the size definition for a particular implementation is proportional to
-             * the actual size of the message.
-             *
-             * \sa JobUnit
-             */
-            virtual JobUnit*               produce_next_job_unit(JobUnitSize  size)             = 0;
-            /**
-             * Returns the status of a DistributableJob. This method is used for synchronization with the
-             * rest of the system, so care must be taken in its implementation. It is imperative that the
-             * method returns ReadyToProduce iff it is immediately ready to produce a JobUnit and also
-             * return FinishedGenerating iff it won't produce any more JobUnits in the future.
-             * \sa DistributableJobStatus
-             */
-            virtual DistributableJobStatus get_status()                                   const = 0;
-            /** Returns the name of this particular DistributableJob. Used for logging purposes. */
-            virtual const char*            get_name()                                     const = 0;
+        /* Used by wait_completion. */
+        bool    finished();
 
-            /* Implemented here, checks with completion_accepted first, then calls handle_results. */
-            virtual void process_results (JobUnitID id, fud_uint message_number, const std::string* message);
+        /* Called by get_next_job_unit. */
+        void  inform_generation();
 
-            /* Implemented here, adds completion_accepted. */
-            virtual void process_finalization (JobUnitID id);
+        /* Attributes. */
+        DistributableJobListener* const _listener;
 
-            /* Calls produce_next_job_unit, if not null, calls inform_generation. */
-            JobUnit* get_next_job_unit(JobUnitSize  size);
+        /** Stores the set of IDs of all completed JobUnits from this DistributableJob. */
+        std::set<JobUnitID> _completed;           /*when _completed.size() = _j_u_gen then */
+        /*the job is completed.                  */
+        /** Amount of generated job units. */
+        size_t              _job_units_generated;
 
-            /* Used by wait_completion. */
-            bool    finished();
+        boost::mutex              _completed_mutex;
+        boost::mutex              _job_units_generated_mutex;
+        boost::condition_variable _condition;
 
-            /* Called by get_next_job_unit. */
-            void  inform_generation();
-
-            /* Attributes. */
-            DistributableJobListener* const _listener;
-
-            /** Stores the set of IDs of all completed JobUnits from this DistributableJob. */
-            std::set<JobUnitID> _completed;           /*when _completed.size() = _j_u_gen then */
-                                                      /*the job is completed.                  */
-
-            /* Stores the list of the messages which been sent for each JobUnit. */
-            std::map< JobUnitID, std::list<fud_uint> > _messages_map;
-
-            /** Amount of generated job units. */
-            size_t              _job_units_generated;
-
-            boost::mutex              _completed_mutex;
-            boost::mutex              _job_units_generated_mutex;
-            boost::condition_variable _condition;
-
-            InputMessage              _input;
+        InputMessage              _input;
     };
 }
 #endif
+

@@ -8,22 +8,19 @@ Counter::Counter(NumberDatabase& num_db, size_t my_id) :
     DistributableJobImplementation(),
     _id(my_id),
     _num_db(num_db),
-    _last(my_id+1)
+    _last(my_id + 1)
 {
     ++_job_count;
 }
 
 const char* Counter::get_name() const
 {
-/*
     std::ostringstream oss;
     oss << "Counter " << _id;
     return oss.str().c_str();
-*/
-    return "Counter";
 }
 
-void Counter::handle_results (JobUnitID id,InputMessage& input)
+void Counter::handle_results(JobUnitID id, InputMessage& input)
 {
     fud_uint count;
     input >> count;
@@ -34,16 +31,15 @@ DistributableJobStatus Counter::get_status() const
 {
     if (_num_db.finished_counting())
         return FinishedGenerating;
+    else if ((_num_db.current_number() % _job_count == _id) && (_last != _num_db.current_number()))
+        return ReadyToProduce;
     else
-        if ((_num_db.current_number() % _job_count == _id) && (_last != _num_db.current_number()) )
-            return ReadyToProduce;
-        else
-            return WaitingMoreData;
+        return WaitingMoreData;
 }
 
 JobUnit* Counter::produce_next_job_unit(JobUnitSize size)
 {
-    if ( get_status() == ReadyToProduce)
+    if (get_status() == ReadyToProduce)
     {
         StreamingJobUnit* res = new StreamingJobUnit();
 

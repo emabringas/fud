@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FuD", "FuD-BOINC.vcproj", "{0199E623-9303-4D4D-ADC0-8A5557BD3F9F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Counter-Client_App", "Counter-Client_App.vcproj", "{ED892B2E-8B40-4E2B-8E26-8F6B5BB2481A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0199E623-9303-4D4D-ADC0-8A5557BD3F9F} = {0199E623-9303-4D4D-ADC0-8A5557BD3F9F}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0199E623-9303-4D4D-ADC0-8A5557BD3F9F}.Debug|Win32.ActiveCfg = Release|Win32
+		{0199E623-9303-4D4D-ADC0-8A5557BD3F9F}.Debug|Win32.Build.0 = Release|Win32
+		{0199E623-9303-4D4D-ADC0-8A5557BD3F9F}.Release|Win32.ActiveCfg = Release|Win32
+		{0199E623-9303-4D4D-ADC0-8A5557BD3F9F}.Release|Win32.Build.0 = Release|Win32
+		{ED892B2E-8B40-4E2B-8E26-8F6B5BB2481A}.Debug|Win32.ActiveCfg = Release|Win32
+		{ED892B2E-8B40-4E2B-8E26-8F6B5BB2481A}.Debug|Win32.Build.0 = Release|Win32
+		{ED892B2E-8B40-4E2B-8E26-8F6B5BB2481A}.Release|Win32.ActiveCfg = Release|Win32
+		{ED892B2E-8B40-4E2B-8E26-8F6B5BB2481A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

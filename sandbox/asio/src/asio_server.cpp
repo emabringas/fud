@@ -32,14 +32,14 @@ AsioServer::AsioServer(Port port) :
 {
     std::cout << "Server: Starting." << std::endl;
     // To connect clients
-    boost::thread acceptor( boost::bind( &AsioServer::run_acceptor_thread, this));
+    boost::thread acceptor(boost::bind(&AsioServer::run_acceptor_thread, this));
 }
 
 void AsioServer::send_one(ClientID id, const std::string& message)
 {
     std::list<ClientProxy*>::iterator it;
-    it = find_if(_client_proxies.begin(),_client_proxies.end(),
-                boost::bind(&ClientProxy::get_id, _1) == id);
+    it = find_if(_client_proxies.begin(), _client_proxies.end(),
+                 boost::bind(&ClientProxy::get_id, _1) == id);
 
     if (it != _client_proxies.end())
         (*it)->process(message);
@@ -47,7 +47,7 @@ void AsioServer::send_one(ClientID id, const std::string& message)
 
 void AsioServer::send_all(const std::string& message)
 {
-    for (std::list<ClientProxy*>::iterator it( _client_proxies.begin() ); it != _client_proxies.end(); ++it)
+    for (std::list<ClientProxy*>::iterator it(_client_proxies.begin()); it != _client_proxies.end(); ++it)
         (*it)->process(message);
 }
 
@@ -68,9 +68,9 @@ void AsioServer::_async_accept()
 {
     AsioClientProxy* client = new AsioClientProxy(_io_service);
     _acceptor.async_accept(client->socket(), boost::bind(&AsioServer::handle_accept,
-                                                         this,
-                                                         boost::asio::placeholders::error,
-                                                         client));
+                           this,
+                           boost::asio::placeholders::error,
+                           client));
 
     std::cout << "Server: Accepting incoming connections." << std::endl;
 }
@@ -81,7 +81,7 @@ void AsioServer::register_client(ClientProxy* client)
     _client_proxies.push_back(client);
 }
 
-void AsioServer::handle_accept(const boost::system::error_code& ec,AsioClientProxy* client)
+void AsioServer::handle_accept(const boost::system::error_code& ec, AsioClientProxy* client)
 {
     if (! ec)
         register_client(client);
@@ -107,7 +107,7 @@ void AsioServer::AsioClientProxy::handle_response(ResponseCode code)
         if (code == Ok) // get result
         {
             char size_buf[RESPONSE_HEADER_LENGTH];
-            boost::asio::read(_socket,boost::asio::buffer(size_buf,RESPONSE_HEADER_LENGTH));
+            boost::asio::read(_socket, boost::asio::buffer(size_buf, RESPONSE_HEADER_LENGTH));
 
             MessageSize size;
 
@@ -117,12 +117,12 @@ void AsioServer::AsioClientProxy::handle_response(ResponseCode code)
             if (size > 0)
             {
                 std::auto_ptr<char> msg(new char[size]);
-                boost::asio::read(_socket,boost::asio::buffer(msg.get(),size));
+                boost::asio::read(_socket, boost::asio::buffer(msg.get(), size));
                 std::cout << "Server: Message received succesfuly." << std::endl;
             }
         }
     }
-    catch(std::exception& e)
+    catch (std::exception& e)
     {
         std::cerr << "Server: Error(handle_response): " << e.what() << std::endl;
         destroy();
@@ -138,7 +138,7 @@ void AsioServer::AsioClientProxy::handle_receive(const boost::system::error_code
 {
     if (!ec)
     {
-        InputMessage bis(std::string(_code_buf,RESPONSE_HEADER_LENGTH));
+        InputMessage bis(std::string(_code_buf, RESPONSE_HEADER_LENGTH));
 
         ResponseCode code;
         bis >> code;
@@ -158,9 +158,9 @@ void AsioServer::AsioClientProxy::handle_send(const boost::system::error_code& e
     {
         std::cout << "Server: Sending Message to Client " << get_id() << std::endl;
 
-        boost::asio::async_read(_socket,boost::asio::buffer(_code_buf,RESPONSE_HEADER_LENGTH),
-                                boost::bind(&AsioServer::AsioClientProxy::handle_receive,this,
-                                boost::asio::placeholders::error));
+        boost::asio::async_read(_socket, boost::asio::buffer(_code_buf, RESPONSE_HEADER_LENGTH),
+                                boost::bind(&AsioServer::AsioClientProxy::handle_receive, this,
+                                            boost::asio::placeholders::error));
     }
     else
     {
@@ -171,12 +171,13 @@ void AsioServer::AsioClientProxy::handle_send(const boost::system::error_code& e
 
 void AsioServer::AsioClientProxy::process(const Message& message)
 {
-    try {
+    try
+    {
         boost::asio::async_write(_socket, boost::asio::buffer(message),
-                                boost::bind(&AsioServer::AsioClientProxy::handle_send,this,
-                                boost::asio::placeholders::error));
+                                 boost::bind(&AsioServer::AsioClientProxy::handle_send, this,
+                                             boost::asio::placeholders::error));
     }
-    catch(std::exception& e)
+    catch (std::exception& e)
     {
         std::cerr << "Server: Error(process/write): " << e.what() << std::endl;
         destroy();

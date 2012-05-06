@@ -50,20 +50,21 @@ namespace fud
      */
     class ClientProcessor
     {
-        public:
-            /**
-             * Computes the results of the message in input, and saves a message to output.
-             *
-             * @param input : The message coming from the server.
-             * @param output : The message that goes to the server. Contains the results.
-             *
-             * @returns true if and only if the computation was done succesfuly.
-             */
-            virtual bool process(InputMessage& input, OutputMessage& output) = 0;
+    public:
+        /**
+         * Computes the results of the message in input, and saves a message to output.
+         *
+         * @param input : The message coming from the server.
+         * @param output : The message that goes to the server. Contains the results.
+         *
+         * @returns true if and only if the computation was done succesfuly.
+         */
+        virtual bool process(InputMessage& input, OutputMessage& output) = 0;
 
-            virtual ~ClientProcessor();
-        protected:
-            ClientProcessor();
+        virtual ~ClientProcessor() {}
+    protected:
+        ClientProcessor();
     };
 }
 #endif
+

@@ -1,0 +1,141 @@
+\chapter{Sobre FuD-BOINC}
+\label{chapter:sobre:fud:boinc}
+
+
+\section{El problema}
+
+El problema que motivó el desarrollo de esta tesis consiste en la implementación de una nueva capa de distribución del framework FuD utilizando el middleware BOINC\footnote{\url{http://boinc.berkeley.edu/}} para permitir que cualquier aplicación que use a FuD en su desarrollo pueda optar por utilizar la computación voluntaria como fuente de procesamiento.
+
+El asunto surgió como una necesidad de la organización FuDePAN\footnote{\url{http://fudepan.org.ar/}} para poder ejecutar sobre un proyecto de computación voluntaria y distribuida cualquier aplicación implementada con la librería FuD, permitiendo así incrementar la capacidad de procesamiento utilizando ordenadores personales de todo el mundo y, por el contrario, evitar el uso de costosas súper-computadoras.
+
+Por defecto, FuD sólo dispone de una única implementación de su capa de distribución, la cual fue desarrollada utilizando la librería Boost::ASIO\footnote{\url{http://www.boost.org/doc/libs/1_48_0/doc/html/boost_asio.html}} para la comunicación en red. Por ello, el objetivo principal de este proyecto es el de proporcionar una nueva implementación para dicha capa de tal manera que, al momento de desarrollar una aplicación utilizando a FuD, el desarrollador pueda elegir con qué implementación desea que su aplicación trabaje, acorde al dominio del problema que se intente resolver.
+
+\section{Metas del proyecto}
+
+Como se mencionó anteriormente, el objetivo principal de este proyecto fue permitir a desarrolladores de aplicaciones FuD la posibilidad de que sus ejecutables realicen computación distribuida mediante la arquitectura BOINC sin tener los conocimientos previos necesarios sobre desarrollo de aplicaciones BOINC. 
+
+En consecuencia, se pretende brindar, a la organización FuDePAN, una noción general sobre la creación y administración de un proyecto servidor BOINC en el cual se puedan poner en funcionamiento las aplicaciones creadas con esta nueva capa de distribución.
+
+De esta manera, FuDePAN podría dar un paso hacia adelante en lo que respecta a computación voluntaria evitando así tener que realizar importantes inversiones económicas para la adquisición de grandes nodos de procesamiento. Cabe destacar que FuDePAN es una organización sin fines de lucro por lo que sus ingresos monetarios dependen directamente de las colaboraciones que pueda percibir de diferentes organismos.
+
+La última meta que pretende este proyecto es la de poder generar un binario de la aplicación cliente Parallel-Clusterer\footnote{\url{http://code.google.com/p/parallel-clusterer/}}, utilizando a FuD-BOINC como capa de distribución, que sea compatible con sistemas operativos Windows, ya que actualmente esta aplicación solo está disponible para Linux. El motivo de esto es claro: la mayoría de los usuarios de computadoras utilizan una versión de este sistema operativo.
+
+\section{Tareas de investigación}
+
+Debido a que al comienzo del proyecto desconocíamos qué era BOINC y cómo trabajaba FuD debimos realizar diversas trabajos de investigación que nos permitieron conocer aún más el dominio del problema.
+
+A continuación se describen las tareas que se llevaron a cabo a lo largo del proyecto:
+
+\begin{itemize}
+\item Se analizó el funcionamiento general del framework FuD, focalizándonos puntualmente en la capa de distribución, el manejador de trabajos y su manejador de clientes. Aquí fue necesario conocer el diseño de la librería en conjunto con algunos puntos concretos de su implementación, verificando qué clases estaban involucradas en las tareas de comunicación y distribución de trabajos entre Cliente-Servidor. Para concluir, efectuamos la ejecución de sus aplicaciones ejemplos incluidas en el framework al mismo tiempo que analizábamos su código.
+\item Se investigó cómo trabaja la arquitectura BOINC desde su forma más general hasta los detalles mínimos de implementación relacionados directamente con el dominio de nuestro problema. Se optó por usar esta postura debido a que BOINC es muy amplio y muchas de sus características no están relacionadas con el desarrollo de esta tesis, sino más bien con trabajos a futuro. Durante esta tarea se inspeccionó el código fuente de algunas de sus aplicaciones ejemplo, estudiando su estructuras y funciones tanto del lado servidor como del lado cliente.
+\item Se examinó en detalle el proceso de creación y administración de un proyecto BOINC para posteriormente instalar nuestro propio proyecto. Esta tarea fue una etapa importante debido a que todo el proceso está íntimamente relacionado con la administración y configuración de un servidor web, cosa que en ese entonces desconocíamos por completo. Por este motivo, fue necesario estudiar el proceso general de instalación y configuración mencionado como así también la configuración de diversas herramientas en el ordenador servidor como fueron por ejemplo Apache, MySQL, PHP, entre otros.
+\item Luego del punto anterior, fue necesario conocer la función de cada uno de los demonios que corren en un proyecto BOINC y cuál es el rol de cada uno en la interacción cliente-servidor.
+\item Una vez instalado y configurado nuestro proyecto BOINC iniciamos pruebas funcionales de sus aplicaciones ejemplos al mismo tiempo que observamos detenidamente las interacciones generadas entre el servidor del proyecto y los clientes adheridos al mismo.
+\item Para la compilación de las aplicaciones ejemplos de BOINC, y teniendo en cuenta que íbamos a necesitar compilar FuD con BOINC, se examinó atentamente los archivos y librerías necesarias de BOINC que permitían compilar dichas aplicaciones.
+\end{itemize}
+
+Cada una de estas tareas fueron cruciales para comprender el funcionamiento y los modos de operación tanto de FuD como de BOINC, por ello, además de su estudio al comienzo de este trabajo final, fue necesario examinar cada punto durante todo el desarrollo.
+
+Es importante dejar en claro que todos estos puntos ocuparon un alto porcentaje del desarrollo de este proyecto; debido a nuestra falta de conocimiento y sumado a que desde la fundación también desconocían BOINC, el tiempo que nos llevó la realización de cada una de estas tareas fue bastante amplio.
+
+
+\section{Cómo funciona la capa de distribución}
+
+La capa de distribución del framework FuD está compuesta por una arquitectura del tipo cliente servidor. Ésta ofrece un modelo de computación distribuida master-worker donde el servidor actúa como master, llevando a cabo el progreso total del sistema, y los clientes actúan como worker, encargándose del procesamiento de datos.
+
+Debido a la arquitectura utilizada por FuD y considerando que BOINC es un middleware para la computación distribuida, para el desarrollo de nuestro proyecto debimos utilizar la arquitectura cliente-servidor.
+
+\subsection{Servidor}
+
+El funcionamiento del servidor de FuD-BOINC tiene como base el comportamiento del servidor FuD original, agregándole ciertas funcionalidades o características que permiten a las aplicaciones desarrolladas con las librerías FuD funcionar correctamente sobre un proyecto BOINC.
+
+Las características principales de la capa de distribución de FuD-BOINC se resumen en las siguientes:
+
+\begin{itemize}
+\item Analizar el archivo configuración del proyecto. (\texttt{config.xml})
+\item Conectar con la base de datos del proyecto.
+\item Crear un \texttt{ClientProxy} el cual representará a un cliente de FuD conectado al servidor de manera permanente donde su función será la de generar trabajos de BOINC y de notificar a FuD sobre \texttt{workunits} que hayan sido completadas. Para esto último, el mismo \texttt{ClientProxy} se encarga de lanzar un thread encargado de realizar las tareas que generalmente le corresponde al demonio \texttt{assimilator} de BOINC. Para más información sobre el \texttt{assimilator} de BOINC consultar la sección \ref{boinc:assimilator}.
+\item Crear un archivo binario por cada \texttt{JobUnit} de FuD liberada a la capa de distribución, el cual contendrá la información de dicha \texttt{JobUnit}.
+\item Crear una \texttt{workunit} por cada \texttt{JobUnit} que se pretenda enviar a procesar utilizando como entrada el archivo generado en el punto anterior. 
+\end{itemize}
+
+\subsection{Cliente}
+
+Al igual que el servidor, también se debió adaptar el cliente de FuD para que funcione correctamente sobre un cliente BOINC \ref{boinc:manager}. 
+
+La función principal de la aplicación cliente de FuD-BOINC es llevar a cabo las computaciones de las tareas recibidas desde el servidor. Para ello, primero debe leer la información contenida en su archivo de entrada y traducirla a \texttt{JobUnit} para luego informar a la capa superior sobre la computación a realizar.
+
+Una vez que la computación es completada, sus resultados son encapsulados dentro de un nuevo archivo de resultado el cual será enviado por el cliente BOINC al servidor del proyecto.
+
+Es importante dejar en claro que el cliente de FuD corre sobre el cliente de BOINC interactuando de la siguiente manera:
+
+\begin{enumerate}
+\item Cuando BOINC Manager (\ref{boinc:manager}) se inicia, suponiendo que el usuario ya ha hecho su adhesión al proyecto, inmediatamente consulta al servidor del proyecto por la existencia de nuevos trabajos que requieran ser procesados.
+\item En caso de que existan tareas, BOINC Manager se encargará de descargar aquellas que sean indicadas por el servidor del proyecto.
+\item Una vez descargados estos archivos, por cada uno de ellos, BOINC Manager ejecuta la aplicación cliente de FuD pasándole como argumento el archivo con los datos de la tarea a computar.
+\item Cuando el cliente de FuD finaliza genera un archivo de salida conteniendo el resultado de la computación que es tomado por BOINC Manager para luego enviárselo al servidor del proyecto al mismo tiempo que consulta por nuevos trabajos.
+\end{enumerate}
+
+\section{Dependencias externas}
+
+FuD tiene dependencia con un par de librerías. A continuación se explican qué librerías fueron utilizadas y cómo obtenerlas.
+
+\subsection{Mili}
+
+Mili es una colección de pequeñas y útiles librerías desarrolladas en el lenguaje C++ por FuDePAN, compuesta únicamente por cabeceras. 
+No requiere instalación para su uso y ofrece soluciones simples para problemas sencillos.
+
+Esta biblioteca provee varias funcionalidades mediante archivos cabecera, conocidos en el ámbito de C/C++ como archivos con extensión “.h”.
+Mili puede ser descargada junto con su documentación desde su repositorio \footnote{\url{http://mili.googlecode.com/}}.
+
+Mili ha sido extensamente utilizada a lo largo del desarrollo de FuD-BOINC. Se utilizaron las funcionalidades provistas por \texttt{generic\_exception}, \texttt{binary\_stream} y \texttt{RAII}.
+
+\begin{itemize}
+\item \texttt{binary\_stream}: permite serializar diferentes tipos de datos dentro de un único objeto utilizando los operadores de stream. Hay dos maneras de utilizar esta librería:
+\begin{enumerate}
+\item Empaquetar datos dentro de un objeto de salida (\texttt{bostream}) utilizando el operador <<.
+\item Extraer datos desde un objeto de entrada (\texttt{bistream}) utilizando el operador >>.
+\end{enumerate}
+
+\item \texttt{RAII}: esta librería ofrece una implementación de RAII\footnote{\url{http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization}} (Resource Acquisition Is Initialization) permitiendo aplicar RAII sobre los objetos para liberar los recursos adquiridos de manera automática cuando éstos terminan su ciclo de vida.
+
+\item \texttt{generic\_exception}: ofrece una implementación de excepciones genéricas a partir de las cuales los desarrolladores pueden crear sus propias excepciones para problemas específicos de una manera muy simple .
+\end{itemize}
+
+\subsection{Boost}
+
+La librería Boost es una colección de librerías de código abierto que extienden las funcionalidades del lenguaje C++. Es posible descargar Boost y acceder a su documentación desde su sitio web\footnote{\url{http://www.boost.org/}}.
+
+Durante el desarrollo de nuestra capa de distribución hicimos uso de las librerías \texttt{Boost::thread} y \texttt{Boost::bind}:
+
+\begin{itemize}
+\item \texttt{Boost thread}: permite el uso de múltiples hilos de ejecución con datos compartidos. Provee las clases y funciones necesarias para manejar estos hilos. 
+\item \texttt{Boost Bind}: es una librería que ofrece una generalización para las librerías std::bind1st() y std::bind2nd() provistas por C++. Soporta un número arbitrario de funciones de objetos, funciones, punteros a funciones, etc. y es capaz de ligar cualquier argumento a un valor especifico o ligar los argumentos de entrada con valores en diferentes posiciones.
+
+Ejemplo:
+
+\begin{lstlisting}[frame=shadowbox, language=c++, xleftmargin=8mm, framexleftmargin=20pt, basicstyle=\footnotesize, numberstyle=\footnotesize, backgroundcolor=\color{gris}]
+bind(f,1,2)			produce f(1,2)
+bind(f, _2, _1)(x, y);		produce f(y, x)
+bind(g, _1, 9, _1)(x);		produce g(x, 9, x)
+bind(g, _3, _3, _3)(x, y, z);	produce g(z, z, z)
+bind(g, _1, _1, _1)(x, y, z);	produce g(x, x, x)
+\end{lstlisting}
+\end{itemize}
+
+Estas bibliotecas fueron utilizadas para crear el asimilador de tareas requerido por BOINC.
+
+\subsection{MySQL}
+
+Es un sistema de gestión de bases de datos relacionales muy conocido que provee acceso multiusuario a sus bases de datos.
+
+Un proyecto BOINC utiliza una base de datos MySQL para persistir su información en el tiempo que sea necesario por lo que el desarrollo de nuestro proyecto, se hizo uso de ciertas funcionalidades que ofrece BOINC para el acceso a la base de datos y que involucran la ejecución sentencias MySQL para tal fin.
+
+\subsection{SSL}
+
+SSL proporciona autenticación y privacidad de la información entre servidor y clientes sobre Internet mediante el uso de criptografía. Habitualmente, sólo el servidor es autenticado mientras que el cliente se mantiene sin autenticar.
+
+SSL se ejecuta en una capa entre los protocolos de aplicación como HTTP, SMTP, NNTP y sobre el protocolo de transporte TCP, que forma parte de la familia de protocolos TCP/IP. En la mayoría de los casos se usa junto al protocolo HTTP para formar HTTPS. 
+
+BOINC hace uso de este protocolo para proveer seguridad en sus proyectos por lo que tuvimos que incluir dicha librería en la compilación de una aplicación FuD-BOINC.

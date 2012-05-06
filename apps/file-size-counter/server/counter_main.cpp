@@ -1,7 +1,7 @@
 /*
   Parallel Clusterer: A distributed protein backbone clusterer.
     Copyright (C) 2009 Guillermo Biset, FuDePAN
-    
+
     This file is part of the Parallel Clusterer Project.
 
     File:           clusterer_threads.cpp
@@ -9,10 +9,10 @@
 
     System:         Parallel Clusterer
     Language:       C++
-  
+
     Author:         Guillermo Biset
     E-Mail:         billybiset AT gmail.com
-  
+
     Parallel Clusterer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -31,7 +31,7 @@
 #include <sys/time.h>
 
 #include "counter.h"
-#include "getoptpp/getopt_pp.h"
+#include "getopt_pp.h"
 
 using namespace fud;
 using namespace GetOpt;
@@ -49,15 +49,15 @@ int main(int argc, char** argv)
     size_t const AMOUNT(10);
 
     Counter * jobs[AMOUNT];
-    for (size_t i=0; i < AMOUNT; ++i)
+    for (size_t i = 0; i < AMOUNT; ++i)
         jobs[i] = new Counter("server/data/file2.txt");
 
-    for (size_t i=0; i < AMOUNT; ++i)
+    for (size_t i = 0; i < AMOUNT; ++i)
         jobs[i]->run();
 
-    for (size_t i=0; i < AMOUNT; ++i)
+    for (size_t i = 0; i < AMOUNT; ++i)
         jobs[i]->wait_completion();
 
-    for (size_t i=0; i < AMOUNT; ++i)
+    for (size_t i = 0; i < AMOUNT; ++i)
         jobs[i]->output_results();
 }

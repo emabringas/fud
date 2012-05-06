@@ -29,7 +29,7 @@ const Port DEFAULT_PORT = 30303;
 void show_help()
 {
     std::cout << "Valid options are:\n"
-        "\t-p --port        [optional] Set port. Default=" << DEFAULT_PORT << std::endl;
+              "\t-p --port        [optional] Set port. Default=" << DEFAULT_PORT << std::endl;
     ;
 }
 
@@ -53,19 +53,19 @@ int main(int argc, char **argv)
 
         std::cout << "All sentences typed will be sent to all clients, until you type 'q'." << std::endl;
 
-        for( std::cin >> s; s != "q"; std::cin >> s)
+        for (std::cin >> s; s != "q"; std::cin >> s)
         {
             OutputMessage output;
 
             output << s.size() + HEADER_LENGTH << s;
 
-            server.send_all( output.str() );
+            server.send_all(output.str());
         }
 
         //Close all connections by sending a 0.
         OutputMessage output;
         output << 0;
 
-        server.send_all( output.str() );
+        server.send_all(output.str());
     }
 }

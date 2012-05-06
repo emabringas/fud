@@ -54,47 +54,53 @@ namespace fud
      */
     class JobUnit
     {
-        public:
-            /** Returns the message this JobUnit has for the client that is to process it. */
-            const std::string&  serialize()            const;
+    public:
+        /** Returns the message this JobUnit has for the client that is to process it. */
+        const std::string&  serialize()            const;
 
-            /** Returns the current JobUnit's ID. */
-            inline  JobUnitID   get_id()               const {return _id;}
-            /** Returns the current JobUnit's size. */
-            inline  JobUnitSize get_size()             const {return _size;}
+        /** Returns the current JobUnit's ID. */
+        inline  JobUnitID   get_id()               const
+        {
+            return _id;
+        }
+        /** Returns the current JobUnit's size. */
+        inline  JobUnitSize get_size()             const
+        {
+            return _size;
+        }
 
-            virtual ~JobUnit(){};
-        protected:
-            /**
-             * Standard constructor, it will increment the count of total JobUnits created.
-             */
-            JobUnit();
+        virtual ~JobUnit() {};
+    protected:
+        /**
+         * Standard constructor, it will increment the count of total JobUnits created.
+         */
+        JobUnit();
 
-            /**
-             * Used by the concrete classes inhereting from JobUnit. The concept of *size* is
-             * user defined and will generally be problem dependant. It is advised that the *size*
-             * definition for a particular implementation is proportional to the actual size of the
-             * message.
-             * @param size : The size of the expected JobUnit, it is to be used as a guide and is not
-             *               mandatory.
-             */
-            void  set_size(JobUnitSize size);
-        private:
-            /**
-             * The implementer of the method must return the exact message he wants to transmit to
-             * the processing client on the receiving end. This message should be formed using mili's
-             * binary streams library[0] to pack data in a single string.
-             * [0]: see <htpp://mili.googlecode.com>
-             */
-            virtual const std::string&  get_message()          const = 0;
+        /**
+         * Used by the concrete classes inhereting from JobUnit. The concept of *size* is
+         * user defined and will generally be problem dependant. It is advised that the *size*
+         * definition for a particular implementation is proportional to the actual size of the
+         * message.
+         * @param size : The size of the expected JobUnit, it is to be used as a guide and is not
+         *               mandatory.
+         */
+        void  set_size(JobUnitSize size);
+    private:
+        /**
+         * The implementer of the method must return the exact message he wants to transmit to
+         * the processing client on the receiving end. This message should be formed using mili's
+         * binary streams library[0] to pack data in a single string.
+         * [0]: see <htpp://mili.googlecode.com>
+         */
+        virtual const std::string&  get_message()          const = 0;
 
-            static JobUnitID    _last_generated;   /* Id of the last generated JobUnit. */
-            JobUnitID           _id;               /* Id of current JobUnit. */
-            JobUnitSize         _size;             /* Size of current JobUnit, this is user defined. See set_size method. */
+        static JobUnitID    _last_generated;   /* Id of the last generated JobUnit. */
+        JobUnitID           _id;               /* Id of current JobUnit. */
+        JobUnitSize         _size;             /* Size of current JobUnit, this is user defined. See set_size method. */
 
-            /* IMPORTANT: this is why they came up with mutable. Careful analysis took place before putting mutable here. */
-            mutable OutputMessage       _output_message;   /* Message inmanent in the JobUnit, doesn't change. */
-            mutable mili::FirstTimeFlag _string_pending;   /* Flag concerning readyness of message string. */
+        /* IMPORTANT: this is why they came up with mutable. Careful analysis took place before putting mutable here. */
+        mutable OutputMessage       _output_message;   /* Message inmanent in the JobUnit, doesn't change. */
+        mutable mili::FirstTimeFlag _string_pending;   /* Flag concerning readyness of message string. */
     };
 
     /**
@@ -105,41 +111,42 @@ namespace fud
      */
     class StreamingJobUnit : public JobUnit
     {
-        public:
-            /**
-             * Standard constructor.
-             *
-             * \sa JobUnit
-             */
-            StreamingJobUnit();
+    public:
+        /**
+         * Standard constructor.
+         *
+         * \sa JobUnit
+         */
+        StreamingJobUnit();
 
-            /**
-             * Insert an element to the JobUnit.
-             *
-             * @param x : The data to be inserted.
-             *
-             * \sa OutputMessage
-             */
-            template<typename T>
-            StreamingJobUnit& operator<< (T x)
-            {
-                _output << x;
-                return *this;
-            }
+        /**
+         * Insert an element to the JobUnit.
+         *
+         * @param x : The data to be inserted.
+         *
+         * \sa OutputMessage
+         */
+        template<typename T>
+        StreamingJobUnit& operator<< (T x)
+        {
+            _output << x;
+            return *this;
+        }
 
-            /**
-             * Wrapper for the JobUnit method.
-             *
-             * @param size : The size of the JobUnit.
-             *
-             * \sa JobUnit
-             */
-            using JobUnit::set_size;
-        private:
-            OutputMessage _output;
+        /**
+         * Wrapper for the JobUnit method.
+         *
+         * @param size : The size of the JobUnit.
+         *
+         * \sa JobUnit
+         */
+        using JobUnit::set_size;
+    private:
+        OutputMessage _output;
 
-            virtual const std::string& get_message() const;
+        virtual const std::string& get_message() const;
     };
 }
 
 #endif
+

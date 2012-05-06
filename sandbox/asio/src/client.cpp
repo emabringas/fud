@@ -30,9 +30,9 @@ const char* const DEFAULT_ADDRESS = "127.0.0.1";
 void show_help()
 {
     std::cout << "Valid options are:\n"
-        "\t-p --port        [optional] Set port. Default=" << DEFAULT_PORT << std::endl <<
-        "\t-a --address     [optional] Set address. Default=" << DEFAULT_ADDRESS << std::endl <<
-        "\t-c --connections [optional] Set connection amount (for multiplexing). Default = 1" << std::endl;
+              "\t-p --port        [optional] Set port. Default=" << DEFAULT_PORT << std::endl <<
+              "\t-a --address     [optional] Set address. Default=" << DEFAULT_ADDRESS << std::endl <<
+              "\t-c --connections [optional] Set connection amount (for multiplexing). Default = 1" << std::endl;
     ;
 }
 
@@ -51,11 +51,11 @@ int main(int argc, char **argv)
 
         size_t connections(1);
 
-        options >> Option('p', "port", port) >> Option('a',"address",address) >> Option('c',"connections",connections);
+        options >> Option('p', "port", port) >> Option('a', "address", address) >> Option('c', "connections", connections);
 
         std::cout << "Main client app.: Starting client" << std::endl;
 
-        AsioClient client(address,port,connections);
+        AsioClient client(address, port, connections);
 
         client.run();
     }

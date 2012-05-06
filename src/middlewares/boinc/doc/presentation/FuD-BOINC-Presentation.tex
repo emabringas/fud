@@ -1,0 +1,113 @@
+\documentclass[xcolor=pdftex,hyperref={pdfpagelabels=false},table,10pt]{beamer}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\lstset{
+   backgroundcolor=\color{lbcolor},
+   tabsize=4,
+   rulecolor=,
+   language=C++,
+       basicstyle=\scriptsize,
+       upquote=true,
+       columns=fixed,
+       showstringspaces=false,
+       extendedchars=true,
+       breaklines=true,
+       frame=single,
+       showtabs=false,
+       showspaces=false,
+       showstringspaces=false,
+       identifierstyle=\tt,
+       keywordstyle=\color[rgb]{0.1,0.1,0.6}\bfseries,
+       commentstyle=\color[rgb]{0.133,0.545,0.133},
+       stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+\definecolor{fudepan}{HTML}{006c63}
+\definecolor{verde}{RGB}{0, 127, 63}
+\definecolor{gris}{RGB}{86, 86, 86}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.95,0.95,0.95}
+\definecolor{azul}{RGB}{0, 110, 143}
+
+\hypersetup{colorlinks,linkcolor=,urlcolor=verde}{}
+
+\usetheme{Warsaw}
+
+\usecolortheme[named=azul]{structure}
+
+\usefonttheme{structurebold}
+\useinnertheme{rounded}
+\setbeamercovered{transparent}
+
+\defbeamertemplate*{footline}{shadow theme}
+{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=.3\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertframenumber\,/\,\inserttotalframenumber\hfill\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.7\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\tesistitle
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\title{FuD-BOINC}
+\subtitle{\tesistitle}
+\author{Lucas Besso - Raúl Striglio}
+\institute[UNRC]{
+    \begin{minipage}{0.45\textwidth}
+        \begin{center}
+            %Escudo UNRC
+            \includegraphics[scale=0.23]{images/escudo.jpg}\\
+            \begin{scriptsize}
+                \textsc{Universidad Nacional de Río Cuarto} \\
+            \end{scriptsize}
+            \vfill
+            \begin{tiny}
+                \textsc{Fac. de Cs. Exactas, Fco-Qcas y Naturales} \\
+                \textsc{Departamento de Computación} \\[1cm]
+            \end{tiny}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \begin{center}
+            %Escudo FuDePAN
+            \includegraphics[scale=0.1]{images/logo-fudepan.png}\\
+            \vfill
+            \begin{scriptsize}
+                \textsc{FuDePAN} \\
+            \end{scriptsize}
+            \begin{tiny}
+                \textsc{Fundación para el Desarrollo de la Programación en Ácidos Nucleicos} \\[0.5cm]
+            \end{tiny}
+        \end{center}
+    \end{minipage}
+}
+\date{28 de Diciembre de 2011}
+
+\newcommand{\fudepan}{\textbf{FuDePAN}}
+\newcommand{\fud}{\textbf{FuD}}
+\newcommand{\tesistitle}{Implementación de una capa de distribución del framework FuD utilizando como middleware a BOINC}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Temario}
+   \scriptsize{ \tableofcontents }
+\end{frame}
+
+\input{01-Introduccion}
+\input{02-fud-boinc}
+\input{03-rediseno-fud}
+\input{04-aplicacion-prueba}
+\input{05-conclusion}
+
+\end{document}

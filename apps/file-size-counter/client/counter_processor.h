@@ -28,17 +28,17 @@
 #ifndef COUNTER_PROCESSOR_H
 #define COUNTER_PROCESSOR_H
 
-#include "fud_client.h"
+#include "fud/fud_client.h"
 
 namespace fud
 {
-    class CounterProcessor : ClientProcessor
-    {
-        public:
-            CounterProcessor();
+class CounterProcessor : ClientProcessor
+{
+public:
+    CounterProcessor();
 
-            virtual bool process(InputMessage& input, OutputMessage& output);
-    };
+    virtual bool process(InputMessage& input, OutputMessage& output);
+};
 }
 
 #endif

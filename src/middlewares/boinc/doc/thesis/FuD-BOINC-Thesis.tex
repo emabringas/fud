@@ -1,0 +1,191 @@
+\documentclass[12pt,spanish,a4paper]{report}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{appendix}
+\usepackage{makeidx}
+\usepackage{fancyhdr}
+\usepackage{textcomp}
+\usepackage{float}
+\usepackage{amssymb, amsmath}
+\usepackage{multicol}
+\usepackage{anysize}
+\usepackage{pdflscape}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[T1]{fontenc}  % permite copiar correctamente el texto del pdf.
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+	pdfsubject={Proyecto Final de la carrera Lic. en Ciencias de la Computaci\'on - UNRC},   % subject of the document
+    pdftitle={Implementaci\'on de una capa de distribuci\'on del framework FuD usando el middleware BOINC},    % title
+    pdfauthor={Lucas Besso - Ra\'ul Striglio},     % author
+    pdfproducer={http://www.fudepan.org.ar/}, % producer of the document
+    pdfkeywords={fud} {fud-boinc} {fudepan} {boinc} {tesis} {unrc} {computacion voluntaria}, % list of keywords
+    pdfnewwindow=false,      % links in new window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=Red,          % color of internal links
+    citecolor=Green,        % color of links to bibliography
+    filecolor=Magenta,      % color of file links
+    urlcolor=Blue           % color of external links
+}
+
+\marginsize{3cm}{3cm}{3cm}{3cm}
+\pagestyle{fancy}
+
+\fancyhf{}
+\fancyhead[R]{\bfseries\thepage}
+\fancyhead[L]{\bfseries\rightmark}
+
+\cfoot{\scriptsize Implementación de una capa de distribución del framework FuD usando el middleware BOINC }
+
+%Commands
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\renewcommand\lstlistingname{Código}
+\renewcommand\lstlistlistingname{Índice de códigos fuente}
+
+\definecolor{gris}{RGB}{245, 245, 245}
+
+%para evitar que corte las palabras
+\pretolerance=3000
+\tolerance=3000
+
+
+% Fix the line-breaking
+\sloppy
+
+
+\begin{document}
+	\pagenumbering{roman}
+
+	\begin{titlepage} 
+		\begin{center}
+		
+			%Escudos
+            \begin{minipage}{0.45\textwidth}
+                \begin{center}
+                    %Escudo UNRC
+                    \includegraphics[width=60pt,height=90.5pt]{images/escudo.jpg}\\
+                    \begin{footnotesize}
+                        \textsc{Universidad Nacional de Río Cuarto} \\
+                    \end{footnotesize}
+                    \vfill
+                    \begin{scriptsize}
+                        \textsc{Fac. de Cs. Exactas, Fco-Qcas y Naturales} \\
+                        \textsc{Departamento de Computación} \\[1cm]    
+                    \end{scriptsize}
+                \end{center}
+            \end{minipage}
+            \begin{minipage}{0.45\textwidth}
+                \begin{center}
+                    %Escudo FuDePAN
+                    \includegraphics[width=90pt,height=90pt]{images/logo-fudepan.png}\\
+                    \vfill
+                    \begin{footnotesize}
+                        \textsc{FuDePAN} \\
+                    \end{footnotesize}
+                    \begin{scriptsize}
+                        \textsc{Fundación para el Desarrollo de la Programación en Ácidos Nucleicos} \\[1cm]    
+                    \end{scriptsize}
+                \end{center}
+            \end{minipage}
+
+			\textsc{\\[2cm] \large Trabajo Final}\\[0.2cm]
+			\textsc{Licenciatura en Ciencias de la Computación}\\[0.2cm]
+
+			\HRule
+			{ \Large \bfseries Implementación de una capa de distribución \\del framework FuD usando el middleware \\BOINC\\}
+			\HRule 
+			\\[4cm]
+			
+
+			\begin{multicols}{3}
+				\begin{center} \large
+					\emph{Autores:}\\
+					Lucas \textsc{Besso}\\
+					Raúl \textsc{Striglio}
+				\end{center}
+				\columnbreak  
+			
+				\begin{center} \large
+					\emph{Director:} \\
+					Lic. Laura \textsc{Tardivo}
+				\end{center}
+				\columnbreak  
+			
+				\begin{center} \large
+				\emph{Co-Director:} \\
+				Daniel \textsc{Gutson}
+				\end{center}
+			\end{multicols}
+			
+			\vfill
+			\today
+			%{15 de diciembre de 2011}
+
+		\end{center}
+	\end{titlepage}
+
+	\newpage
+
+	%Resumen
+	\begin{abstract}
+El cómputo sobre grandes conjuntos de datos es un tema importante dentro de la ciencia de la computación. Mucha información es inherentemente difícil de comprimir y a su vez los recursos para procesar esta cantidad de datos usualmente son muy costosos. Las organizaciones sin fines de lucro, instituciones educacionales, etc. deben encontrar la manea de manejar sus requerimientos computacionales intentando mantener los costos lo más bajo posible. Existen varias herramientas que permiten solucionar este problema mediante alguna forma de computación distribuida.
+
+Este trabajo brinda un panorama general sobre el diseño, implementación y pruebas de una nueva capa de distribución para el framework FuD con el objetivo de permitirle a éste hacer uso de la arquitectura BOINC para realizar computación voluntaria.
+
+El enfoque elegido fue hacer uso de las librerías ofrecidas por BOINC para poder integrar sus funcionalidades como parte del comportamiento de la capa de distribución de FuD.
+	\end{abstract}
+
+	\input{Agradecimientos}
+	
+	\tableofcontents
+	\listoffigures 
+	\lstlistoflistings
+    \listoftables
+	
+	\newpage
+	\pagenumbering{arabic}
+	
+	\part{Preliminar}\label{prelim}
+		\input{01-Introduccion}
+		\input{02-Marco_teorico}
+		\input{03-Metodologia_de_trabajo}	
+	\part{Capa de distribución FuD-BOINC}\label{BOINC}
+		\input{04-Sobre_fud-boinc}
+		\input{05-Diseno}
+		\input{06-Implementacion}
+		\input{07-Testing}
+		\input{08-Resultados}
+	\part{Conclusión}\label{conclusion}
+		\input{09-Conclusion}
+		\input{10-Trabajos_futuros}
+		
+	% Bibliografia
+	\part{Bibliografía}
+	\label{biblio}
+	    \nocite{*}
+	    \addcontentsline{toc}{chapter}{Bibliografía}
+	    \bibliography{Bibliografia}
+	    \bibliographystyle{annotate}
+
+    \part{Apéndices}
+        \appendix \label{appendix}
+        %\addappheadtotoc
+        %\appendixpage
+        %\newpage
+        \input{apendice_FuD-BOINC-metrics}
+ 
+
+\end{document}

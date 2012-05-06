@@ -29,9 +29,9 @@ const char* const DEFAULT_ADDRESS = "127.0.0.1";
 void show_help()
 {
     std::cout << "Valid options are:\n"
-        "\t-p --port        [optional] Set port. Default=" << DEFAULT_PORT << std::endl <<
-        "\t-d --dest        [optional] Set destination port. Default=" << DEFAULT_PORT << std::endl <<
-        "\t-a --address     [optional] Set address. Default=" << DEFAULT_ADDRESS << std::endl;
+              "\t-p --port        [optional] Set port. Default=" << DEFAULT_PORT << std::endl <<
+              "\t-d --dest        [optional] Set destination port. Default=" << DEFAULT_PORT << std::endl <<
+              "\t-a --address     [optional] Set address. Default=" << DEFAULT_ADDRESS << std::endl;
 
     ;
 }
@@ -57,12 +57,12 @@ int main(int argc, char **argv)
 
         std::string s;
 
-        std::cin >> s; 
+        std::cin >> s;
 
         //Close all connections by sending a 0.
         OutputMessage output;
         output << 0;
 
-        server.send_all( output.str() );
+        server.send_all(output.str());
     }
 }

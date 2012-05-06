@@ -1,0 +1,36 @@
+<!-- Result template to create BOINC workunit for the FuD program -->
+
+<file_info>
+    <number>0</number>
+</file_info>
+<workunit>
+    <file_ref>
+        <file_number>0</file_number>
+        <open_name>in</open_name>
+    </file_ref>
+    <command_line>in</command_line>
+    
+  <min_quorum>           1  </min_quorum>
+  <target_nresults>      1  </target_nresults>
+  <max_error_results>   10  </max_error_results>
+  <max_total_results>   10  </max_total_results>
+  <max_success_results>  5  </max_success_results>
+  <rsc_memory_bound>   9e6  </rsc_mem_bound>
+  <rsc_disk_bound>     9e6  </rsc_disk_bound>
+  <rsc_fpops_est>     2e11  </rsc_fpops_est>
+  <rsc_fpops_bound>   9e19  </rsc_fpops_bound>
+  <credit>		       100  </credit>
+  <delay_bound>      45000  </delay_bound>
+  <opaque>               0  </opaque>
+  <error_mask>           0  </error_mask>
+  <assimilate_state>     0  </assimilate_state>
+  <priority>             0  </priority>
+  <nhr_class>            0  </hr_class>
+  <canonical_credit>     0  </canonical_credit>
+  <canonical_resultid>   0  </canonical_resultid>
+  <file_delete_state>    0  </file_delete_state>
+  <rsc_bandwidth_bound>  0  </rsc_bandwidth_bound>
+  <fileset_id>           0  </fileset_id>
+  
+  
+</workunit>

@@ -23,8 +23,8 @@
 using boost::asio::ip::tcp;
 
 AsioClient::AsioClient(std::string address, Port port, size_t connections) :
-    io_services_(connections,NULL),
-    sockets_(connections,NULL),
+    io_services_(connections, NULL),
+    sockets_(connections, NULL),
     address_(address),
     port_(port)
 {
@@ -39,12 +39,12 @@ void AsioClient::run()
         connect(connection);
     }
     for (size_t connection(0) ; connection < sockets_.size() - 1; ++connection)
-        boost::thread t( boost::bind( &boost::asio::io_service::run, io_services_[connection] ) );
+        boost::thread t(boost::bind(&boost::asio::io_service::run, io_services_[connection]));
 
     io_services_[sockets_.size() - 1]->run();
 }
 
-void AsioClient::handle_received_message(const boost::system::error_code& ec,const std::string& msg)
+void AsioClient::handle_received_message(const boost::system::error_code& ec, const std::string& msg)
 {
     if (!ec)
         std::cout << "Client: Message of size " << msg.size() << " recieved: " << msg << std::endl;
@@ -58,30 +58,31 @@ void AsioClient::wait_for_message(const boost::system::error_code& ec, size_t co
         {
             MessageSize size;
 
-            tcp::socket& _socket( *(sockets_[connection]) );
+            tcp::socket& _socket(*(sockets_[connection]));
 
             do
             {
                 char header[HEADER_LENGTH];
-                boost::asio::read(_socket,boost::asio::buffer(header,HEADER_LENGTH));
+                boost::asio::read(_socket, boost::asio::buffer(header, HEADER_LENGTH));
 
-                InputMessage input(std::string(header,HEADER_LENGTH));
+                InputMessage input(std::string(header, HEADER_LENGTH));
                 input >> size;
 
                 if (size != 0)
                 {
                     std::auto_ptr<char> body(new char[size]);
-                    boost::asio::read(_socket,boost::asio::buffer(body.get(),size));
+                    boost::asio::read(_socket, boost::asio::buffer(body.get(), size));
 
                     std::string msg;
 
                     input.clear();
-                    input.str( std::string(body.get(), size ) );
+                    input.str(std::string(body.get(), size));
                     input >> msg;
 
                     std::cout << "Client: Message of size " << msg.size() << " recieved: " << msg << std::endl;
                 }
-            } while (size != 0);
+            }
+            while (size != 0);
 
             std::cout << "Client: Connection closed succesfuly." << std::endl;
         }
@@ -97,14 +98,14 @@ void AsioClient::connect(size_t connection)
     std::cout << "Client: Starting at " << address_ << ':' << port_ << std::endl;
     try
     {
-        tcp::endpoint endpoint(boost::asio::ip::address::from_string(address_),port_);
+        tcp::endpoint endpoint(boost::asio::ip::address::from_string(address_), port_);
 
-        sockets_[connection] = new tcp::socket( *( io_services_[connection] ));
+        sockets_[connection] = new tcp::socket(*(io_services_[connection]));
 
         sockets_[connection]->async_connect(endpoint, boost::bind(&AsioClient::wait_for_message,
-                                                                 this,
-                                                                 boost::asio::placeholders::error,
-                                                                 connection) );
+                                            this,
+                                            boost::asio::placeholders::error,
+                                            connection));
 
         std::cout << "Client: Connected." << std::endl;
         //state: connected
