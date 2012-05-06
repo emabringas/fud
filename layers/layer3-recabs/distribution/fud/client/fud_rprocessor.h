@@ -86,6 +86,9 @@ class FuDRProcessor  :  public DistributableRecursiveProcessor,
          *  @return the number of clients that the FuD server give us.
          */ 
         virtual uint collaborators(uint n);
+        
+        /** FuD DistributionClient attribute. */
+        fud::DistributionClient* _distribution_client;
 
 };
 
