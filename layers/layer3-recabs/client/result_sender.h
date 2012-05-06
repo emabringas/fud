@@ -53,6 +53,11 @@ namespace recabs
 struct RealSender
 {
     /**
+     * Destructor
+     */
+    virtual ~RealSender(){};
+    
+    /**
      * Sends a message to the server
      * Should be implemented by the layer below.
      *
