@@ -58,6 +58,7 @@ ClientProxy::ClientProxy() :
 
 ClientProxy::~ClientProxy()
 {
+    delete _history;
 }
 
 bool ClientProxy::busy() const
