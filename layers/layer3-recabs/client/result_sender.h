@@ -68,6 +68,10 @@ RealSender* create_real_sender();
 
 struct MessageSender
 {
+    /**
+     * Destructor.
+     */
+    virtual ~MessageSender(){};
 
     /**
      *  Reimplementation of method send.
