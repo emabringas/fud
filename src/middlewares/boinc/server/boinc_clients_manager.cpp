@@ -306,7 +306,7 @@ void BoincClientsManager::BoincClientProxy::run() throw(BoincException)
     app = find_app(NAME_APP, _db_assimilator);
     while(_running_assimilator)
     {
-        if (find_work_units(app, wu) == true)
+        if (find_work_units(app, wu))
         {
             process_work_units(wu);
         }
@@ -369,7 +369,7 @@ void BoincClientsManager::BoincClientProxy::process_work_units(DB_WORKUNIT& wu)
     do
     {
         // Search for a cannonical result.
-        if (find_cannonical_result(wu, canonical_result) == true ) 
+        if (find_cannonical_result(wu, canonical_result)) 
         {
             // Found a Canonical Result.
             assimilate_handler(wu, canonical_result);
