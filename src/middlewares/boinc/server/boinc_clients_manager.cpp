@@ -301,21 +301,14 @@ void BoincClientsManager::BoincClientProxy::run() throw(BoincException)
     }
     DB_APP app(&_db_assimilator);
     DB_WORKUNIT wu(&_db_assimilator);
-    DB_RESULT canonical_result(&_db_assimilator);
     std::stringstream buf();
 
     app = find_app(NAME_APP, _db_assimilator);
     while(_running_assimilator)
     {
-        if (find_work_unit(app, wu) == true)
-        {   
-            // Found a WU.
-            if ( find_cannonical_result(wu,canonical_result) == true ) 
-            {
-                // Found a Canonical Result.
-                assimilate_handler(wu,canonical_result);
-                update_wu_state(wu, WuDone);                
-            }
+        if (find_work_units(app, wu) == true)
+        {
+            process_work_units(wu);
         }
         sleep(SLEEP_INTERVAL);
     }
@@ -343,9 +336,9 @@ DB_APP BoincClientsManager::BoincClientProxy::find_app(const std::string& app_na
 }
 
 
-bool BoincClientsManager::BoincClientProxy::find_work_unit(const DB_APP& app, DB_WORKUNIT& wu) throw (BoincDataBaseException)
+bool BoincClientsManager::BoincClientProxy::find_work_units(const DB_APP& app, DB_WORKUNIT& wu) throw (BoincDataBaseException)
 {
-    boinc_log_debug("Looking for workunit unassimilated.");
+    boinc_log_debug("Looking for workunits unassimilated.");
 
     // Build the query.
     std::stringstream buf;
@@ -362,11 +355,27 @@ bool BoincClientsManager::BoincClientProxy::find_work_unit(const DB_APP& app, DB
             boinc_log_error(message);
             throw (BoincDataBaseException(message));
         }
-        boinc_log_debug(std::string ("Workunit not found."));
+        boinc_log_debug(std::string ("Workunits not found."));
         return false;
     }
-    boinc_log_debug(std::string ("Workunit found."));
+    boinc_log_debug(std::string ("Workunits found."));
     return true;
+}
+
+
+void BoincClientsManager::BoincClientProxy::process_work_units(DB_WORKUNIT& wu)
+{
+    DB_RESULT canonical_result(&_db_assimilator);
+    do
+    {
+        // Search for a cannonical result.
+        if (find_cannonical_result(wu, canonical_result) == true ) 
+        {
+            // Found a Canonical Result.
+            assimilate_handler(wu, canonical_result);
+            update_wu_state(wu, WuDone);
+        }
+    } while (!wu.enumerate());
 }
 
 
@@ -378,8 +387,9 @@ bool BoincClientsManager::BoincClientProxy::find_cannonical_result(DB_WORKUNIT& 
 
     DB_RESULT result(&_db_assimilator);
     cannonical_result.clear();
+
+    result.enumerate(buf.str().c_str());    
     
-    result.enumerate(buf.str().c_str());
     const bool found = result.get_id() == wu.canonical_resultid;
         
     if ( found )
@@ -415,7 +425,7 @@ bool BoincClientsManager::BoincClientProxy::find_cannonical_result(DB_WORKUNIT& 
 }
 
 
-void BoincClientsManager::BoincClientProxy::assimilate_handler(DB_WORKUNIT& wu, DB_RESULT& canonical_result)
+void BoincClientsManager::BoincClientProxy::assimilate_handler(const DB_WORKUNIT& wu, DB_RESULT& canonical_result)
 {
     boinc_log_debug("Starting the assimilation...");
     
@@ -432,7 +442,6 @@ void BoincClientsManager::BoincClientProxy::assimilate_handler(DB_WORKUNIT& wu, 
                 //Mandatory order of things! first set status to idle before invoking free_client_event.
                 //You risk deadlock otherwise.
                 finish_one_job();
-                
             }
             catch (const std::exception& ex)
             {

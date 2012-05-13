@@ -191,10 +191,16 @@ namespace fud
             /** Find and return the workunit related with the application.
             *
             * @param app : Workunit's Application
-            * @param wu : The workunit to be sended
-            * @returns True if workunit associated with application app is found, false if not.
+            * @param wu : Workunits ready for assimilate
+            * @returns True if workunits associated with application app are found, false if not.
             */
-            bool find_work_unit(const DB_APP& app, DB_WORKUNIT& wu) throw (BoincDataBaseException);
+            bool find_work_units(const DB_APP& app, DB_WORKUNIT& wu) throw (BoincDataBaseException);
+        
+            /** Process all the workunits obtained from the db workunit. The wu has at least one workunit.
+            *
+            * @param wu : Workunits ready for assimilate
+            **/
+            void process_work_units(DB_WORKUNIT& wu);
         
             /** Find and return the cannonical result related with the workunit.
             *
@@ -209,7 +215,7 @@ namespace fud
             * @param wu : The workunit sended
             * @param canonical_result: Concrete cannonical result
             */
-            void assimilate_handler(DB_WORKUNIT& wu, DB_RESULT& cannonical_result);
+            void assimilate_handler(const DB_WORKUNIT& wu, DB_RESULT& cannonical_result);
 
             /** Extract the message encapsulated in the cannonical result. 
             *
