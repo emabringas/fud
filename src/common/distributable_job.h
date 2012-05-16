@@ -236,7 +236,7 @@ namespace fud
             virtual const char*            get_name()                                     const = 0;
 
             /* Implemented here, checks with completion_accepted first, then calls handle_results. */
-            virtual void process_results (JobUnitID id, fud_uint message_number, const std::string* message);
+            virtual void process_results (JobUnitID id, fud_uint, const std::string* message);
 
             /* Implemented here, adds completion_accepted. */
             virtual void process_finalization (JobUnitID id);
@@ -256,9 +256,6 @@ namespace fud
             /** Stores the set of IDs of all completed JobUnits from this DistributableJob. */
             std::set<JobUnitID> _completed;           /*when _completed.size() = _j_u_gen then */
                                                       /*the job is completed.                  */
-
-            /* Stores the list of the messages which been sent for each JobUnit. */
-            std::map< JobUnitID, std::list<fud_uint> > _messages_map;
 
             /** Amount of generated job units. */
             size_t              _job_units_generated;

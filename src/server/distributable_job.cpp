@@ -82,23 +82,12 @@ void DistributableJobImplementation::inform_generation()
     ++_job_units_generated;
 }
 
-void DistributableJobImplementation::process_results (JobUnitID id, fud_uint message_number, const std::string* message)
+void DistributableJobImplementation::process_results (JobUnitID id, fud_uint, const std::string* message)
 {
     if (!completed(id))
     {
-        /* Search message */
-        bool finded(false);
-        std::list<fud_uint>::iterator it;
-        for (it = _messages_map[id].begin(); it != _messages_map[id].end() && !finded; it++)
-            if (*it == message_number)
-                finded = true;
-        /* If the message is not in the list: process and add it; otherwise does nothing. */
-        if (!finded)
-        {
-            _input.str(*message);
-            handle_results(id,_input);
-            _messages_map[id].push_front(message_number);
-        }
+        _input.str(*message);
+        handle_results(id,_input);
     }
 }
 
