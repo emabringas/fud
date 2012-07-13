@@ -109,6 +109,14 @@ namespace fud
         virtual void process_finalization (JobUnitID id) = 0;
 
         /**
+         * Checks to see if this JobUnit was completed.
+         * @param id : The JobUnitID to check for.
+         * \sa JobUnit
+         * \sa JobUnitID
+         */
+        virtual bool completed(JobUnitID id) = 0;
+
+        /**
          * Produces a JobUnit. It wraps a call to produce_next_job_unit and generates the
          * corresponding event. The DistributableJob must change state after generating it,
          * so calls to the method won't produce duplicate JobUnits.
