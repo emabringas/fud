@@ -221,14 +221,35 @@ void JobManager::rescue_inclomplete_job_unit(JobUnitID id)
             // Enqueue pending job unit founded into job queue to be eventually reasigned.
             _jobQueue.push_back(*it);
             _pendingList.erase(it);
-            syslog(LOG_NOTICE,"Info: Job Unit %d Rescued. ",id);
+            syslog(LOG_NOTICE, "Info: Job Unit %d Rescued. ", id);
         }
         else
-            syslog(LOG_NOTICE,"Info: Job Unit %d is complete or not found. ",id);       
+            syslog(LOG_NOTICE, "Info: Job Unit %d is complete or not found. ", id);
     }
-    //TODO assert(complete(JobUnitId) or is_in_job_queue(JobUnitId))
+    else
+    {
+        if ( is_job_unit_finished(id) )
+            syslog(LOG_NOTICE, "Info: Job Unit %d not rescued because it is completed. ",id);
+        else
+            // Inconsistency case: a JobUnit which want to be rescued is not in the pending list and it is not completed.
+            syslog(LOG_ERR, "ERROR: JobUnit %u not rescued. It is not in the pending list and it is not completed !!", id);
+        assert( is_job_unit_finished(id) );
+    }
 }
 
+bool JobManager::is_job_unit_finished(JobUnitID id)
+{
+    bool completed(false);
+    try
+    {
+        completed = mili::find(_ids_to_job_map, id)->completed(id);
+    }
+    catch(const std::exception& e)
+    {
+        syslog(LOG_ERR, "Error: %s.", e.what());
+    }
+    return completed;
+}
 
 void JobManager::handle_free_client_event()
 {

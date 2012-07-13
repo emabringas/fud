@@ -222,6 +222,14 @@ namespace fud
              */
             void resend_pending_job_unit();
 
+            /**
+             * Indicates if a job unit is finished.
+             *
+             * @param id The JobUnitID of the JobUnit which will want to ask.
+             * @return The truth value corresponding if the JobUnit is finished or not.
+             */
+            bool is_job_unit_finished(JobUnitID id);
+
             /* Attr. */
             static JobManager*              _instance;
 
