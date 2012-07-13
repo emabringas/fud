@@ -251,8 +251,6 @@ void JobManager::handle_free_client_event()
                 _pendingList.push_back(_jobQueue.front());
                 _jobQueue.pop_front();
             }
-            else
-                syslog(LOG_NOTICE,"Error sending JobUnit %u from Job Queue to a client.",_jobQueue.front()->get_id());
         }
     }
     handle_job_queue_not_full_event();
@@ -281,16 +279,19 @@ void JobManager::handle_job_unit_completed_event(JobUnitID id)
         else
         {
             #ifdef RESEND_PENDING_JOBS
-                syslog(LOG_NOTICE,"Finished JobUnit %u is not in the pending list.", id);
+                syslog(LOG_NOTICE,"JobUnit %u was already marked as completed.", id);
             #else
-                syslog(LOG_NOTICE,"Fatal Error: JobUnit %u is not in the pending list and it was assigned to a client.", id);
-                throw(1);
+                // If RESEND_PENDING_JOBS is OFF and a finished job is not in pending list, then it is a consistency error.
+                // This finished job was assigned and there was a mistake removing it from pending list or it never was
+                // assigned to nobody and there was a mistake about the JobUnit arrived as finished.
+                syslog(LOG_ERR, "ERROR: JobUnit %u is not in the pending list and it was completed !!", id);
+                assert(false);
             #endif
         }
     }
     catch(const std::exception& e)
     {
-        syslog(LOG_NOTICE,"Error: %s.",e.what());
+        syslog(LOG_ERR, "Error: %s.", e.what());
     }
 }
 
@@ -306,14 +307,14 @@ void JobManager::handle_incoming_message_event(JobUnitID id, fud_uint message_nu
     }
     catch(const std::exception& e)
     {
-        syslog(LOG_NOTICE,"Error: %s.",e.what());
+        syslog(LOG_ERR, "Error: %s.", e.what());
     }
     delete message; //release the memory
 }
 
 void JobManager::run_scheduler()
 {
-    syslog(LOG_NOTICE,"Starting scheduler.");
+    syslog(LOG_NOTICE, "Starting scheduler.");
     try
     {
         Event<JobManagerEventHandler>* event;
@@ -329,7 +330,7 @@ void JobManager::run_scheduler()
     }
     catch(const std::exception& e)
     {
-        syslog(LOG_NOTICE,"Error in scheduler: %s",e.what());
+        syslog(LOG_ERR, "Error in scheduler: %s", e.what());
         _status = kStopped;
     }
 }
@@ -365,7 +366,7 @@ void JobManager::handle_new_job_event()
         {
             if ((*it)->get_status() == ReadyToProduce)
             {
-                syslog(LOG_NOTICE,"Starting Job %s",(*it)->get_name());
+                syslog(LOG_NOTICE, "Starting Job %s", (*it)->get_name());
                 _producingJobs.push_back(*it);
                 it = _waitingJobs.erase(it);
                 free_client_event();

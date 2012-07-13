@@ -80,7 +80,7 @@ void ClientsManager::register_client(ClientProxy* client)
 void ClientsManager::deregister_client(ClientID id)
 {
     boost::mutex::scoped_lock glock(_client_proxies_mutex);
-    syslog(LOG_NOTICE,"Deregistering client %u.",id);
+    syslog(LOG_NOTICE, "Deregistering client %u.", id);
     if (!get_client(id)->busy())
         _free_clients--;
 
@@ -144,7 +144,7 @@ bool ClientsManager::assign_job_unit (const JobUnit& job_unit)
     }
     else
     {
-        syslog(LOG_NOTICE,"There are no clients available.");
+        syslog(LOG_NOTICE, "There are no clients available to assign the JobUnit %u.", job_unit.get_id());
         return false;
     }
 }
