@@ -67,9 +67,11 @@ private:
     std::set<T*> setT_2_setPtrT(const std::list<T>& list);
 
 protected:
-    CombinationPolicy<T>*           _combination_policy;
-    PrunePolicy<T>*                 _prune_policy;
-    recabs::ChildrenFunctors        _children_list;
+    CombinationPolicy<T>*                   _combination_policy;
+    PrunePolicy<T>*                         _prune_policy;
+    recabs::ChildrenFunctors                _children_list;
+    std::list <std::set<T*>& combination>   _combiations_holder;
+
 
     /**
     *  From a particular node, this method return the "next
@@ -110,6 +112,15 @@ protected:
     {
         return false;
     }
+
+
+    /**
+    * It decides what to do with all combinations
+    */
+    virtual void manage_combinations() 
+    {
+    }
+
 
     /**
      * Returns a stream representing a result that will be sended to the server.
