@@ -77,7 +77,7 @@ void NewtonianCombinationPolicy<T>::combinations_builder(CombinationAux combinat
     {
         //std::cout << this->get_name() << "------------------" << std::endl;
         Combination comb = vector_to_set(combination);
-        notify(comb);
+        this->notify(comb);
     }
     else
     {
