@@ -76,7 +76,10 @@ void L4Node<T>::call(recabs::ChildrenFunctors& children, recabs::Packet& result)
         {
             //ver que hacemos si no se pudo recuperar del fallo de la politica
         }
-
+        else
+        {
+            manage_combinations();
+        }
         children = _children_list;
     }
 
@@ -87,18 +90,8 @@ void L4Node<T>::update(const std::set<T*>& combination)
 {
     if (_prune_policy->is_useful(combination))
     {
+        _combiations_holder.push_back(combination);
 
-        std::list<T> new_comb = setPtrT_2_listT(combination);
-        std::list<L4Node*> children;
-        typename std::list< L4Node<T>*>::iterator it;
-
-        children = new_children(new_comb);
-        it =  children.begin();
-        while (it != children.end())
-        {
-            _children_list.push_back(*it) ;
-            ++it;
-        }
     }
 }
 
