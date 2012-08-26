@@ -60,6 +60,7 @@ protected:
     CombinationPolicy<T>*       _combination_policy;
     PrunePolicy<T>*             _prune_policy;
     recabs::ChildrenFunctors    _children_list;
+    std::list < std::list<T> >  _combinations_holder;
 
     /**
     *  It returns the "next state" (another L4Node), obtained from a combination.
@@ -108,6 +109,8 @@ protected:
      * Returns a Packet representing a result that will be sent to the server.
      */
     virtual recabs::Packet get_result() = 0;
+
+    virtual void manage_combinations() = 0;
 
 public:
     /**
@@ -187,6 +190,7 @@ public:
             }
             else
             {
+                manage_combinations();
                 mili::copy_container(_children_list, children);
             }
         }
@@ -201,16 +205,7 @@ public:
     {
         if (_prune_policy->is_useful(combination))
         {
-            std::list<L4Node*> children;
-            typename std::list< L4Node<T>*>::iterator it;
-
-            new_children(combination, children);
-            it =  children.begin();
-            while (it != children.end())
-            {
-                _children_list.push_back(*it) ;
-                ++it;
-            }
+            _combinations_holder.push_back (combination);
         }
     }
 
