@@ -56,6 +56,7 @@ set ( combeng_private_libplugin_headers
                                             combination_policies/composed_combination_policy_sequencial.h
                                             combination_policies/list_combination_policy.h
                                             combination_policies/newtonian_combination_policy.h
+                                            combination_policies/combination_policy_predicate.h
                                             combination_policies/observer_aux.h
     )
     

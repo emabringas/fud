@@ -54,6 +54,7 @@
 #include ".private/libplugin/composed_combination_policy_sequencial.h"
 #include ".private/libplugin/list_combination_policy.h"
 #include ".private/libplugin/newtonian_combination_policy.h"
+#include ".private/libplugin/combination_policy_predicate.h"
 #include ".private/libplugin/observer_aux.h"
 
 /*server */
