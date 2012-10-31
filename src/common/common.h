@@ -123,10 +123,10 @@ namespace fud
     typedef mili::bostream<> OutputMessage;
 
     /** mili::substr needs this Pos(ition) class. */
-    typedef mili::_Pos      Pos;
+    typedef mili::Pos_      Pos;
 
     /** mili::substr needs this Count class. */
-    typedef mili::_Count    Count;
+    typedef mili::Count_    Count;
 
     /**
      * Message headers from client to server.
