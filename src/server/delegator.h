@@ -46,6 +46,9 @@
 namespace fud
 {
 
+/**
+ * TODO Add class comment.
+ */
 class Delegator : private ClientsEventListener
 {
 

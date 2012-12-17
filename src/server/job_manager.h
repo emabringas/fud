@@ -117,14 +117,11 @@ namespace fud
      * The central hub for jobs in the system.
      * Implements all Job handling functionality.
      *
-     * \sa ClientsManagerListener
      * \sa DistributableJobListener
      * \sa JobManagerEventHandler
      */
-    class JobManager :
-        private ClientsManagerListener,
-        private DistributableJobListener,
-        private JobManagerEventHandler
+    class JobManager : private DistributableJobListener,
+                       private JobManagerEventHandler
     {
         public:
             /**
@@ -194,9 +191,11 @@ namespace fud
             void              create_another_job_unit();
 
             /* Enqueuing ClientsManager events */
+            /* TODO Remove or reutilize declaration ofthese methods. Old ClientsManagerListener methods.
             virtual void free_client_event();
             virtual void job_unit_completed_event(JobUnitID id);
             virtual void incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message);
+            */
 
             /* Enqueuing DistributableJob events */
             virtual void distributable_job_completed_event(DistributableJob* distjob);

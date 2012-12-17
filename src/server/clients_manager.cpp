@@ -70,9 +70,11 @@ ClientsManager::~ClientsManager()
 void ClientsManager::register_client(ClientProxy* client)
 {
     boost::mutex::scoped_lock glock(_client_proxies_mutex);
-    syslog(LOG_NOTICE,"Registering client %u.",client->get_id());
+    syslog(LOG_NOTICE,"Registering client %u.", client->get_id());
     _client_proxies.insert( std::pair<ClientID, ClientProxy*>(client->get_id(), client) );
-    _listener->free_client_event();
+    /* TODO Revise this new call. The old method call here was removed.
+    _listener->on_idle_client( client->get_id() );
+    */
     _free_clients++;
     _available_clients++;
 }
@@ -103,13 +105,17 @@ void ClientsManager::deregister_client(ClientID id)
 
 void ClientsManager::free_client_event()
 {
-    _listener->free_client_event();
+    /* TODO Remove or reutilize this old listener call.
+    _listener->free_clienet_event();
+    */
 }
 
 void ClientsManager::inform_completion(JobUnitID id)
 {
     boost::mutex::scoped_lock glock(_client_proxies_mutex);
+    /* TODO Remove or reutilize this old listener call.
     _listener->job_unit_completed_event(id);
+    */
     _free_clients++;
     _available_clients++;
 }
@@ -117,10 +123,12 @@ void ClientsManager::inform_completion(JobUnitID id)
 void ClientsManager::inform_incoming_message(JobUnitID id, fud_uint message_number, std::string* message)
 {
     boost::mutex::scoped_lock glock(_client_proxies_mutex);
+    /* TODO Remove or reutilize this old listener call.
     _listener->incoming_message_event(id, message_number, message);
+    */
 }
 
-void ClientsManager::set_listener(ClientsManagerListener* const listener)
+void ClientsManager::set_listener(ClientsEventListener* const listener)
 {
     _listener = listener;
 }
