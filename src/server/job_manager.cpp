@@ -89,7 +89,9 @@ JobManager::JobManager() :
     openlog ("FUD", 0, LOG_LOCAL1);
     syslog(LOG_NOTICE,"Started FuD.");
 
+    /* TODO Remove this line. It belongs to old ClientsManagerListener usage.
     _clients_manager->set_listener(this);
+    */
 }
 
 JobManager::~JobManager() 
@@ -169,6 +171,7 @@ void JobManager::handle_distributable_job_completed_event(DistributableJob* dist
     handle_free_client_event();
 }
 
+/* TODO Remove or reutilize the instructions of these methods. Belongs to the old ClientsManagerListener.
 void JobManager::free_client_event()
 {
     _event_queue.push(new_event(&JobManagerEventHandler::handle_free_client_event));
@@ -183,6 +186,7 @@ void JobManager::incoming_message_event(JobUnitID id, fud_uint message_number, s
 {
     _event_queue.push(new_event(&JobManagerEventHandler::handle_incoming_message_event, id, message_number, message));
 }
+*/
 
 void JobManager::distributable_job_completed_event(DistributableJob* distjob)
 {
@@ -368,7 +372,9 @@ void JobManager::handle_new_job_event()
                 syslog(LOG_NOTICE,"Starting Job %s",(*it)->get_name());
                 _producingJobs.push_back(*it);
                 it = _waitingJobs.erase(it);
+                /* TODO Remove this line. It is a method from the old ClientsManagerListener.
                 free_client_event();
+                */
             }
             else
             {

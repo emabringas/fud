@@ -122,6 +122,9 @@ namespace fud
     /** A message you put data into. */
     typedef mili::bostream<> OutputMessage;
 
+    /** Message type used between server and clients. */
+    typedef std::string Message;
+
     /** mili::substr needs this Pos(ition) class. */
     typedef mili::Pos_      Pos;
 
