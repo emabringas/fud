@@ -72,9 +72,8 @@ struct JobManagerListener
      * Requeriment: constantly time.
      *
      * @param[in] client_id The ID of the client which completes the JobUnit.
-     * @param[in] job_unit_id The ID of the completed JobUnit.
      */
-    virtual void on_finish_job_unit(ClientID client_id, JobUnitID job_unit_id) = 0;
+    virtual void on_finish_job_unit(ClientID client_id) = 0;
 
 };
 

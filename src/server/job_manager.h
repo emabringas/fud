@@ -50,6 +50,7 @@
 #include "clients_manager.h"
 #include "events.h"
 #include "synchronized_containers.h"
+#include "job_manager_listener.h"
 
 
 namespace fud
@@ -121,7 +122,8 @@ namespace fud
      * \sa JobManagerEventHandler
      */
     class JobManager : private DistributableJobListener,
-                       private JobManagerEventHandler
+                       private JobManagerEventHandler,
+                       private JobManagerListener
     {
         public:
             /**
@@ -196,6 +198,12 @@ namespace fud
             virtual void job_unit_completed_event(JobUnitID id);
             virtual void incoming_message_event(JobUnitID id, fud_uint message_number, std::string* message);
             */
+
+            /** Methods of JobManagerListener interface. */
+            void on_idle_client();
+            void on_disconnect_client(ClientID client_id);
+            void on_client_message_arrived(ClientID client_id, const Message& message);
+            void on_finish_job_unit(ClientID client_id);
 
             /* Enqueuing DistributableJob events */
             virtual void distributable_job_completed_event(DistributableJob* distjob);
