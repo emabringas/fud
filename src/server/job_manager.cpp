@@ -188,6 +188,26 @@ void JobManager::incoming_message_event(JobUnitID id, fud_uint message_number, s
 }
 */
 
+void JobManager::on_idle_client()
+{
+    /** TODO Implement this method */
+}
+
+void JobManager::on_disconnect_client(ClientID client_id)
+{
+    /** TODO Implement this method */
+}
+
+void JobManager::on_client_message_arrived(ClientID client_id, const Message& message)
+{
+    /** TODO Implement this method */
+}
+
+void JobManager::on_finish_job_unit(ClientID client_id)
+{
+    /** TODO Implement this method */
+}
+
 void JobManager::distributable_job_completed_event(DistributableJob* distjob)
 {
     _event_queue.push(new_event(&JobManagerEventHandler::handle_distributable_job_completed_event,distjob));
