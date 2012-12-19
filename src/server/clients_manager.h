@@ -48,6 +48,7 @@
 #include "job_unit.h"
 #include "events.h"
 #include "clients_event_listener.h"
+#include "job_listener.h"
 
 namespace fud
 {
@@ -58,7 +59,7 @@ namespace fud
      * later be implemented in the implementation file in one of ClientsManager
      * descendants.
      */
-    class ClientsManager
+    class ClientsManager : private JobListener
     {
         public:
             /* Interface for base classes, can't put it protected */
@@ -113,16 +114,6 @@ namespace fud
              * \sa ClientsEventListener
              */
             void set_listener(ClientsEventListener* const listener);
-
-            /**
-             * Tries to assign a JobUnit to a client.
-             *
-             * @returns <b>true</b> if the JobUnit was succesfully assigned
-             *          to a free client, <b>false</b> otherwise.
-             *
-             * \sa JobUnit
-             */
-            bool assign_job_unit  (const JobUnit& job_unit);
 
             /**
              * Handles the "FreeClients" request. This method returns the number of free
@@ -181,6 +172,8 @@ namespace fud
 
         private:
 
+            bool assign_job_unit(fud::ClientID, const fud::JobUnit&);
+            
             void update_time_average(JobUnitSize ju_size, uint32_t ms_elapsed);
 
             std::map<ClientID, ClientProxy*>    _client_proxies;

@@ -133,8 +133,11 @@ void ClientsManager::set_listener(ClientsEventListener* const listener)
     _listener = listener;
 }
 
-bool ClientsManager::assign_job_unit (const JobUnit& job_unit)
+bool ClientsManager::assign_job_unit(ClientID client_id, const JobUnit& job_unit)
 {
+    /* TODO review this implementation. client_id should be used to send the 
+     * job_unit instead of search for an available client
+     */
     ClientProxy* client(get_available_client());
     if (client != NULL)
     {
@@ -214,3 +217,4 @@ fud_uint ClientsManager::orders()
 {
     return _reservations;
 }
+

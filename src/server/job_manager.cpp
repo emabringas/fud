@@ -219,7 +219,16 @@ void JobManager::resend_pending_job_unit()
 
     if (! _pendingList.empty())
     {
-        if ( _clients_manager->assign_job_unit(*_pendingList.front()) )
+        /* TODO Now, JobManager must knows what client_id is idle for receive a job.
+         * JobManager will receive this information through JobManagerListener interface
+         * Current client_id is declared to can compile the source code and must be changed.
+         */
+        ClientID client_id;
+        
+        /* TODO Note that the old if sentence used _clients_manager:
+         * if ( _clients_manager->assign_job_unit(client_id, *_pendingList.front()) )
+         */
+        if ( _job_listener->assign_job_unit(client_id, *_pendingList.front()) )
         {
             // Send this one to the back, act as Round Robin
             _pendingList.push_back(_pendingList.front());
@@ -269,7 +278,16 @@ void JobManager::handle_free_client_event()
         }
         else
         {
-            if ( _clients_manager->assign_job_unit(*_jobQueue.front()) )
+           /* TODO Now, JobManager must knows what client_id is idle for receive a job.
+            * JobManager will receive this information through JobManagerListener interface
+            * Current client_id is declared to can compile the source code and must be changed.
+            */
+            ClientID client_id;
+
+            /* TODO Note that the old if sentence used _clients_manager:
+             * if ( _clients_manager->assign_job_unit(client_id, *_pendingList.front()) )
+             */
+            if ( _job_listener->assign_job_unit(client_id, *_jobQueue.front()) )
             {
                 syslog(LOG_NOTICE,"Sending JobUnit %u to pending list.",(_jobQueue.front()->get_id()) );
                 _pendingList.push_back(_jobQueue.front());

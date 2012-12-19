@@ -51,6 +51,7 @@
 #include "events.h"
 #include "synchronized_containers.h"
 #include "job_manager_listener.h"
+#include "job_listener.h"
 
 
 namespace fud
@@ -232,7 +233,13 @@ namespace fud
             /* Attr. */
             static JobManager*              _instance;
 
+            /* TODO Remove ClientsManager. JobManager should uses the new JobListener 
+             * interface instead.
+             */
             ClientsManager*                 _clients_manager;
+            
+            // Used to assign a new job unit
+            JobListener*                     _job_listener;
 
             std::list<DistributableJob *>          _producingJobs;
             std::list<DistributableJob *>          _waitingJobs;
