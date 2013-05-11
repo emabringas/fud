@@ -89,7 +89,9 @@ JobManager::JobManager() :
     openlog ("FUD", 0, LOG_LOCAL1);
     syslog(LOG_NOTICE,"Started FuD.");
 
+    /* TODO Remove this line. It belongs to old ClientsManagerListener usage.
     _clients_manager->set_listener(this);
+    */
 }
 
 JobManager::~JobManager() 
@@ -169,6 +171,7 @@ void JobManager::handle_distributable_job_completed_event(DistributableJob* dist
     handle_free_client_event();
 }
 
+/* TODO Remove or reutilize the instructions of these methods. Belongs to the old ClientsManagerListener.
 void JobManager::free_client_event()
 {
     _event_queue.push(new_event(&JobManagerEventHandler::handle_free_client_event));
@@ -183,6 +186,27 @@ void JobManager::incoming_message_event(JobUnitID id, fud_uint message_number, s
 {
     _event_queue.push(new_event(&JobManagerEventHandler::handle_incoming_message_event, id, message_number, message));
 }
+*/
+
+void JobManager::on_idle_client()
+{
+    /** TODO Implement this method */
+}
+
+void JobManager::on_disconnect_client(ClientID client_id)
+{
+    /** TODO Implement this method */
+}
+
+void JobManager::on_client_message_arrived(ClientID client_id, const Message& message)
+{
+    /** TODO Implement this method */
+}
+
+void JobManager::on_finish_job_unit(ClientID client_id)
+{
+    /** TODO Implement this method */
+}
 
 void JobManager::distributable_job_completed_event(DistributableJob* distjob)
 {
@@ -195,7 +219,16 @@ void JobManager::resend_pending_job_unit()
 
     if (! _pendingList.empty())
     {
-        if ( _clients_manager->assign_job_unit(*_pendingList.front()) )
+        /* TODO Now, JobManager must knows what client_id is idle for receive a job.
+         * JobManager will receive this information through JobManagerListener interface
+         * Current client_id is declared to can compile the source code and must be changed.
+         */
+        ClientID client_id;
+        
+        /* TODO Note that the old if sentence used _clients_manager:
+         * if ( _clients_manager->assign_job_unit(client_id, *_pendingList.front()) )
+         */
+        if ( _job_listener->assign_job_unit(client_id, *_pendingList.front()) )
         {
             // Send this one to the back, act as Round Robin
             _pendingList.push_back(_pendingList.front());
@@ -245,7 +278,16 @@ void JobManager::handle_free_client_event()
         }
         else
         {
-            if ( _clients_manager->assign_job_unit(*_jobQueue.front()) )
+           /* TODO Now, JobManager must knows what client_id is idle for receive a job.
+            * JobManager will receive this information through JobManagerListener interface
+            * Current client_id is declared to can compile the source code and must be changed.
+            */
+            ClientID client_id;
+
+            /* TODO Note that the old if sentence used _clients_manager:
+             * if ( _clients_manager->assign_job_unit(client_id, *_pendingList.front()) )
+             */
+            if ( _job_listener->assign_job_unit(client_id, *_jobQueue.front()) )
             {
                 syslog(LOG_NOTICE,"Sending JobUnit %u to pending list.",(_jobQueue.front()->get_id()) );
                 _pendingList.push_back(_jobQueue.front());
@@ -368,7 +410,9 @@ void JobManager::handle_new_job_event()
                 syslog(LOG_NOTICE,"Starting Job %s",(*it)->get_name());
                 _producingJobs.push_back(*it);
                 it = _waitingJobs.erase(it);
+                /* TODO Remove this line. It is a method from the old ClientsManagerListener.
                 free_client_event();
+                */
             }
             else
             {
