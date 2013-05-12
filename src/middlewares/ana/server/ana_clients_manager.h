@@ -43,7 +43,7 @@
 
 #include <map>
 
-#include <ana/ana.hpp>
+#include <ana.hpp>
 
 #include "common.h"
 #include "clients_manager.h"

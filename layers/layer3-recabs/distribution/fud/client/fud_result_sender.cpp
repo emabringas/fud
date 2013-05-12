@@ -39,7 +39,7 @@
  */
 
 #include "fud_result_sender.h"
-#include <fud/fud_client.h>
+#include <fud_client.h>
 
 using namespace recabs;
 

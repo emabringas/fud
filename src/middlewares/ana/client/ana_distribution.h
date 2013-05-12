@@ -43,7 +43,7 @@
 
 #include <boost/thread.hpp>
 
-#include <ana/ana.hpp>
+#include <ana.hpp>
 
 #include "common.h"
 #include "distribution_client.h"

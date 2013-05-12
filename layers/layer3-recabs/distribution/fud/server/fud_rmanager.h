@@ -41,7 +41,7 @@
 #ifndef FUD_MANAGER_H
 #define FUD_MANAGER_H
 
-#include <fud/fud.h>
+#include <fud.h>
 #include "l4_server_app.h"
 #include "recursion_manager.h"
 

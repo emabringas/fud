@@ -1,0 +1,12 @@
+Import ('env')
+
+deps = ['mili', 'fud']
+ext_inc = []
+
+inc = env.Dir('.'), env.Dir('client'), env.Dir('common'), env.Dir('distribution/fud/client'), env.Dir('../../src/common'), env.Dir('../../src/client')
+src = env.Glob('client/*.cpp'), env.Glob('distribution/fud/client/*.cpp')
+env.CreateSharedLibrary('recabs_client', inc, ext_inc, src, deps)
+
+inc = env.Dir('server'), env.Dir('common'), env.Dir('distribution/fud/server'), env.Dir('../ana/src/api'), env.Dir('../../src/common'), env.Dir('../../src/server')
+src = env.Glob('server/*.cpp'), env.Glob('distribution/fud/server/*.cpp')
+env.CreateSharedLibrary('recabs_server', inc, ext_inc, src, deps)
