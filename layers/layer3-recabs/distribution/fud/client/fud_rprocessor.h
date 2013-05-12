@@ -41,7 +41,7 @@
 #ifndef FUD_PROCESSOR_H
 #define FUD_PROCESSOR_H
 
-#include <fud/fud_client.h>
+#include <fud_client.h>
 #include "common.h"
 #include "distributable_recursive_processor.h"
 #include "deserializer_functor.h"
