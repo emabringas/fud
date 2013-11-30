@@ -41,8 +41,10 @@
 #include <boost/thread.hpp>
 #include "async_io_clients_manager.h"
 
-using namespace fud;
 using boost::asio::ip::tcp;
+
+namespace fud
+{
 
 AsyncIOClientsManager::AsyncIOClientsManager(const Port& port) :
     _io_service(),
@@ -153,11 +155,9 @@ void AsyncIOClientsManager::AsyncIOClientProxy::destroy()
     ClientsManager::get_instance()->deregister_client( get_id() );
 }
 
-
-namespace fud
+ClientsManager* create_clients_manager()
 {
-    ClientsManager* create_clients_manager()
-    {
-        return new AsyncIOClientsManager(31337);
-    }
+    return new AsyncIOClientsManager(31337);
 }
+
+} // end namespace

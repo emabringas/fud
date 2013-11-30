@@ -42,7 +42,8 @@
 #include "fud/client/distribution_client.h"
 #include "fud/client/processors_manager.h"
 
-using namespace fud;
+namespace fud
+{
 
 void Sender::send(const OutputMessage& message)
 {
@@ -52,3 +53,4 @@ void Sender::send(const OutputMessage& message)
     DistributionClient::get_instance()->dispatch(out.str());
 }
 
+} //end namespace

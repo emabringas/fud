@@ -46,7 +46,8 @@
 #include <sstream>
 #include "ana_clients_manager.h"
 
-using namespace fud;
+namespace fud
+{
 
 AnaClientsManager::AnaClientsManager(const Port& port) :
     ClientsManager(),
@@ -123,10 +124,9 @@ void AnaClientsManager::AnaClientProxy::handle_send (ana::error_code,
 {
 }
 
-namespace fud
+ClientsManager* create_clients_manager()
 {
-    ClientsManager* create_clients_manager()
-    {
-        return new AnaClientsManager(31337);
-    }
+    return new AnaClientsManager(31337);
 }
+
+} // end namespace

@@ -41,7 +41,8 @@
 #include "fud/common/distributable_job.h"
 #include "fud/server/job_manager.h"
 
-using namespace fud;
+namespace fud
+{
 
 DistributableJobImplementation::DistributableJobImplementation() :
     _listener(JobManager::get_instance()->get_distributable_job_listener()),
@@ -141,3 +142,5 @@ bool DistributableJobImplementation::completed(JobUnitID id)
 
     return it != _completed.end();
 }
+
+} // end namespace
