@@ -36,11 +36,11 @@
  *
  */
 
-#include "sender.h"
-#include "common.h"
-#include "distribution_client.h"
-#include "processors_manager.h"
 #include <mili/mili.h>
+#include "fud/client/sender.h"
+#include "fud/common/common.h"
+#include "fud/client/distribution_client.h"
+#include "fud/client/processors_manager.h"
 
 using namespace fud;
 

@@ -32,7 +32,7 @@
  *
  */
 
-#include "processing_history.h"
+#include "fud/server/processing_history.h"
 
 using namespace fud;
 

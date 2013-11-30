@@ -34,8 +34,8 @@
 
 #include <boost/thread.hpp>
 
-#include "client_processor.h"
-#include "processors_manager.h"
+#include "fud/client/client_processor.h"
+#include "fud/client/processors_manager.h"
 
 using namespace fud;
 

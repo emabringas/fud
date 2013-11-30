@@ -38,7 +38,7 @@
  *
  */
 
-#include "job_unit.h"
+#include "fud/common/job_unit.h"
 
 using namespace fud;
 
