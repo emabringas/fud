@@ -39,11 +39,11 @@
  */
 
 #include "common.h"
-#include "client_processor.h"
-#include "distribution_client.h"
+#include "fud/client/client_processor.h"
+#include "fud/client/distribution_client.h"
 #include "job_unit.h"
-#include "sender.h"
-#include "interactive_helper.h"
+#include "fud/client/sender.h"
+#include "fud/client/interactive_helper.h"
 
 namespace fud
 {

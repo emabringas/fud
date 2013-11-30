@@ -38,8 +38,8 @@
 #include <string>
 #include <boost/thread.hpp>
 
-#include "common.h"
-#include "job_unit.h"
+#include "fud/common/common.h"
+#include "fud/common/job_unit.h"
 
 namespace fud
 {

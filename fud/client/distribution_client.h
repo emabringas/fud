@@ -43,7 +43,7 @@
 
 #include <string>
 
-#include "common.h"
+#include "fud/common/common.h"
 #include <boost/thread.hpp>
 #include <queue>
 
