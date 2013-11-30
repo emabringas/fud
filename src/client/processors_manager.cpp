@@ -125,4 +125,4 @@ void ProcessorsManager::inform_result(bool result)
         std::cerr << "ERROR obtaining results " << std::endl;
 }
 
-}
+} //end namespace

@@ -40,7 +40,8 @@
 
 #include "fud/common/job_unit.h"
 
-using namespace fud;
+namespace fud
+{
 
 JobUnitID JobUnit::_last_generated = 0;
 
@@ -76,3 +77,5 @@ const std::string& StreamingJobUnit::get_message() const
 {
     return _output.str();
 }
+
+} // end namespace

@@ -40,7 +40,8 @@
 #include "fud/client/distribution_client.h"
 #include "fud/client/processors_manager.h"
 
-using namespace fud;
+namespace fud
+{
 
 DistributionClient::DistributionClient() :
     _finished(false),
@@ -155,3 +156,5 @@ void DistributionClient::message(InputMessage& message)
 {
     message = _message;
 }
+
+} // end namespace

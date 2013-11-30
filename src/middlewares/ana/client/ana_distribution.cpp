@@ -42,7 +42,8 @@
 #include "fud/middlewares/ana/client/ana_distribution.h"
 #include "fud/client/processors_manager.h"
 
-using namespace fud;
+namespace fud
+{
 
 AnaDistribution::AnaDistribution(std::string address, Port port) :
     DistributionClient(),
@@ -131,3 +132,5 @@ namespace fud
         return new AnaDistribution(address,port);
     }
 }
+
+} // end namespace
