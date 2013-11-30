@@ -39,7 +39,6 @@
  */
 
 #include <sstream>
-
 #include "fud/middlewares/ana/client/ana_distribution.h"
 #include "fud/client/processors_manager.h"
 

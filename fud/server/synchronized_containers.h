@@ -39,9 +39,7 @@
 #include <queue>
 #include <boost/thread.hpp>
 #include <pthread.h>
-
-#include "mili/mili.h"
-#include "mili/prepos_mutex.h"
+#include <mili/mili.h>
 
     /**
      * A thread safe Queue.

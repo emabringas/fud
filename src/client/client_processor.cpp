@@ -33,7 +33,6 @@
  */
 
 #include <boost/thread.hpp>
-
 #include "fud/client/client_processor.h"
 #include "fud/client/processors_manager.h"
 

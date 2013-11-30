@@ -41,14 +41,13 @@
 #ifndef ASYNC_IO_DISTRIBUTION_H
 #define ASYNC_IO_DISTRIBUTION_H
 
+#include <string>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
-#include <string>
-
-using boost::asio::ip::tcp;
-
 #include "fud/common/common.h"
 #include "fud/client/distribution_client.h"
+
+using boost::asio::ip::tcp;
 
 namespace fud
 {

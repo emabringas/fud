@@ -43,7 +43,6 @@
 
 #include <map>
 #include <boost/thread.hpp>
-
 #include "fud/server/client_proxy.h"
 #include "fud/common/job_unit.h"
 #include "events.h"

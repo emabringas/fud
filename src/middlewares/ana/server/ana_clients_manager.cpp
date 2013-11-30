@@ -44,7 +44,6 @@
 
 #include <syslog.h>
 #include <sstream>
-
 #include "ana_clients_manager.h"
 
 using namespace fud;

@@ -38,10 +38,10 @@
  *
  */
 
+#include <syslog.h>
 #include "fud/server/client_proxy.h"
 #include "fud/server/clients_manager.h"
 #include "fud/server/processing_history.h"
-#include <syslog.h>
 #include "fud/server/job_manager.h"
 
 using namespace fud;

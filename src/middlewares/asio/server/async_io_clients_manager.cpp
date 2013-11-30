@@ -39,7 +39,6 @@
 #include <syslog.h>
 #include <memory>
 #include <boost/thread.hpp>
-
 #include "async_io_clients_manager.h"
 
 using namespace fud;
