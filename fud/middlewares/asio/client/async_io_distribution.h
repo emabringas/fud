@@ -47,8 +47,8 @@
 
 using boost::asio::ip::tcp;
 
-#include "common.h"
-#include "distribution_client.h"
+#include "fud/common/common.h"
+#include "fud/client/distribution_client.h"
 
 namespace fud
 {

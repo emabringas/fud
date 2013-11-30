@@ -45,10 +45,10 @@
 
 #include <ana/ana.hpp>
 
-#include "common.h"
-#include "clients_manager.h"
-#include "client_proxy.h"
-#include "job_unit.h"
+#include "fud/common/common.h"
+#include "fud/server/clients_manager.h"
+#include "fud/server/client_proxy.h"
+#include "fud/common/job_unit.h"
 
 namespace fud
 {

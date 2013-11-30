@@ -39,7 +39,7 @@
 #ifndef SENDER_H
 #define SENDER_H
 
-#include "common.h"
+#include "fud/common/common.h"
 
 namespace fud
 {

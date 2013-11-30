@@ -36,7 +36,7 @@
 #define WORK_STATS_H
 
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include "common.h"
+#include "fud/common/common.h"
 
 namespace fud
 {

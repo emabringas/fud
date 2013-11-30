@@ -44,8 +44,8 @@
 #include <map>
 #include <boost/thread.hpp>
 
-#include "client_proxy.h"
-#include "job_unit.h"
+#include "fud/server/client_proxy.h"
+#include "fud/common/job_unit.h"
 #include "events.h"
 
 namespace fud
