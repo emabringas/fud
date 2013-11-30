@@ -36,7 +36,6 @@
 #define JOB_UNIT_H
 
 #include <string>
-
 #include <mili/mili.h>
 #include "common.h"
 
