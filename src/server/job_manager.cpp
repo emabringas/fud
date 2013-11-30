@@ -130,7 +130,6 @@ void JobManager::create_another_job_unit()
     if ( job != NULL )
     {
         JobUnit* job_unit;
-//         job_unit = job->get_next_job_unit(_current_job_unit_size);
         job_unit = job->get_next_job_unit(200);
         if ( job_unit != NULL )
         {
@@ -388,4 +387,4 @@ void JobManager::enqueue(DistributableJob* distjob)
     _waitingJobs.push_back(distjob);
 }
 
-}
+} // end namespace

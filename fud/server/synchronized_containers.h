@@ -40,7 +40,8 @@
 #include <boost/thread.hpp>
 #include <pthread.h>
 #include <mili/mili.h>
-
+#include "mili/prepos_mutex.h"
+ 
     /**
      * A thread safe Queue.
      * Uses a PrePosCaller locking and unlocking the same mutex.
