@@ -36,7 +36,6 @@
 #define PROCESSING_HISTORY_H
 
 #include <list>
-
 #include "work_stats.h"
 #include "fud/common/job_unit.h"
 

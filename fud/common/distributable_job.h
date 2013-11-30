@@ -43,12 +43,10 @@
 
 #include <string>
 #include <set>
-
 #include <boost/thread.hpp>
-
+#include "fud/server/events.h"
 #include "job_unit.h"
 #include "common.h"
-#include "fud/server/events.h"
 
 /**
  * \namespace fud

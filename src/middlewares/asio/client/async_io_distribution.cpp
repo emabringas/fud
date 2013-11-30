@@ -42,7 +42,6 @@
 #include "processors_manager.h"
 
 using boost::asio::ip::tcp;
-
 using namespace fud;
 
 AsyncIODistribution::AsyncIODistribution(std::string address, Port port) :

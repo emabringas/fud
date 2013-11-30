@@ -42,9 +42,7 @@
 #define ANA_DISTRIBUTION_H
 
 #include <boost/thread.hpp>
-
 #include <ana/ana.hpp>
-
 #include "fud/common/common.h"
 #include "fud/client/distribution_client.h"
 

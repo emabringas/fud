@@ -43,8 +43,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-
-#include "mili/mili.h"
+#include <mili/mili.h>
 
 namespace fud
 {

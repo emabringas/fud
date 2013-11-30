@@ -38,11 +38,9 @@
  *
  */
 
-#include <syslog.h>
 #include <map>
-
+#include <syslog.h>
 #include <boost/bind.hpp>
-
 #include "fud/server/clients_manager.h"
 #include "fud/common/common.h"
 

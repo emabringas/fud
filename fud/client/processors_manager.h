@@ -42,7 +42,6 @@
 #define PROCESSORS_MANAGER_H
 
 #include <string>
-
 #include "fud/common/common.h"
 #include "client_processor.h"
 

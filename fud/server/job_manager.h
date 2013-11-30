@@ -42,9 +42,7 @@
 #define JOB_MANAGER_H
 
 #include <list>
-
 #include <boost/thread.hpp>
-
 #include "fud/common/distributable_job.h"
 #include "fud/common/job_unit.h"
 #include "clients_manager.h"

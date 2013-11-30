@@ -40,10 +40,8 @@
 
 #include <syslog.h>
 #include <sys/time.h>
-
 #include <boost/bind.hpp>
 #include <boost/functional.hpp>
-
 #include "fud/server/job_manager.h"
 
 namespace fud
