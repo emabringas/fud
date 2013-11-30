@@ -42,9 +42,7 @@
 #define ANA_CLIENTS_MANAGER_H
 
 #include <map>
-
 #include <ana/ana.hpp>
-
 #include "fud/common/common.h"
 #include "fud/server/clients_manager.h"
 #include "fud/server/client_proxy.h"

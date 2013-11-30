@@ -36,7 +36,6 @@
 #define ASYNC_IO_CLIENTS_MANAGER_H
 
 #include <boost/asio.hpp>
-
 #include "fud/common/common.h"
 #include "fud/server/clients_manager.h"
 #include "fud/server/client_proxy.h"

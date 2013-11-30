@@ -36,10 +36,11 @@
  *
  */
 
+
+#include <mili/mili.h>
 #include "fud/client/interactive_helper.h"
 #include "fud/client/distribution_client.h"
 #include "fud/common/common.h"
-#include <mili/mili.h>
 
 using namespace fud;
 

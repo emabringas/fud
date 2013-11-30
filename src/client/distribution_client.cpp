@@ -36,10 +36,9 @@
  *
  */
 
+#include <boost/thread.hpp>
 #include "fud/client/distribution_client.h"
 #include "fud/client/processors_manager.h"
-
-#include <boost/thread.hpp>
 
 using namespace fud;
 

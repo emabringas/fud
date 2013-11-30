@@ -37,7 +37,6 @@
 
 #include <string>
 #include <boost/thread.hpp>
-
 #include "fud/common/common.h"
 #include "fud/common/job_unit.h"
 
