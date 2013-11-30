@@ -39,7 +39,7 @@
 #ifndef INTERACTIVE_HELPER_H
 #define INTERACTIVE_HELPER_H
 
-#include "common.h"
+#include "fud/common/common.h"
 
 namespace fud
 {

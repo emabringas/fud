@@ -38,7 +38,7 @@
 #include <list>
 
 #include "work_stats.h"
-#include "job_unit.h"
+#include "fud/common/job_unit.h"
 
 namespace fud
 {

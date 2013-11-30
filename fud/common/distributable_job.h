@@ -48,7 +48,7 @@
 
 #include "job_unit.h"
 #include "common.h"
-#include "events.h"
+#include "fud/server/events.h"
 
 /**
  * \namespace fud

@@ -41,8 +41,8 @@
 #ifndef CLIENT_PROXY_H
 #define CLIENT_PROXY_H
 
-#include "job_unit.h"
-#include "common.h"
+#include "fud/common/job_unit.h"
+#include "fud/common/common.h"
 #include "work_stats.h"
 
 

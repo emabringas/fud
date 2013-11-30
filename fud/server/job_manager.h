@@ -45,8 +45,8 @@
 
 #include <boost/thread.hpp>
 
-#include "distributable_job.h"
-#include "job_unit.h"
+#include "fud/common/distributable_job.h"
+#include "fud/common/job_unit.h"
 #include "clients_manager.h"
 #include "events.h"
 #include "synchronized_containers.h"
