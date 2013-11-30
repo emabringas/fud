@@ -44,7 +44,7 @@
 #include <boost/bind.hpp>
 #include <boost/functional.hpp>
 
-#include "job_manager.h"
+#include "fud/server/job_manager.h"
 
 namespace fud
 {

@@ -38,8 +38,8 @@
  *
  */
 
-#include "distributable_job.h"
-#include "job_manager.h"
+#include "fud/common/distributable_job.h"
+#include "fud/server/job_manager.h"
 
 using namespace fud;
 

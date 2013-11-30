@@ -43,8 +43,8 @@
 
 #include <boost/bind.hpp>
 
-#include "clients_manager.h"
-#include "common.h"
+#include "fud/server/clients_manager.h"
+#include "fud/common/common.h"
 
 using namespace fud;
 

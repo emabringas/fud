@@ -40,9 +40,9 @@
 
 #include <iostream>
 
-#include "distribution_client.h"
-#include "processors_manager.h"
-#include "sender.h"
+#include "fud/client/distribution_client.h"
+#include "fud/client/processors_manager.h"
+#include "fud/client/sender.h"
 
 namespace fud
 {

@@ -40,8 +40,8 @@
 
 #include <sstream>
 
-#include "ana_distribution.h"
-#include "processors_manager.h"
+#include "fud/middlewares/ana/client/ana_distribution.h"
+#include "fud/client/processors_manager.h"
 
 using namespace fud;
 

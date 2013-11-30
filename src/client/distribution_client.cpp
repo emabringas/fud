@@ -36,8 +36,8 @@
  *
  */
 
-#include "distribution_client.h"
-#include "processors_manager.h"
+#include "fud/client/distribution_client.h"
+#include "fud/client/processors_manager.h"
 
 #include <boost/thread.hpp>
 

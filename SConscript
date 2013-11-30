@@ -1,9 +1,13 @@
 Import ('env')
 
-name = "fud"
-inc = env.Dir('.'), env.Dir('fud/client'), env.Dir('fud/common'), env.Dir('fud/server'), env.Dir('fud/middlewares/ana/server'), env.Dir('fud/middlewares/ana/client')
+inc = env.Dir('.')
 ext_inc = []
 deps = ['mili', 'boost_system', 'boost_thread', 'ana']
-src = env.Glob('src/client/*.cpp'), env.Glob('src/server/*.cpp'), env.Glob('fud/middlewares/ana/server/*.cpp'), env.Glob('fud/middlewares/ana/server/*.cpp')
+src = env.Glob('src/client/*.cpp'), env.Glob('fud/middlewares/ana/client/*.cpp'), env.Glob('fud/middlewares/asio/client/*.cpp') 
+env.CreateSharedLibrary('fud_client', inc, ext_inc, src, deps)
 
-env.CreateSharedLibrary(name, inc, ext_inc, src, deps)
+inc = env.Dir('.')
+ext_inc = []
+deps = ['mili', 'boost_system', 'boost_thread', 'ana']
+src = env.Glob('src/server/*.cpp'), env.Glob('src/common/*.cpp'), env.Glob('fud/middlewares/ana/server/*.cpp'), env.Glob('fud/middlewares/asio/server/*.cpp')
+env.CreateSharedLibrary('fud_server', inc, ext_inc, src, deps)
