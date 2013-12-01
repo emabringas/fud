@@ -45,8 +45,8 @@
 #include <set>
 #include <boost/thread.hpp>
 #include "fud/server/events.h"
-#include "job_unit.h"
-#include "common.h"
+#include "fud/common/job_unit.h"
+#include "fud/common/common.h"
 
 /**
  * \namespace fud

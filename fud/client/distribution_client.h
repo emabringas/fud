@@ -42,8 +42,8 @@
 #define DISTRIBUTION_CLIENT_H
 
 #include <string>
-#include <boost/thread.hpp>
 #include <queue>
+#include <boost/thread.hpp>
 #include "fud/common/common.h"
 
 namespace fud

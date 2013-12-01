@@ -38,10 +38,10 @@
  *
  */
 
-#include "common.h"
+#include "fud/common/job_unit.h"
+#include "fud/common/common.h"
 #include "fud/client/client_processor.h"
 #include "fud/client/distribution_client.h"
-#include "job_unit.h"
 #include "fud/client/sender.h"
 #include "fud/client/interactive_helper.h"
 

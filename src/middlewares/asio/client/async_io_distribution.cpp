@@ -38,13 +38,12 @@
  *
  */
 
-#include "async_io_distribution.h"
-#include "processors_manager.h"
+#include "fud/middlewares/asio/client/async_io_distribution.h"
+#include "fud/client/processors_manager.h"
 
 using boost::asio::ip::tcp;
+using namespace fud;
 
-namespace fud
-{
 
 AsyncIODistribution::AsyncIODistribution(std::string address, Port port) :
     DistributionClient(),
@@ -116,12 +115,10 @@ void AsyncIODistribution::dispatch(const std::string& out)
 }
 
 
-namespace fud
+/*namespace fud
 {
     DistributionClient* create_distribution_client(std::string address, Port port)
     {
         return new AsyncIODistribution(address,port);
     }
-}
-
-} // end namespace
+}*/

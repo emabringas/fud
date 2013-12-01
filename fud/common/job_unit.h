@@ -37,7 +37,7 @@
 
 #include <string>
 #include <mili/mili.h>
-#include "common.h"
+#include "fud/common/common.h"
 
 namespace fud
 {

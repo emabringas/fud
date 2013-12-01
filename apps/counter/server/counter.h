@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "fud.h"
+#include <fud/fud.h>
 
 #include "number_database.h"
 
