@@ -1,5 +1,7 @@
 Import ('env')
 
+# Issue XYZ
+# Delete the next line when issue is corrected.
 env.Append(LINKFLAGS='-Wl,-rpath=/usr/local/lib')
 
 name = 'countermsgserver'
