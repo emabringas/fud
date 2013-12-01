@@ -33,11 +33,8 @@
 */
 
 #include <string>
-
 #include <unistd.h>
-
-#include "mili/mili.h"
-
+#include <mili/mili.h>
 #include "counter_processor.h"
 
 using namespace fud;

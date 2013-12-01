@@ -29,9 +29,8 @@
 
 #include <syslog.h>
 #include <sys/time.h>
-
-#include <fud/fud.h>
-#include "getoptpp/getopt_pp.h"
+#include <getoptpp/getopt_pp.h>
+#include <fud/fud_server.h>
 #include "counter.h"
 
 using namespace fud;

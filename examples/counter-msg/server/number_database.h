@@ -1,10 +1,5 @@
 #include <cstdlib>
-
-//include for installed FuD
-//#include <fud/fud_client.h> 
-
-//include for local FuD
-#include "fud_client.h"
+#include <fud/fud_client.h> 
 
 #ifndef NUMBER_DATABASE_H
 #define NUMBER_DATABASE_H
