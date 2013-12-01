@@ -1,5 +1,4 @@
 #include <sstream>
-
 #include "counter.h"
 
 size_t Counter::_job_count = 0;

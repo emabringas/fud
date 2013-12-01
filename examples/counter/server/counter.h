@@ -2,9 +2,7 @@
 #define COUNTER_H
 
 #include <string>
-
-#include <fud/fud.h>
-
+#include <fud/fud_server.h>
 #include "number_database.h"
 
 using namespace fud;
