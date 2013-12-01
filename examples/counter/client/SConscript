@@ -6,11 +6,6 @@ env.Append(LINKFLAGS='-Wl,-rpath=/usr/local/lib')
 
 name = 'counterclient'
 inc = env.Dir('.')
+src = env.Glob('*.cpp')
 deps = ['fud_client', 'getoptpp', 'mili']
-
-src = env.Glob('*.cpp') 
-src.remove(env.File('counter_client.cpp'))
-env.CreateObject('counterclient-objects', inc, src, deps)
-
-deps = list(deps) + ['counterclient-objects']
-env.CreateProgram(name, inc, ['counter_client.cpp'], deps)
+env.CreateProgram(name, inc, src, deps)

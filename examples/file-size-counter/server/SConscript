@@ -6,11 +6,6 @@ env.Append(LINKFLAGS='-Wl,-rpath=/usr/local/lib')
 
 name = 'fscserver'
 inc = env.Dir('.')
-deps = ['fud_server', 'getoptpp', 'mili']
-
 src = env.Glob('*.cpp') 
-src.remove(env.File('counter_main.cpp'))
-env.CreateObject('fscserver-objects', inc, src, deps)
-
-deps = list(deps) + ['fscserver-objects']
-env.CreateProgram(name, inc, ['counter_main.cpp'], deps)
+deps = ['fud_server', 'getoptpp', 'mili']
+env.CreateProgram(name, inc, src, deps)
