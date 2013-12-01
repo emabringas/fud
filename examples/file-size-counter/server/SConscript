@@ -1,5 +1,7 @@
 Import ('env')
 
+env.Append(LINKFLAGS='-Wl,-rpath=/usr/local/lib')
+
 name = 'fscserver'
 inc = env.Dir('.')
 deps = ['fud_server', 'getoptpp', 'mili']
