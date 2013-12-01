@@ -5,7 +5,7 @@ implementations = ['ana', 'asio']
 
 # Concrete implementation for FuD
 AddOption(
-    '--implementation',
+    '--layer1-implementation',
     dest='implementation',
     action='store',
     type='string',
@@ -51,16 +51,14 @@ env.CreateObject('common_fud', inc, src, deps)
 inc = env.Dir('.')
 ext_inc = []
 src = env.Glob('src/client/*.cpp')
-#deps = ['mili', 'boost_system', 'boost_thread', 'ana', 'common_fud', 'fud_client' + env.GetOption('implementation')]
-deps = ['mili', 'boost_system', 'boost_thread', 'ana', 'common_fud', 'fud_client_ana']
+deps = ['mili', 'boost_system', 'boost_thread', 'ana', 'common_fud', 'fud_client_' + env.GetOption('implementation')]
 env.CreateSharedLibrary('fud_client', inc, ext_inc, src, deps)
 
 # SharedLibrary: FuD server
 inc = env.Dir('.')
 ext_inc = []
 src = env.Glob('src/server/*.cpp')
-#deps = ['mili', 'boost_system', 'boost_thread', 'ana', 'common_fud', 'fud_server' + env.GetOption('implementation')]
-deps = ['mili', 'boost_system', 'boost_thread', 'ana', 'common_fud', 'fud_server_ana']
+deps = ['mili', 'boost_system', 'boost_thread', 'ana', 'common_fud', 'fud_server_' + env.GetOption('implementation')]
 env.CreateSharedLibrary('fud_server', inc, ext_inc, src, deps)
 
 
