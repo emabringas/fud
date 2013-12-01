@@ -1,5 +1,7 @@
 Import ('env')
 
+env.Append(LINKFLAGS='-Wl,-rpath=/usr/local/lib')
+
 name = 'countermsgserver'
 inc = env.Dir('.')
 deps = ['fud_server', 'fud_client', 'getoptpp', 'mili']
