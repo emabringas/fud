@@ -6,11 +6,6 @@ env.Append(LINKFLAGS='-Wl,-rpath=/usr/local/lib')
 
 name = 'counterserver'
 inc = env.Dir('.')
-deps = ['fud_server', 'getoptpp', 'mili']
-
 src = env.Glob('*.cpp') 
-src.remove(env.File('counter_main.cpp'))
-env.CreateObject('counterserver-objects', inc, src, deps)
-
-deps = list(deps) + ['counterserver-objects']
-env.CreateProgram(name, inc, ['counter_main.cpp'], deps)
+deps = ['fud_server', 'getoptpp', 'mili']
+env.CreateProgram(name, inc, src, deps)
