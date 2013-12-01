@@ -4,8 +4,7 @@
 #include <list>
 #include <fstream>
 #include <string>
-
-#include <fud/fud.h>
+#include <fud/fud_server.h>
 
 using namespace fud;
 
