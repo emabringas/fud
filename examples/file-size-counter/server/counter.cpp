@@ -35,7 +35,7 @@ const char* Counter::get_name() const
     return "Counter";
 }
 
-void Counter::handle_results (JobUnitID id,InputMessage& input)
+void Counter::handle_results (JobUnitID /*id*/, InputMessage& input)
 {
     size_t count;
     input >> count;
