@@ -1,0 +1,12 @@
+Import ('env')
+
+name = 'countermsgclient'
+inc = env.Dir('.')
+deps = ['fud_client', 'getoptpp', 'mili']
+
+src = env.Glob('*.cpp') 
+src.remove(env.File('counter_client.cpp'))
+env.CreateObject('countermsgclient-objects', inc, src, deps)
+
+deps = list(deps) + ['countermsgclient-objects']
+env.CreateProgram(name, inc, ['counter_client.cpp'], deps)

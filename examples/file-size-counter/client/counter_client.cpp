@@ -28,9 +28,9 @@
     along with Parallel Clusterer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <fud/fud.h>
+#include <getoptpp/getopt_pp.h>
+#include <fud/fud_client.h>
 #include "counter_processor.h"
-#include "getoptpp/getopt_pp.h"
 
 using namespace fud;
 using namespace GetOpt;

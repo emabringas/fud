@@ -2,13 +2,7 @@
 #define COUNTER_H
 
 #include <string>
-
-//include for installed FuD
-//#include <fud/fud.h> 
-
-//include for local FuD
-#include "fud.h"
-
+#include <fud/fud_server.h> 
 #include "number_database.h"
 
 using namespace fud;
