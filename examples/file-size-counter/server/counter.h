@@ -17,7 +17,7 @@ class Counter : public DistributableJobImplementation
 
         virtual ~Counter(){};
     private:
-        virtual void        handle_results (JobUnitID id,InputMessage& input);
+        virtual void        handle_results (JobUnitID /*id*/, InputMessage& input);
 
         virtual DistributableJobStatus get_status()    const;
         virtual const char*            get_name()      const;

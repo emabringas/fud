@@ -19,7 +19,7 @@ const char* Counter::get_name() const
     return oss.str().c_str();
 }
 
-void Counter::handle_results (JobUnitID id,InputMessage& input)
+void Counter::handle_results (JobUnitID /*id*/, InputMessage& input)
 {
     unsigned int header;
     input >> header;
@@ -56,7 +56,7 @@ DistributableJobStatus Counter::get_status() const
             return WaitingMoreData;
 }
 
-JobUnit* Counter::produce_next_job_unit(JobUnitSize size)
+JobUnit* Counter::produce_next_job_unit(JobUnitSize /*size*/)
 {
     if ( get_status() == ReadyToProduce)
     {
