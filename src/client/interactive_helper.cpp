@@ -42,8 +42,7 @@
 #include "fud/client/distribution_client.h"
 #include "fud/common/common.h"
 
-namespace fud
-{
+using namespace fud;
 
 fud_uint InteractiveHelper::ask_for_free_clients(fud_uint n)
 {
@@ -74,5 +73,3 @@ fud_uint InteractiveHelper::extract_free_clients()
         return 0;
     }
 }
-
-} // end namespace

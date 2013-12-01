@@ -44,9 +44,9 @@
 #include <map>
 #include <ana/ana.hpp>
 #include "fud/common/common.h"
+#include "fud/common/job_unit.h"
 #include "fud/server/clients_manager.h"
 #include "fud/server/client_proxy.h"
-#include "fud/common/job_unit.h"
 
 namespace fud
 {

@@ -45,10 +45,9 @@
 #include <boost/thread.hpp>
 #include "fud/common/distributable_job.h"
 #include "fud/common/job_unit.h"
-#include "clients_manager.h"
-#include "events.h"
-#include "synchronized_containers.h"
-
+#include "fud/server/clients_manager.h"
+#include "fud/server/events.h"
+#include "fud/server/synchronized_containers.h"
 
 namespace fud
 {
@@ -243,4 +242,3 @@ namespace fud
     };
 }
 #endif
-

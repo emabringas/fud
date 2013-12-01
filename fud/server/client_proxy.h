@@ -43,8 +43,7 @@
 
 #include "fud/common/job_unit.h"
 #include "fud/common/common.h"
-#include "work_stats.h"
-
+#include "fud/server/work_stats.h"
 
 namespace fud
 {

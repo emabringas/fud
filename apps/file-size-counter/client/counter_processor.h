@@ -28,7 +28,7 @@
 #ifndef COUNTER_PROCESSOR_H
 #define COUNTER_PROCESSOR_H
 
-#include "fud_client.h"
+#include <fud/fud.h>
 
 namespace fud
 {

@@ -44,8 +44,7 @@
 #include "fud/server/clients_manager.h"
 #include "fud/common/common.h"
 
-namespace fud
-{
+using namespace fud;
 
 ClientsManager* ClientsManager::_instance = NULL;
 
@@ -205,5 +204,3 @@ fud_uint ClientsManager::orders()
 {
     return _reservations;
 }
-
-} // end namespace

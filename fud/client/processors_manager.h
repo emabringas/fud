@@ -43,7 +43,7 @@
 
 #include <string>
 #include "fud/common/common.h"
-#include "client_processor.h"
+#include "fud/client/client_processor.h"
 
 namespace fud
 {
