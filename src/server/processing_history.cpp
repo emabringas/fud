@@ -34,8 +34,7 @@
 
 #include "fud/server/processing_history.h"
 
-namespace fud
-{
+using namespace fud;
 
 ProcessingHistory::ProcessingHistory(size_t max_size) :
     _history(),
@@ -80,5 +79,3 @@ float ProcessingHistory::get_millisecs_per_size_unit()
     }
     return static_cast<float>(acum_time) / static_cast<float>(acum_size);
 }
-
-} // end namespace

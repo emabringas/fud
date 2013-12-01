@@ -30,8 +30,9 @@
 #include <syslog.h>
 #include <sys/time.h>
 
-#include "counter.h"
+#include <fud/fud.h>
 #include "getoptpp/getopt_pp.h"
+#include "counter.h"
 
 using namespace fud;
 using namespace GetOpt;
@@ -48,7 +49,7 @@ int main(int argc, char** argv)
 
     size_t const AMOUNT(10);
 
-    Counter * jobs[AMOUNT];
+    Counter* jobs[AMOUNT];
     for (size_t i=0; i < AMOUNT; ++i)
         jobs[i] = new Counter("server/data/file2.txt");
 

@@ -36,8 +36,7 @@
 #include "fud/client/client_processor.h"
 #include "fud/client/processors_manager.h"
 
-namespace fud
-{
+using namespace fud;
 
 ClientProcessor::ClientProcessor()
 {
@@ -48,5 +47,3 @@ ClientProcessor::~ClientProcessor()
 {
 	
 }
-
-} // end namespace

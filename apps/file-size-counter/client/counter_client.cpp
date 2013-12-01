@@ -28,7 +28,7 @@
     along with Parallel Clusterer.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "fud_client.h"
+#include <fud/fud.h>
 #include "counter_processor.h"
 #include "getoptpp/getopt_pp.h"
 

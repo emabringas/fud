@@ -37,13 +37,12 @@
  */
 
 #include <mili/mili.h>
-#include "fud/client/sender.h"
 #include "fud/common/common.h"
+#include "fud/client/sender.h"
 #include "fud/client/distribution_client.h"
 #include "fud/client/processors_manager.h"
 
-namespace fud
-{
+using namespace fud;
 
 void Sender::send(const OutputMessage& message)
 {
@@ -52,5 +51,3 @@ void Sender::send(const OutputMessage& message)
     out << size_of_message << kMessage << ProcessorsManager::get_instance()->get_next_message_number() << message.str();
     DistributionClient::get_instance()->dispatch(out.str());
 }
-
-} //end namespace

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-#include "fud.h"
+#include <fud/fud.h>
 
 using namespace fud;
 

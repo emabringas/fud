@@ -44,8 +44,7 @@
 #include "fud/server/processing_history.h"
 #include "fud/server/job_manager.h"
 
-namespace fud
-{
+using namespace fud;
 
 ClientID ClientProxy::_last_id = 0;
 
@@ -139,5 +138,3 @@ void ClientProxy::check_incomplete_job()
 {
     JobManager::get_instance()->rescue_inclomplete_job_unit(_current_id);
 }
-
-} // end namespace
